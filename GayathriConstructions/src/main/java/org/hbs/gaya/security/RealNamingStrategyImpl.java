@@ -1,4 +1,4 @@
-package org.hbs.gaya;
+package org.hbs.gaya.security;
 
 import java.io.Serializable;
 

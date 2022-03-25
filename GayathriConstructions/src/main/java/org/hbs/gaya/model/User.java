@@ -1,4 +1,4 @@
-package org.hbs.gaya;
+package org.hbs.gaya.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

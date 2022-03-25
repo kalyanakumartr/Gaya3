@@ -1,7 +1,8 @@
-package org.hbs.gaya;
+package org.hbs.gaya.security;
 
 import java.util.Collection;
 
+import org.hbs.gaya.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
