@@ -2,7 +2,7 @@ package org.hbs.gaya.security;
 
 import java.util.Collection;
 
-import org.hbs.gaya.model.User;
+import org.hbs.gaya.model.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,9 +10,9 @@ public class CustomUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 7705372376820691794L;
 	
-	private User user;
+	private Users user;
 	
-	public CustomUserDetails(User user) {
+	public CustomUserDetails(Users user) {
 		this.user = user;
 	}
 
@@ -52,7 +52,7 @@ public class CustomUserDetails implements UserDetails {
 	}
 	
 	public String getFullName() {
-		return user.getFirstName() + " " + user.getLastName();
+		return user.getUserName() + " " + user.getLastName();
 	}
 
 }
