@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "rental_items")
+@Table(name = "rental_item")
 @Getter
 @Setter
 @NoArgsConstructor
-public class RentalItems implements Serializable
+public class RentalItem implements Serializable
 {
 
 	private static final long serialVersionUID = 160903192897435425L;
@@ -32,15 +32,16 @@ public class RentalItems implements Serializable
 	@JoinColumn(name = "rentalId", nullable = false)
 	private Rental				rental;
 
+	@ManyToOne(targetEntity = Inventory.class, fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "inventoryId", nullable = false)
+	private Inventory				inventory;
+
 	@Column(name = "quantity")
 	private Integer				quantity = 0;
 
-	@Column(name = "returnQuantity")
-	private Integer				returnQuantity = 0;
+	@Column(name = "balanceQuantity")
+	private Integer				balanceQuantity = 0;
 
-	@Column(name = "brokenQuantity")
-	private Integer				brokenQuantity = 0;
-	
 	@Column(name = "price")
 	private Double				price = 0.0;
 	

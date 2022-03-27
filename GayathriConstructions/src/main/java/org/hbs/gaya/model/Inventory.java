@@ -38,10 +38,15 @@ public class Inventory extends CreatedModifiedDateStatus implements Serializable
 	@Column(name = "rentalItemCost")
 	private Double				rentalItemCost;
 
+	@Column(name = "availableQuantity")
+	private Integer				availableQuantity;
+
+	@Column(name = "rentedQuantity")
+	private Integer				rentedQuantity;
+	
+	@Column(name = "brokenQuantity")
+	private Integer				brokenQuantity;
+	
 	@Column(name = "quantity")
 	private Integer				quantity;
-
-	@Column(name = "mobileNo")
-	private String				mobileNo;
-
 }
