@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,9 +35,11 @@ public class Users extends CreatedModifiedDateStatus implements Serializable
 	private String				userName;
 
 	@Column(name = "lastName")
-	private String				lastName;
+	private String				lastName = "";
 
 	@Column(name = "mobileNo")
 	private String				mobileNo;
+	
+	
 
 }
