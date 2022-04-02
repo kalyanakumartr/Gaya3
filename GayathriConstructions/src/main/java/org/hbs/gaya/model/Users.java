@@ -23,10 +23,11 @@ public class Users extends CreatedModifiedDateStatus implements Serializable
 	private static final long	serialVersionUID	= -8743496249588408243L;
 
 	@Id
+	@Column(name = "employeeId")
 	private String				employeeId;
 
-	@Column(name = "email")
-	private String				email;
+	@Column(name = "emailId")
+	private String				emailId;
 
 	@Column(name = "password")
 	private String				password;

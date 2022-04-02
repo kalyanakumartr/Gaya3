@@ -1,5 +1,7 @@
 package org.hbs.gaya.security;
 
+import java.util.List;
+
 import org.hbs.gaya.dao.UsersDao;
 import org.hbs.gaya.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Users user = usersDao.findByEmail(username);
-		if (user == null) {
+		List<Users> userList= usersDao.getLoginDetails(username);
+		if (userList == null) {
 			throw new UsernameNotFoundException("User not found");
 		}
-		return new CustomUserDetails(user);
+		return new CustomUserDetails(userList.get(0));
 	}
 
 }
