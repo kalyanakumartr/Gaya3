@@ -1,11 +1,17 @@
 package org.hbs.gaya.bo;
 
-import org.hbs.gaya.model.Users;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.io.Serializable;
+import java.util.List;
 
-@Repository
-public interface InventoryBo extends JpaRepository<Users, Long>
+import org.hbs.gaya.model.Inventory;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface InventoryBo extends Serializable
 {
+	List<Inventory> searchInventory(String searchParam);
 
+	Inventory save(Inventory inventory);
+
+	Inventory getInventory(String inventoryId) throws Exception;
 }
