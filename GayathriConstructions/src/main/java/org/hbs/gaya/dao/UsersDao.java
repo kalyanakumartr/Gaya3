@@ -17,7 +17,7 @@ public interface UsersDao extends JpaRepository<Users, Long>
 	@Query("select u FROM Users u")
 	List<Users> findByEmail(String username);
 
-	@Query("select u FROM Users u where u.mobileNo = :phoneNumber")
-	List<Users> getLoginDetails(@Param("phoneNumber") String phoneNumber);
+	@Query("select u FROM Users u where u.mobileNo = :mobileNo")
+	List<Users> getLoginDetails(@Param("mobileNo") String mobileNo);
 
 }
