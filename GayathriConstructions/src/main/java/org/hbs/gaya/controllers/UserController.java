@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
 
 @Controller
 public class UserController {
@@ -21,6 +24,30 @@ public class UserController {
 	public String viewHomePage() {
 		return "index";
 	}
+	
+	@GetMapping(value = "/success-dashboard")
+	@ResponseBody
+    public String successPage() {
+		
+    	return "success";
+    }
+	
+
+	@GetMapping(value = "/failure-dashboard")
+	@ResponseBody
+    public String failurePage() {
+		
+    	return "failure";
+    }
+
+
+	@GetMapping(value = "/dashboard")
+    public String viewDashBoardPage() {
+		
+		System.out.println(">>>>>>>>>>>>>>>viewDashBoardPage>>>>>>>>>>>>>>>> " );
+    	return "dashboard";
+    }
+
 	
 	@GetMapping("/register")
 	public String showRegistrationForm(Model model) {
@@ -40,12 +67,13 @@ public class UserController {
 		return "register_success";
 	}
 	
-	@GetMapping("/users")
+	@PostMapping("/users")
+	@ResponseBody
 	public String listUsers(Model model) {
 		List<Users> listUsers = usersDao.findAll();
 		model.addAttribute("listUsers", listUsers);
-		
-		return "users";
+		System.out.println(">>>>listUsers>>>>> " + listUsers);
+		return new Gson().toJson(listUsers);
 	}
 	
 }

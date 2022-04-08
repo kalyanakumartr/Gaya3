@@ -52,21 +52,58 @@ var KTLogin = function() {
 				setTimeout(function() {
 					KTUtil.btnRelease(formSubmitButton);
 				}, 2000);
-
-				// Form Validation & Ajax Submission: https://formvalidation.io/guide/examples/using-ajax-to-submit-the-form
 				
+				$.ajax(formSubmitUrl, {
+				    type: 'POST',  // http method
+				    data: {
+				    	emailId: form.querySelector('[name="emailId"]').value,
+		            	password: form.querySelector('[name="password"]').value,	
+				    },  
+				    success: function (data, status, xhr) {
+				    	// Release button
+						KTUtil.btnRelease(formSubmitButton);
+						if(data == 'success')
+						{
+							window.location.href = "/gaya/dashboard";
+						}
+						else
+						{
+							Swal.fire({
+				                text: "Sorry, Your credentials are Invalid.",
+				                icon: "error",
+				                buttonsStyling: false,
+								confirmButtonText: "Ok, got it!",
+								customClass: {
+									confirmButton: "btn font-weight-bold btn-light-primary"
+								}
+				            }).then(function() {
+								KTUtil.scrollTop();
+							});
+						}
+				    },
+				    error: function (jqXhr, textStatus, errorMessage) {
+				            $('p').append('Error' + errorMessage);
+				    }
+				});
+				
+				// Form Validation & Ajax Submission: https://formvalidation.io/guide/examples/using-ajax-to-submit-the-form
+				/**
 		        FormValidation.utils.fetch(formSubmitUrl, {
 		            method: 'POST',
 					dataType: 'json',
+					async:false,
 		            params: {
 		            	emailId: form.querySelector('[name="emailId"]').value,
 		            	password: form.querySelector('[name="password"]').value,
 		            },
 		        }).then(function(response) { // Return valid JSON
+		        	
 					// Release button
 					KTUtil.btnRelease(formSubmitButton);
-
+					alert(JSON.stringify(response));
+					
 					if (response && typeof response === 'object' && response.status && response.status == 'success') {
+						//$( "html" ).html( response );
 						Swal.fire({
 			                text: "All is cool! Now you submit this form",
 			                icon: "success",
@@ -92,7 +129,7 @@ var KTLogin = function() {
 						});
 					}
 		        });
-				
+				*/
 		    })
 			.on('core.form.invalid', function() {
 				Swal.fire({

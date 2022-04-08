@@ -3,7 +3,7 @@
 
 var KTAppsUsersListDatatable = function() {
 	// Private functions
-
+	
 	// basic demo
 	var _demo = function() {
 		var datatable = $('#kt_datatable').KTDatatable({
@@ -12,7 +12,7 @@ var KTAppsUsersListDatatable = function() {
 				type: 'remote',
 				source: {
 					read: {
-						url: HOST_URL + '/api/datatables/demos/default.php',
+						url: '/gaya/users',
 					},
 				},
 				pageSize: 10, // display 20 records per page
@@ -41,120 +41,38 @@ var KTAppsUsersListDatatable = function() {
 			// columns definition
 			columns: [
 				{
-					field: 'RecordID',
-					title: '#',
+					field: 'employeeId',
+					title: 'Sno',
 					sortable: 'asc',
-					width: 40,
+					width: 70,
 					type: 'number',
 					selector: false,
 					textAlign: 'left',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.RecordID + '</span>';
+						return '<span class="font-weight-bolder">' + data.employeeId + '</span>';
 					}
 				}, {
-					field: 'OrderID',
-					title: 'Customer',
-					width: 250,
+					field: 'userName',
+					title: 'User Name',
+					width: 125,
 					template: function(data) {
-						var number = KTUtil.getRandomInt(1, 14);
-						var user_img = '100_' + number + '.jpg';
-
-						var output = '';
-						if (number > 8) {
-							output = '<div class="d-flex align-items-center">\
-								<div class="symbol symbol-40 symbol-sm flex-shrink-0">\
-									<img class="" src="assets/media/users/' + user_img + '" alt="photo">\
-								</div>\
-								<div class="ml-4">\
-									<div class="text-dark-75 font-weight-bolder font-size-lg mb-0">' + data.CompanyAgent + '</div>\
-									<a href="#" class="text-muted font-weight-bold text-hover-primary">' + data.CompanyEmail + '</a>\
-								</div>\
-							</div>';
-						}
-						else {
-							var stateNo = KTUtil.getRandomInt(0, 7);
-							var states = [
-								'success',
-								'primary',
-								'danger',
-								'success',
-								'warning',
-								'dark',
-								'primary',
-								'info'];
-							var state = states[stateNo];
-
-							output = '<div class="d-flex align-items-center">\
-								<div class="symbol symbol-40 symbol-light-'+state+' flex-shrink-0">\
-									<span class="symbol-label font-size-h4 font-weight-bold">' + data.CompanyAgent.substring(0, 1) + '</span>\
-								</div>\
-								<div class="ml-4">\
-									<div class="text-dark-75 font-weight-bolder font-size-lg mb-0">' + data.CompanyAgent + '</div>\
-									<a href="#" class="text-muted font-weight-bold text-hover-primary">' + data.CompanyEmail + '</a>\
-								</div>\
-							</div>';
-						}
-
-						return output;
+						
+						return '<span class="font-weight-bolder">' + data.userName + ' ' + data.lastName + '</span>';
 					}
 				}, {
-					field: 'Country',
-					title: 'Country',
-					template: function(row) {
-						var output = '';
-
-						output += '<div class="font-weight-bolder font-size-lg mb-0">' + row.Country + '</div>';
-						output += '<div class="font-weight-bold text-muted">Code: ' + row.ShipCountry + '</div>';
-
-						return output;
+					field: 'mobileNo',
+					title: 'Mobile No',
+					width: 100,
+					template: function(data) {
+						return '<span class="font-weight-bolder">' + data.mobileNo + '</span>';
 					}
 				}, {
-					field: 'ShipDate',
-					title: 'Ship Date',
-					type: 'date',
-					format: 'MM/DD/YYYY',
-					template: function(row) {
-						var output = '';
-
-						var status = {
-							1: {'title': 'Paid', 'class': ' label-light-primary'},
-							2: {'title': 'Approved', 'class': ' label-light-danger'},
-							3: {'title': 'Pending', 'class': ' label-light-primary'},
-							4: {'title': 'Rejected', 'class': ' label-light-success'}
-						};
-						var index = KTUtil.getRandomInt(1, 4);
-
-						output += '<div class="font-weight-bolder text-primary mb-0">' + row.ShipDate + '</div>';
-						output += '<div class="text-muted">' + status[index].title + '</div>';
-
-						return output;
-					},
-				}, {
-					field: 'CompanyName',
-					title: 'Company Name',
-					template: function(row) {
-						var output = '';
-
-						output += '<div class="font-weight-bold text-muted">' + row.CompanyName + '</div>';
-
-						return output;
+					field: 'emailId',
+					title: 'Email',
+					width: 175,
+					template: function(data) {
+						return '<span class="font-weight-bolder">' + data.emailId + '</span>';
 					}
-				}, {
-					field: 'Status',
-					title: 'Status',
-					// callback function support for column rendering
-					template: function(row) {
-						var status = {
-							1: {'title': 'Pending', 'class': ' label-light-primary'},
-							2: {'title': 'Delivered', 'class': ' label-light-danger'},
-							3: {'title': 'Canceled', 'class': ' label-light-primary'},
-							4: {'title': 'Success', 'class': ' label-light-success'},
-							5: {'title': 'Info', 'class': ' label-light-info'},
-							6: {'title': 'Danger', 'class': ' label-light-danger'},
-							7: {'title': 'Warning', 'class': ' label-light-warning'},
-						};
-						return '<span class="label label-lg font-weight-bold ' + status[row.Status].class + ' label-inline">' + status[row.Status].title + '</span>';
-					},
 				}, {
 					field: 'Actions',
 					title: 'Actions',
@@ -163,58 +81,7 @@ var KTAppsUsersListDatatable = function() {
 					overflow: 'visible',
 					autoHide: false,
 					template: function() {
-						return '\
-	                        <div class="dropdown dropdown-inline">\
-	                            <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-toggle="dropdown">\
-									<span class="svg-icon svg-icon-md">\
-										<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="svg-icon">\
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-												<rect x="0" y="0" width="24" height="24"/>\
-												<path d="M7,3 L17,3 C19.209139,3 21,4.790861 21,7 C21,9.209139 19.209139,11 17,11 L7,11 C4.790861,11 3,9.209139 3,7 C3,4.790861 4.790861,3 7,3 Z M7,9 C8.1045695,9 9,8.1045695 9,7 C9,5.8954305 8.1045695,5 7,5 C5.8954305,5 5,5.8954305 5,7 C5,8.1045695 5.8954305,9 7,9 Z" fill="#000000"/>\
-												<path d="M7,13 L17,13 C19.209139,13 21,14.790861 21,17 C21,19.209139 19.209139,21 17,21 L7,21 C4.790861,21 3,19.209139 3,17 C3,14.790861 4.790861,13 7,13 Z M17,19 C18.1045695,19 19,18.1045695 19,17 C19,15.8954305 18.1045695,15 17,15 C15.8954305,15 15,15.8954305 15,17 C15,18.1045695 15.8954305,19 17,19 Z" fill="#000000" opacity="0.3"/>\
-											</g>\
-										</svg>\
-									</span>\
-	                            </a>\
-	                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
-	                                <ul class="navi flex-column navi-hover py-2">\
-	                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
-	                                        Choose an action:\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-print"></i></span>\
-	                                            <span class="navi-text">Print</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-copy"></i></span>\
-	                                            <span class="navi-text">Copy</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-file-excel-o"></i></span>\
-	                                            <span class="navi-text">Excel</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-file-text-o"></i></span>\
-	                                            <span class="navi-text">CSV</span>\
-	                                        </a>\
-	                                    </li>\
-	                                    <li class="navi-item">\
-	                                        <a href="#" class="navi-link">\
-	                                            <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>\
-	                                            <span class="navi-text">PDF</span>\
-	                                        </a>\
-	                                    </li>\
-	                                </ul>\
-	                            </div>\
-	                        </div>\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">\
+						return '\ <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">\
 	                            <span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
