@@ -1,12 +1,19 @@
 package org.hbs.gaya.controllers;
 
+import java.util.List;
+
 import org.hbs.gaya.bo.InventoryBo;
 import org.hbs.gaya.model.Inventory;
+import org.hbs.gaya.model.Material;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 @Controller
 public class MaterialInventoryController
@@ -34,13 +41,20 @@ public class MaterialInventoryController
 		return "inventory_search";
 	}
 
-	@GetMapping("/searchInventory")
-	public String search(Model model)
+	@PostMapping("/searchInventory")
+	@ResponseBody
+	public String search()
 	{
-		if (model != null)
-			model.addAttribute("inventoryList", inventoryBo.searchInventory(String.valueOf(model.getAttribute("search"))));
-
-		return "inventory_search";
+		try
+		{
+			List<Inventory> dataList = inventoryBo.searchInventory("%");
+			return new ObjectMapper().writeValueAsString(dataList);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	@GetMapping("/updateInventory")

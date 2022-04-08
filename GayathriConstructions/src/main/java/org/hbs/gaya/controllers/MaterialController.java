@@ -6,7 +6,6 @@ import org.hbs.gaya.dao.MaterialDao;
 import org.hbs.gaya.model.Material;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,9 +25,9 @@ public class MaterialController {
 		return "material";
 	}
 
-	@PostMapping("/materials")
+	@PostMapping("/searchMaterial")
 	@ResponseBody
-	public String materialList(Model model)
+	public String searchMaterial()
 	{
 		try
 		{

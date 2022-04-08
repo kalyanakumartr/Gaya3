@@ -1,18 +1,18 @@
 "use strict";
 // Class definition
 
-var KTAppsMaterialListDatatable = function() {
+var KTAppsInventoryListDatatable = function() {
 	// Private functions
 	
 	// basic demo
 	var _demo = function() {
 		var datatable = $('#kt_datatable').KTDatatable({
-			// datasource definition
+			// data source definition
 			data: {
 				type: 'remote',
 				source: {
 					read: {
-						url: '/gaya/searchMaterial',
+						url: '/gaya/searchInventory',
 					},
 				},
 				pageSize: 10, // display 20 records per page
@@ -41,37 +41,65 @@ var KTAppsMaterialListDatatable = function() {
 			// columns definition
 			columns: [
 				{
-					field: 'materialId',
+					field: '',
 					title: 'Sno',
 					sortable: 'asc',
 					width: 70,
 					type: 'number',
 					selector: false,
 					textAlign: 'left',
-					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.materialId + '</span>';
+					template: function(data, row) {
+						return '<span class="font-weight-bolder">' + (row+1) + '</span>';
 					}
 				}, {
-					field: 'materialName',
+					field: 'material.materialName',
 					title: 'Material Name',
 					width: 125,
 					template: function(data) {
 						
-						return '<span class="font-weight-bolder">' + data.materialName + '</span>';
+						return '<span class="font-weight-bolder">' + data.material.materialName + '</span>';
 					}
 				}, {
-					field: 'numberCode',
-					title: 'Code',
+					field: 'materialCost',
+					title: 'Cost',
 					width: 100,
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.numberCode + '</span>';
+						return '<span class="font-weight-bolder">' + data.materialCost + '</span>';
 					}
 				}, {
-					field: 'description',
-					title: 'Description',
-					width: 175,
+					field: 'rentalItemCost',
+					title: 'Item Cost',
+					width: 100,
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.description + '</span>';
+						return '<span class="font-weight-bolder">' + data.rentalItemCost + '</span>';
+					}
+				}, {
+					field: 'availableQuantity',
+					title: 'Available Quantity',
+					width: 100,
+					template: function(data) {
+						return '<span class="font-weight-bolder">' + data.availableQuantity + '</span>';
+					}
+				}, {
+					field: 'rentedQuantity',
+					title: 'Rented Quantity',
+					width: 100,
+					template: function(data) {
+						return '<span class="font-weight-bolder">' + data.rentedQuantity + '</span>';
+					}
+				}, {
+					field: 'brokenQuantity',
+					title: 'Broken Quantity',
+					width: 100,
+					template: function(data) {
+						return '<span class="font-weight-bolder">' + data.brokenQuantity + '</span>';
+					}
+				}, {
+					field: 'quantity',
+					title: 'Total 	Quantity',
+					width: 100,
+					template: function(data) {
+						return '<span class="font-weight-bolder">' + data.quantity + '</span>';
 					}
 				}, {
 					field: 'Actions',
@@ -117,6 +145,8 @@ var KTAppsMaterialListDatatable = function() {
 		});
 
 		$('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
+		
+		
 	};
 
 	return {
@@ -128,5 +158,5 @@ var KTAppsMaterialListDatatable = function() {
 }();
 
 jQuery(document).ready(function() {
-	KTAppsMaterialListDatatable.init();
+	KTAppsInventoryListDatatable.init();
 });

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hbs.gaya.util.EnumInterface;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +27,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Rental implements Serializable
 {
 	public enum ERentalStatus implements EnumInterface
