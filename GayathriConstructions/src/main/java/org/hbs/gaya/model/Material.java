@@ -29,10 +29,10 @@ public class Material extends CreatedModifiedDateStatus implements Serializable
 	private String				materialName;
 
 	@Column(name = "numberCode")
-	private Integer				numberCode;
+	private String				numberCode;
 
 	@Column(name = "description")
-	private Double				description;
+	private String				description;
 	
 	@Column(name = "displayOrder")
 	private Integer				displayOrder;
