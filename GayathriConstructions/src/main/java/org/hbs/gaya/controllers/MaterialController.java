@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 @Controller
@@ -32,7 +33,7 @@ public class MaterialController {
 		try
 		{
 			List<Material> dataList = matDao.findAll();
-			return new Gson().toJson(dataList);
+			return new ObjectMapper().writeValueAsString(dataList);
 		}
 		catch (Exception e)
 		{
