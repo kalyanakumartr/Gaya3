@@ -15,65 +15,52 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
 @Controller
-public class UserController {
+public class UserController
+{
 
 	@Autowired
 	private UsersDao usersDao;
-	
+
 	@GetMapping("")
-	public String viewHomePage() {
+	public String viewHomePage()
+	{
 		return "index";
 	}
-	
-	@GetMapping(value = "/success-dashboard")
-	@ResponseBody
-    public String successPage() {
-		
-    	return "success";
-    }
-	
 
-	@GetMapping(value = "/failure-dashboard")
-	@ResponseBody
-    public String failurePage() {
-		
-    	return "failure";
-    }
+	@GetMapping(value = "/users")
+	public String viewUsersPage()
+	{
+		return "users";
+	}
 
-
-	@GetMapping(value = "/dashboard")
-    public String viewDashBoardPage() {
-		
-		System.out.println(">>>>>>>>>>>>>>>viewDashBoardPage>>>>>>>>>>>>>>>> " );
-    	return "dashboard";
-    }
-
-	
 	@GetMapping("/register")
-	public String showRegistrationForm(Model model) {
+	public String showRegistrationForm(Model model)
+	{
 		model.addAttribute("user", new Users());
-		
+
 		return "signup_form";
 	}
-	
+
 	@PostMapping("/process_register")
-	public String processRegister(Users user) {
+	public String processRegister(Users user)
+	{
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		String encodedPassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
-		
+
 		usersDao.save(user);
-		
+
 		return "register_success";
 	}
-	
+
 	@PostMapping("/users")
 	@ResponseBody
-	public String listUsers(Model model) {
+	public String listUsers(Model model)
+	{
 		List<Users> listUsers = usersDao.findAll();
 		model.addAttribute("listUsers", listUsers);
 		System.out.println(">>>>listUsers>>>>> " + listUsers);
 		return new Gson().toJson(listUsers);
 	}
-	
+
 }

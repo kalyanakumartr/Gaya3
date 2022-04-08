@@ -14,12 +14,17 @@ public class MaterialInventoryController
 	@Autowired
 	InventoryBo inventoryBo;
 
-	@GetMapping("/inventory")
-	public String inventoryAddForm(Model model)
+	@GetMapping(value = "/inventory")
+	public String viewInventoryPage()
 	{
-		model.addAttribute("inventory", new Inventory());
-
 		return "inventory";
+	}
+	
+
+	@GetMapping(value = "/addInventory")
+	public String viewAddInventoryPage()
+	{
+		return "add-inventory";
 	}
 
 	@PostMapping("/addInventory")
