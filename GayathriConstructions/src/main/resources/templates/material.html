@@ -264,6 +264,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									<!--end::Title-->
 									<!--begin::Separator-->
 									<div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+									
 									<!--end::Separator-->
 									<!--begin::Search Form-->
 									<div class="d-flex align-items-center" id="kt_subheader_search">
@@ -299,9 +300,13 @@ License: You must have a valid license purchased only from themeforest(the above
 									<a href="#" class=""></a>
 									<!--end::Button-->
 									<!--begin::Button-->
-									<a href="gaya/addMaterial" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">Add Material</a>
-									<!--end::Button-->
-									<!--begin::Dropdown-->
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+									   Add Material
+									</button>
+																		
+									
+
+	<!--begin::Dropdown-->
 									
 									<!--end::Dropdown-->
 								</div>
@@ -347,25 +352,7 @@ License: You must have a valid license purchased only from themeforest(the above
 					</div>
 					<!--end::Content-->
 					<!--begin::Footer-->
-					<div class="footer bg-white py-4 d-flex flex-lg-column" id="kt_footer">
-						<!--begin::Container-->
-						<div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
-							<!--begin::Copyright-->
-							<div class="text-dark order-2 order-md-1">
-								<span class="text-muted font-weight-bold mr-2">2021Â©</span>
-								<a href="http://keenthemes.com/metronic" target="_blank" class="text-dark-75 text-hover-primary">Keenthemes</a>
-							</div>
-							<!--end::Copyright-->
-							<!--begin::Nav-->
-							<div class="nav nav-dark">
-								<a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-5">About</a>
-								<a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-5">Team</a>
-								<a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
-							</div>
-							<!--end::Nav-->
-						</div>
-						<!--end::Container-->
-					</div>
+					<div w3-include-html="footer.html"></div>
 					<!--end::Footer-->
 				</div>
 				<!--end::Wrapper-->
@@ -421,6 +408,71 @@ License: You must have a valid license purchased only from themeforest(the above
 				<!--end::Svg Icon-->
 			</span>
 		</div>
+		<!-- Button trigger modal-->
+
+
+<!-- Modal-->
+<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Material</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin::Row-->
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Material Num</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="matNum" placeholder="Material Num" value="" />
+							<span class="form-text text-muted">Please enter your Material Num.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					<!--begin::Group-->
+					<div class="col-xl-6">
+						<div class="form-group">
+							<label>Material Name</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="matName" placeholder="Material Name" value="" />
+							<span class="form-text text-muted">Please enter your Material Name.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+				</div>
+				<!--end::Row-->
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Material Code</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="matCode" placeholder="MatCode" value="" />
+							<span class="form-text text-muted">Please enter your Material Code.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					<!--begin::Group-->
+					<div class="col-xl-6">
+						<div class="form-group">
+							<label>Desc</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="desc" placeholder="Desc" value="" />
+							<span class="form-text text-muted">Please enter your Desc.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+				</div>
+				<!--end::Row-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 		<!--end::Scrolltop-->
 		<!--begin::Sticky Toolbar-->
 		
