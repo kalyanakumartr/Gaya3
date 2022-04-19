@@ -5,13 +5,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hbs.gaya.dao.MaterialDao;
+import org.hbs.gaya.dao.UsersDao;
 import org.hbs.gaya.model.Material;
 import org.hbs.gaya.util.DataTableParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,16 +25,26 @@ public class MaterialController {
 	@Autowired
 	MaterialDao matDao;
 	
+	@Autowired
+	private UsersDao usersDao;
+	
 	@GetMapping(value = "/material")
 	public String viewMaterialPage()
 	{
 		return "material";
 	}
 
-	@GetMapping(value = "/addMaterial")
-	public String addMaterialPage()
+	//@PostMapping(value = "/addMaterial" , produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/addMaterial" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String addMaterialPage( Material material)
 	{
-		return "addMaterial";	
+		System.out.println(material+"material"+ material.getMaterialName());
+		material.setCreatedUser(usersDao.getLoginDetails("1234567890").get(0));
+		material.setModifiedUser(usersDao.getLoginDetails("1234567890").get(0));
+		material.setStatus(true);
+		material.setDisplayOrder(1);
+		matDao.save(material);
+		return "material";	
 	}
 
 	@PostMapping("/searchMaterial")
