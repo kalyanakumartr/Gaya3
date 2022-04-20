@@ -46,7 +46,24 @@ public class MaterialController {
 		matDao.save(material);
 		return "material";	
 	}
-
+	@PostMapping(value = "/editMaterial" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String editMaterialPage( Material material)
+	{
+		Material materialtemp = matDao.getById(material.getMaterialId());
+		materialtemp.setMaterialName(material.getMaterialName());
+		materialtemp.setDescription(material.getDescription());
+		materialtemp.setNumberCode(material.getNumberCode());
+		matDao.save(materialtemp);
+		return "material";	
+	}
+	@PostMapping(value = "/deleteMaterial" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String deleteMaterialPage( Material material)
+	{
+		Material materialtemp = matDao.getById(material.getMaterialId());
+		materialtemp.setStatus(false);
+		matDao.save(materialtemp);
+		return "material";	
+	}
 	@PostMapping("/searchMaterial")
 	@ResponseBody
 	public String searchMaterial( HttpServletRequest request)

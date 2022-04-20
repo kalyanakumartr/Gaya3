@@ -1,6 +1,9 @@
 "use strict";
 // Class definition
-
+function deleteMaterial(id){
+				alert(id);
+				
+			}
 var KTAppsMaterialListDatatable = function() {
 	// Private functions
 	
@@ -80,8 +83,8 @@ var KTAppsMaterialListDatatable = function() {
 					width: 130,
 					overflow: 'visible',
 					autoHide: false,
-					template: function() {
-						return '\ <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">\
+					template: function(data) {
+						return '\ <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-id =\''+JSON.stringify(data)+'\' data-toggle="modal" data-target="#editModalMaterial" title="Edit details">\
 	                            <span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -92,7 +95,7 @@ var KTAppsMaterialListDatatable = function() {
 									</svg>\
 	                            </span>\
 	                        </a>\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" title="Delete">\
+	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon" data-id =\''+JSON.stringify(data)+'\' data-toggle="modal" data-target="#deleteModal" title="Delete" >\
 								<span class="svg-icon svg-icon-md">\
 									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -127,6 +130,23 @@ var KTAppsMaterialListDatatable = function() {
 	};
 }();
 
+jQuery('#deleteModal').on('show.bs.modal', function(e) {
+
+    //get data-id attribute of the clicked element
+    var material = jQuery(e.relatedTarget).data('id');
+    
+    jQuery(e.currentTarget).find('input[name="materialId"]').val(material.materialId);
+});
+jQuery('#editModalMaterial').on('show.bs.modal', function(e) {
+
+    //get data-id attribute of the clicked element
+    var material = jQuery(e.relatedTarget).data('id');
+    jQuery(e.currentTarget).find('input[name="materialId"]').val(material.materialId);
+    jQuery(e.currentTarget).find('input[name="materialName"]').val(material.materialName);
+    jQuery(e.currentTarget).find('input[name="numberCode"]').val(material.numberCode);
+    jQuery(e.currentTarget).find('input[name="description"]').val(material.description);
+});
 jQuery(document).ready(function() {
 	KTAppsMaterialListDatatable.init();
 });
+

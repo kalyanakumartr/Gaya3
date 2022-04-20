@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MaterialDao extends JpaRepository<Material, String>
 {
-	@Query("Select mat From Material mat Where mat.materialName like %:materialName%")
+	@Query("Select mat From Material mat Where mat.materialName like %:materialName% and mat.status = true")
 	List<Material> searchMaterial(String materialName);
 }

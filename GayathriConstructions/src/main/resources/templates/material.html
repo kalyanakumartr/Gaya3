@@ -300,7 +300,7 @@ License: You must have a valid license purchased only from themeforest(the above
 									<a href="#" class=""></a>
 									<!--end::Button-->
 									<!--begin::Button-->
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalMaterial">
 									   Add Material
 									</button>
 																		
@@ -411,8 +411,110 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!-- Button trigger modal-->
 
 
-<!-- Modal-->
-<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Material </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin::Row-->
+                <form class="form" id="kt_login_singin_form" method="post" action="/gaya/deleteMaterial">
+				<div class="row">
+					<div class="col-xl-12">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Are you Sure you want to Delete  Material? </label>
+							<input type="hidden" class="form-control form-control-solid form-control-lg" name="materialId" placeholder="Material Num" value="" />
+
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+	                
+	                <button type="submit" id="kt_login_singin_form_submit_button" class="btn btn-light-primary font-weight-bold">Yes</button>
+	                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">No</button>
+            	</div>
+				</form>
+				<!--end::Row-->
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- edit  Modal-->
+<div class="modal fade" id="editModalMaterial" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Material</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin::Row-->
+               <!-- <form th:action="@{/add_material}" th:object="${material}" method="post" style="max-width: 600px; margin: 0 auto;">-->
+                <form class="form" id="kt_login_singin_form" method="post" action="/gaya/editMaterial">
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Material Num</label>
+							<input type="text" readonly class="form-control form-control-solid form-control-lg" name="materialId" placeholder="Material Num" value="" />
+							<span class="form-text text-muted">Please enter your Material Num.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					<!--begin::Group-->
+					<div class="col-xl-6">
+						<div class="form-group">
+							<label>Material Name</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="materialName" placeholder="Material Name" value="" />
+							<span class="form-text text-muted">Please enter your Material Name.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+				</div>
+				<!--end::Row-->
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Material Code</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="numberCode" placeholder="MatCode" value="" />
+							<span class="form-text text-muted">Please enter your Material Code.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					<!--begin::Group-->
+					<div class="col-xl-6">
+						<div class="form-group">
+							<label>Desc</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="description" placeholder="Desc" value="" />
+							<span class="form-text text-muted">Please enter your Desc.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+				</div>
+				<div class="modal-footer">
+	                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+	                <button type="submit" id="kt_login_singin_form_submit_button" class="btn btn-light-primary font-weight-bold">Save</button>
+            	</div>
+				</form>
+				<!--end::Row-->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal-->
+<div class="modal fade" id="addModalMaterial" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -468,7 +570,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				</div>
 				<div class="modal-footer">
 	                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-	                <button type="submit" id="kt_login_singin_form_submit_button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3">Save</button>
+	                <button type="submit" id="kt_login_singin_form_submit_button" class="btn btn-light-primary font-weight-bold">Save</button>
             	</div>
 				</form>
 				<!--end::Row-->
@@ -494,6 +596,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		<!--end::Global Theme Bundle-->
 		<!--begin::Page Scripts(used by this page)-->
 		<script src="gaya/assets/js/pages/custom/user/list-datatable-material.js"></script>
+		<script type="text/javascript">
+			
+		</script>
 		<!--end::Page Scripts-->
 	</body>
 	<!--end::Body-->
