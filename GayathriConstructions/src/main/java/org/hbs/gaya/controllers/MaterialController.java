@@ -34,7 +34,6 @@ public class MaterialController {
 		return "material";
 	}
 
-	//@PostMapping(value = "/addMaterial" , produces = MediaType.APPLICATION_JSON_VALUE)
 	@PostMapping(value = "/addMaterial" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String addMaterialPage( Material material)
 	{
