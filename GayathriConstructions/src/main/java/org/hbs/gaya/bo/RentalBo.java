@@ -1,11 +1,18 @@
 package org.hbs.gaya.bo;
 
-import org.hbs.gaya.model.Users;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
 
-@Repository
-public interface RentalBo extends JpaRepository<Users, Long>
+import org.hbs.gaya.model.Rental;
+import org.hbs.gaya.model.RentalItem;
+
+public interface RentalBo extends Serializable
 {
+	List<Rental> searchRental(String search);
+
+	void calculateDayRental();
+
+	List<RentalItem> searchRentalItem(String rentalId);
 
 }

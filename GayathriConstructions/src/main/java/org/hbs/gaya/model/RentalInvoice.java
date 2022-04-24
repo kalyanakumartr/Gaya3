@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import org.hbs.gaya.util.EnumInterface;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
@@ -32,43 +33,55 @@ public class RentalInvoice implements Serializable
 {
 
 	private static final long serialVersionUID = 160903192897435425L;
-	
+
 	public enum EInvoiceStatus implements EnumInterface
 	{
-		Settled, New, InProcess, Pending; 
+		Settled, New, InProcess, Pending, Payable;
 	}
 
 	@Id
 	@Column(name = "invoiceId")
-	private String				invoiceId;
+	private String			invoiceId;
 
-	@ManyToOne(targetEntity = Rental.class, fetch = FetchType.LAZY, optional = false)
+	@Column(name = "invoiceNo")
+	private String			invoiceNo;
+
+	@ManyToOne(targetEntity = RentalInvoice.class, fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "masterInvoiceId", nullable = false)
-	private RentalInvoice				masterInvoice;
-	
+	@JsonIgnore
+	private RentalInvoice	masterInvoice;
+
 	@ManyToOne(targetEntity = Rental.class, fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "rentalId", nullable = false)
-	private Rental				rental;
+	@JsonIgnore
+	private Rental			rental;
 
 	@Column(name = "invoiceDate")
-	private LocalDate				invoiceDate;
+	private LocalDate		invoiceDate;
 
 	@Column(name = "startDate")
-	private LocalDate				startDate;
+	private LocalDate		startDate;
 
 	@Column(name = "endDate")
-	private LocalDate				endDate;
-	
+	private LocalDate		endDate;
+
 	@Column(name = "invoiceAmount")
-	private Double				invoiceAmount = 0.0;
-	
+	private Double			invoiceAmount	= 0.0;
+
 	@Column(name = "invoiceStatus")
 	@Enumerated(EnumType.STRING)
-	private EInvoiceStatus				invoiceStatus;
-	
+	private EInvoiceStatus	invoiceStatus;
+
 	@Column(name = "paymentAmount")
-	private Double				paymentAmount = 0.0;
-	
+	private Double			paymentAmount	= 0.0;
+
 	@Column(name = "paymentDate")
-	private LocalDateTime				paymentDate;
+	private LocalDateTime	paymentDate;
+
+	@Column(name = "active")
+	private Boolean			active			= false;
+
+	@Column(name = "calculatedDate")
+	private LocalDateTime	calculatedDate;
+
 }
