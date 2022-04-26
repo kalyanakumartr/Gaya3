@@ -16,8 +16,10 @@ import javax.persistence.Table;
 
 import org.hbs.gaya.util.EnumInterface;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,15 +59,19 @@ public class RentalInvoice implements Serializable
 	private Rental			rental;
 
 	@Column(name = "invoiceDate")
-	private LocalDate		invoiceDate;
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
+	private LocalDateTime		invoiceDate;
 
 	@Column(name = "startDate")
-	private LocalDate		startDate;
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
+	private LocalDateTime		startDate;
 
 	@Column(name = "endDate")
-	private LocalDate		endDate;
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
+	private LocalDateTime		endDate;
 
 	@Column(name = "invoiceAmount")
+	@JsonSerialize(using = TwoDecimalSerializer.class)
 	private Double			invoiceAmount	= 0.0;
 
 	@Column(name = "invoiceStatus")
@@ -73,15 +79,14 @@ public class RentalInvoice implements Serializable
 	private EInvoiceStatus	invoiceStatus;
 
 	@Column(name = "paymentAmount")
+	@JsonSerialize(using = TwoDecimalSerializer.class)
 	private Double			paymentAmount	= 0.0;
-
-	@Column(name = "paymentDate")
-	private LocalDateTime	paymentDate;
 
 	@Column(name = "active")
 	private Boolean			active			= false;
 
 	@Column(name = "calculatedDate")
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime	calculatedDate;
 
 }

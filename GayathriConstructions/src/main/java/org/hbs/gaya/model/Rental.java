@@ -65,21 +65,26 @@ public class Rental implements Serializable
 	private ERentalStatus		rentalStatus;
 
 	@Column(name = "rentedDate")
-	@JsonFormat(pattern = "dd-MMM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime		rentedDate;
+	
+	@OneToMany(targetEntity = PaymentHistory.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
+	@JsonDeserialize(as = LinkedHashSet.class)
+	private Set<PaymentHistory>		paymentSet		= new LinkedHashSet<>();
 
-	@OneToMany(targetEntity = RentalItem.class, fetch = FetchType.LAZY, mappedBy = "rental", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = RentalItem.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonDeserialize(as = LinkedHashSet.class)
 	private Set<RentalItem>		rentalItemSet		= new LinkedHashSet<>();
 
-	@OneToMany(targetEntity = RentalInvoice.class, fetch = FetchType.LAZY, mappedBy = "rental", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = RentalInvoice.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonDeserialize(as = LinkedHashSet.class)
 	private Set<RentalInvoice>	rentalInvoiceSet	= new LinkedHashSet<>();
 
 	@Column(name = "createdDate")
-	@JsonFormat(pattern = "dd-MMM-yyyy HH:mm", shape = JsonFormat.Shape.STRING)
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime		createdDate;
 
 	@ManyToOne(targetEntity = Users.class, fetch = FetchType.LAZY, optional = false)

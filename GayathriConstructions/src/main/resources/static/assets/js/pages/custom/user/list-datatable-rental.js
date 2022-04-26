@@ -44,12 +44,12 @@ var KTAppsRentalListDatatable = function() {
 					field: '',
 					title: 'Sno',
 					sortable: 'asc',
-					width: 40,
+					width: 30,
 					type: 'number',
 					selector: false,
 					textAlign: 'center',
 					template: function(data, row) {
-						return '<span class="font-weight-bolder">' + (row + 1) + '</span>';
+						return '<span class="font-weight-sm">' + (row + 1) + '</span>';
 					}
 				}, {
 					field: 'customerName',
@@ -58,55 +58,55 @@ var KTAppsRentalListDatatable = function() {
 					textAlign: 'left',
 					template: function(data) {
 						
-						return '<span class="font-weight-bolder">' + data.customer.customerName + '</span>';
+						return '<span class="">' + data.customer.customerName + '</span>';
 					}
 				}, {
 					field: 'mobileNo',
 					title: 'Mobile No',
-					width: 90,
+					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.customer.mobileNo + '</span>';
+						return '<span class="">' + data.customer.mobileNo + '</span>';
 					}
 				}, {
 					field: 'alternateNo',
 					title: 'Alternate No',
-					width: 90,
+					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.customer.alternateNo + '</span>';
+						return '<span class="">' + data.customer.alternateNo + '</span>';
 					}
 				}, {
 					field: 'pendingInvoiceAmount',
 					title: 'Pending Amount',
-					width: 70,
+					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.pendingInvoiceAmount + '</span>';
+						return '<span class="">' + data.pendingInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'activeInvoiceAmount',
 					title: 'Current Amount',
-					width: 70,
+					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.activeInvoiceAmount + '</span>';
+						return '<span class="">' + data.activeInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'totalInvoiceAmount',
 					title: 'Total Amount',
-					width: 70,
+					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.totalInvoiceAmount + '</span>';
+						return '<span class="">' + data.totalInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'paymentAmount',
 					title: 'Paid Amount',
-					width: 70,
+					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="font-weight-bolder">' + data.paymentAmount + '</span>';
+						return '<span class="">' + data.paymentAmount + '</span>';
 					}
 				}, {
 					field: 'balanceAmount',
@@ -114,7 +114,23 @@ var KTAppsRentalListDatatable = function() {
 					width: 70,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="font-weight-bolder text-danger">' + data.balanceAmount + '</span>';
+						return '<span class="label label-lg label-light-danger label-inline">' + data.balanceAmount + '</span>';
+					}
+				}, {
+					field: 'rentedDate',
+					title: 'Rent Date',
+					width: 70,
+					textAlign: 'center',
+					template: function(data) {
+						return '<span class="">' + data.rentedDate + '</span>';
+					}
+				}, {
+					field: 'rentalStatus',
+					title: 'Status',
+					width: 60,
+					textAlign: 'center',
+					template: function(data) {
+						return '<span class="label label-lg label-light-success label-inline text-success">' + data.rentalStatus + '</span>';
 					}
 				}, {
 					field: 'Actions',
