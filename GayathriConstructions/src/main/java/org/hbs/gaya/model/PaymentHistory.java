@@ -51,5 +51,5 @@ public class PaymentHistory implements Serializable
 	@Column(name = "paymentDate")
 	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime		paymentDate;
-
+	
 }

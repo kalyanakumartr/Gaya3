@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -71,6 +72,7 @@ public class Rental implements Serializable
 	@OneToMany(targetEntity = PaymentHistory.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonDeserialize(as = LinkedHashSet.class)
+	@OrderBy("paymentDate Desc")
 	private Set<PaymentHistory>		paymentSet		= new LinkedHashSet<>();
 
 	@OneToMany(targetEntity = RentalItem.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)

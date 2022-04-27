@@ -42,17 +42,7 @@
 								</div>
 								<!--end::Details-->
 								<!--begin::Toolbar-->
-								<div class="d-flex align-items-center">
-									<!--begin::Button-->
-									<a href="#" class=""></a>
-									<!--end::Button-->
-									<!--begin::Button-->
-									<a href="custom/apps/user/add-user.html" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2">Add Rental</a>
-									<!--end::Button-->
-									<!--begin::Dropdown-->
-									
-									<!--end::Dropdown-->
-								</div>
+								
 								<!--end::Toolbar-->
 							</div>
 						</div>
@@ -109,34 +99,6 @@
 		<!--begin::Quick Cart-->
 		
 		<!--end::Quick Cart-->
-		<!--begin::Quick Panel-->
-		<div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
-			<!--begin::Header-->
-			<div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
-				<div class="offcanvas-close mt-n1 pr-5">
-					<a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
-						<i class="ki ki-close icon-xs text-muted"></i>
-					</a>
-				</div>
-			</div>
-			<!--end::Header-->
-			<!--begin::Content-->
-			<div class="offcanvas-content px-10">
-				<div class="tab-content">
-					<!--begin::Tabpane-->
-					<!--end::Tabpane-->
-					<!--begin::Tabpane-->
-					<!--end::Tabpane-->
-					<!--begin::Tabpane-->
-					<!--end::Tabpane-->
-				</div>
-			</div>
-			<!--end::Content-->
-		</div>
-		<!--end::Quick Panel-->
-		<!--begin::Chat Panel-->
-		
-		<!--end::Chat Panel-->
 		<!--begin::Scrolltop-->
 		<div id="kt_scrolltop" class="scrolltop">
 			<span class="svg-icon">
@@ -152,11 +114,100 @@
 			</span>
 		</div>
 		<!--end::Scrolltop-->
-		<!--begin::Sticky Toolbar-->
 		
-		<!--end::Sticky Toolbar-->
-		<!--begin::Demo Panel-->
-		<!--end::Demo Panel-->
+		<!-- Payment History Modal Begin -->
+		<div class="modal fade" id="viewInvoiceModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">View Invoice</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <i aria-hidden="true" class="ki ki-close"></i>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <!--begin::Row-->
+						<div class="row">
+							<div class="col-xl-12">
+								
+							</div>
+						</div>
+						<div class="modal-footer">
+			                
+			                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+		            	</div>
+						<!--end::Row-->
+		            </div>
+		            
+		        </div>
+		    </div>
+		</div>
+		<!-- Payment History Modal End -->
+		
+		<!-- Payment History Modal Begin -->
+		<div class="modal fade" id="paymentHistoryModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="paymentHistoryLabel">Payment History</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <i aria-hidden="true" class="ki ki-close"></i>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <!--begin::Row-->
+						<div class="row">
+							<div class="col-xl-12" id="paymentHistoryDiv">
+								<table id="paymentHistoryTable" class="table align-middle gs-0 gy-4">
+									<tr>
+										<th align="center">SNo</th>
+										<th align="right">Payment Amount</th>
+										<th align="right">Payment Date</th>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="modal-footer">
+			                
+			                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+		            	</div>
+						<!--end::Row-->
+		            </div>
+		            
+		        </div>
+		    </div>
+		</div>
+		<!-- Payment History Modal End -->
+		
+		<!-- Payment History Modal Begin -->
+		<div class="modal fade" id="viewItemsModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title">Rented Items</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <i aria-hidden="true" class="ki ki-close"></i>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <!--begin::Row-->
+						<div class="row">
+							<div class="col-xl-12">
+								
+							</div>
+						</div>
+						<div class="modal-footer">
+			                
+			                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+		            	</div>
+						<!--end::Row-->
+		            </div>
+		            
+		        </div>
+		    </div>
+		</div>
+		<!-- Payment History Modal End -->
+		
 		<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
 		<!--begin::Global Config(global config for global JS scripts)-->
 		<script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
