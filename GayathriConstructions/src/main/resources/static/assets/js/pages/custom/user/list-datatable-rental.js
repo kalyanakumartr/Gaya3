@@ -218,12 +218,14 @@ jQuery(document).ready(function() {
 });
 
 jQuery(document).on("click", ".paymentHistoryModal", function () {
+	$("#paymentHistoryTable tr>td").remove();
+	
 	var object = $(this).data('id');
 
 	if(object != undefined && object != "")
 	{
 		object = JSON.parse(object.replaceAll("\'", "\""));
-		$("#paymentHistoryTable tr>td").remove();
+		
 	    $.each(object, function(index, jsonObject){     
 	        if(Object.keys(jsonObject).length > 0){
 	          var tableRow = '<tr>';
