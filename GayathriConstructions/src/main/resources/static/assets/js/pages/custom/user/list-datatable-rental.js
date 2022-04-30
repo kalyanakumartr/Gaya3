@@ -220,6 +220,7 @@ jQuery(document).ready(function() {
 });
 
 jQuery(document).on("click", ".paymentHistoryModal", function () {
+	
 	$("#paymentHistoryTable tr>td").remove();
 	
 	var object = $(this).data('id');
@@ -247,7 +248,6 @@ jQuery(document).on("click", ".paymentHistoryModal", function () {
 });
 
 jQuery(document).on("click", ".viewReceiptModal", function () {
-	
 	var rentalId = $(this).data('id');
 
 	if(rentalId != undefined && rentalId != "")
@@ -256,7 +256,7 @@ jQuery(document).on("click", ".viewReceiptModal", function () {
              url: 'gaya/viewRentalReceipt/'+ rentalId,
              type: "POST",
              success: function (response) {
-            	$('.modal-body').html(response);
+            	$('.modal-body-invoice-receipt').html(response);
             	$('.invoiceReceipt').html("View & Print Receipt");
             	
              },
@@ -268,7 +268,7 @@ jQuery(document).on("click", ".viewReceiptModal", function () {
 });
 
 jQuery(document).on("click", ".viewInvoiceModal", function () {
-	
+
 	var rentalId = $(this).data('id');
 
 	if(rentalId != undefined && rentalId != "")
@@ -277,7 +277,7 @@ jQuery(document).on("click", ".viewInvoiceModal", function () {
              url: 'gaya/viewRentalInvoice/'+ rentalId,
              type: "POST",
              success: function (response) {
-            	$('.modal-body').html(response);
+            	$('.modal-body-invoice-receipt').html(response);
             	$('.invoiceReceipt').html("View & Print Invoice");
             	
              },
