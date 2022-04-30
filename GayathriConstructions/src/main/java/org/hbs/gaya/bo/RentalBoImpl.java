@@ -65,4 +65,10 @@ public class RentalBoImpl implements RentalBo
 		}
 
 	}
+
+	@Override
+	public Rental getRentalById(String rentalId)
+	{
+		return rentalDao.getById(rentalId);
+	}
 }

@@ -13,6 +13,6 @@ public class TwoDecimalSerializer extends JsonSerializer<Double>
 	@Override
 	public void serialize(Double value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException
 	{
-		jgen.writeString("\u20B9 " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		jgen.writeString("&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	}
 }

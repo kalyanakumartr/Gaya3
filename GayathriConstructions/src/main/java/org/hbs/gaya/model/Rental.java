@@ -1,11 +1,13 @@
 package org.hbs.gaya.model;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,12 +24,16 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hbs.gaya.model.RentalInvoice.EInvoiceStatus;
+import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.EnumInterface;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -55,6 +61,7 @@ public class Rental implements Serializable
 	private String				rentalId;
 
 	@Column(name = "advanceAmount")
+	@JsonSerialize(using = TwoDecimalSerializer.class)
 	private Double				advanceAmount		= 0.0;
 
 	@ManyToOne(targetEntity = Customer.class, fetch = FetchType.EAGER, optional = false)
@@ -82,7 +89,7 @@ public class Rental implements Serializable
 
 	@OneToMany(targetEntity = RentalInvoice.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
-	@JsonDeserialize(as = LinkedHashSet.class)
+	@JsonIgnore
 	private Set<RentalInvoice>	rentalInvoiceSet	= new LinkedHashSet<>();
 
 	@Column(name = "createdDate")
@@ -161,5 +168,27 @@ public class Rental implements Serializable
 		}
 		return paymentAmt;
 	}
-
+	
+	private String getCurrency(Double value)
+	{
+		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+	}
+	
+	@Transient 
+	public String getAdvanceAmount$()
+	{
+		return getCurrency(this.advanceAmount);
+	}
+	
+	@Transient 
+	public String getTotalAmount$()
+	{
+		double totalAmount = 0.0;
+		for(RentalItem ri : this.rentalItemSet)
+		{
+			totalAmount = totalAmount + ri.getTotalCost();
+		}
+		return getCurrency(totalAmount);
+	}
+	
 }

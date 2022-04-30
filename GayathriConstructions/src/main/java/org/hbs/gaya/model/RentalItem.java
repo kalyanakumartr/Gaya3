@@ -1,6 +1,7 @@
 package org.hbs.gaya.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -62,7 +63,7 @@ public class RentalItem implements Serializable
 	@Column(name = "price")
 	private Double				price				= 0.0;
 
-	@Column(name = "totalCost")
+	@Column(name = "totalCost" )
 	private Double				totalCost			= 0.0;
 	
 	@OneToMany(targetEntity = RentalItemHistory.class, fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL)
@@ -81,5 +82,21 @@ public class RentalItem implements Serializable
 		
 		return totalReturnQty;
 	}
-
+	
+	@Transient 
+	public String getTotalCost$()
+	{
+		return getCurrency(this.totalCost);
+	}
+	
+	@Transient 
+	public String getPrice$()
+	{
+		return getCurrency(this.price);
+	}
+	
+	private String getCurrency(Double value)
+	{
+		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+	}
 }

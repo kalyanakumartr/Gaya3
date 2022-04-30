@@ -54,11 +54,12 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'customerName',
 					title: 'Customer Name',
-					width: 120,
+					width: 110,
 					textAlign: 'left',
+					columnSpacing: 5,
 					template: function(data) {
 						
-						return '<span class="">' + data.customer.customerName + '</span>';
+						return '<span class="font-weight-normal">' + data.customer.customerName + '</span>';
 					}
 				}, {
 					field: 'mobileNo',
@@ -66,7 +67,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="">' + data.customer.mobileNo + '</span>';
+						return '<span class="font-weight-normal">' + data.customer.mobileNo + '</span>';
 					}
 				}, {
 					field: 'alternateNo',
@@ -74,7 +75,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="">' + data.customer.alternateNo + '</span>';
+						return '<span class="font-weight-normal">' + data.customer.alternateNo + '</span>';
 					}
 				}, {
 					field: 'pendingInvoiceAmount',
@@ -82,7 +83,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="">' + data.pendingInvoiceAmount + '</span>';
+						return '<span class="font-weight-normal">' + data.pendingInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'activeInvoiceAmount',
@@ -90,7 +91,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="">' + data.activeInvoiceAmount + '</span>';
+						return '<span class="font-weight-normal">' + data.activeInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'totalInvoiceAmount',
@@ -98,7 +99,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="">' + data.totalInvoiceAmount + '</span>';
+						return '<span class="font-weight-normal">' + data.totalInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'paymentAmount',
@@ -106,7 +107,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="">' + data.paymentAmount + '</span>';
+						return '<span class="font-weight-normal">' + data.paymentAmount + '</span>';
 					}
 				}, {
 					field: 'balanceAmount',
@@ -114,7 +115,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 70,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="label label-lg label-light-danger label-inline">' + data.balanceAmount + '</span>';
+						return '<span class="font-weight-bold text-danger">' + data.balanceAmount + '</span>';
 					}
 				}, {
 					field: 'rentedDate',
@@ -122,28 +123,39 @@ var KTAppsRentalListDatatable = function() {
 					width: 70,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="">' + data.rentedDate + '</span>';
-					}
-				}, {
-					field: 'rentalStatus',
-					title: 'Status',
-					width: 60,
-					textAlign: 'center',
-					template: function(data) {
-						return '<span class="label label-lg label-light-success label-inline text-success">' + data.rentalStatus + '</span>';
+						return '<span class="font-weight-normal">' + data.rentedDate + '</span>';
 					}
 				}, {
 					field: 'Actions',
 					title: 'Actions',
 					sortable: false,
-					width: 150,
+					width: 200,
 					overflow: 'visible',
 					autoHide: false,
 					template: function(data, row) {
 						var payment = JSON.stringify(data.paymentSet);
 						payment = payment.replaceAll("\"", "\'");
 						
-						return '\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentHistoryModal" data-toggle="modal"  data-target="#paymentHistoryModal"  data-id="' + payment + '" title="View Payments">\
+						return '\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 viewReceiptModal" data-id="'+ data.rentalId +'" data-toggle="modal" data-target="#viewInvoiceReceiptModal" title="Print Receipt">\
+									<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Devices/Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+								    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+								        <rect x="0" y="0" width="24" height="24"/>\
+								        <path d="M16,17 L16,21 C16,21.5522847 15.5522847,22 15,22 L9,22 C8.44771525,22 8,21.5522847 8,21 L8,17 L5,17 C3.8954305,17 3,16.1045695 3,15 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,15 C21,16.1045695 20.1045695,17 19,17 L16,17 Z M17.5,11 C18.3284271,11 19,10.3284271 19,9.5 C19,8.67157288 18.3284271,8 17.5,8 C16.6715729,8 16,8.67157288 16,9.5 C16,10.3284271 16.6715729,11 17.5,11 Z M10,14 L10,20 L14,20 L14,14 L10,14 Z" fill="#000000"/>\
+								        <rect fill="#000000" opacity="0.3" x="8" y="2" width="8" height="2" rx="1"/>\
+								    </g>\
+								</svg><!--end::Svg Icon--></span>\
+							</a>\
+							\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 viewInvoiceModal" data-id="'+ data.rentalId +'" data-toggle="modal" data-target="#viewInvoiceReceiptModal" title="View Invoice">\
+								<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Files/File.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+							        <polygon points="0 0 24 0 24 24 0 24"/>\
+							        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>\
+							        <rect fill="#000000" x="6" y="11" width="9" height="2" rx="1"/>\
+							        <rect fill="#000000" x="6" y="15" width="5" height="2" rx="1"/>\
+							    </g>\
+							</svg><!--end::Svg Icon--></span>\
+							</a>\
+							\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentHistoryModal" data-toggle="modal"  data-target="#paymentHistoryModal"  data-id="' + payment + '" title="View Payments">\
 									<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Communication/Dial-numbers.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 								    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
 								        <rect x="0" y="0" width="24" height="24"/>\
@@ -159,17 +171,7 @@ var KTAppsRentalListDatatable = function() {
 								    </g>\
 								</svg><!--end::Svg Icon--></span>\
 							</a>\
-							\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2" data-toggle="modal" data-target="#viewInvoiceModal" title="View Invoice">\
-								<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Files/Import.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-							        <rect x="0" y="0" width="24" height="24"/>\
-							        <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 7.000000) rotate(-180.000000) translate(-12.000000, -7.000000) " x="11" y="1" width="2" height="12" rx="1"/>\
-							        <path d="M17,8 C16.4477153,8 16,7.55228475 16,7 C16,6.44771525 16.4477153,6 17,6 L18,6 C20.209139,6 22,7.790861 22,10 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,9.99305689 C2,7.7839179 3.790861,5.99305689 6,5.99305689 L7.00000482,5.99305689 C7.55228957,5.99305689 8.00000482,6.44077214 8.00000482,6.99305689 C8.00000482,7.54534164 7.55228957,7.99305689 7.00000482,7.99305689 L6,7.99305689 C4.8954305,7.99305689 4,8.88848739 4,9.99305689 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,10 C20,8.8954305 19.1045695,8 18,8 L17,8 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>\
-							        <path d="M14.2928932,10.2928932 C14.6834175,9.90236893 15.3165825,9.90236893 15.7071068,10.2928932 C16.0976311,10.6834175 16.0976311,11.3165825 15.7071068,11.7071068 L12.7071068,14.7071068 C12.3165825,15.0976311 11.6834175,15.0976311 11.2928932,14.7071068 L8.29289322,11.7071068 C7.90236893,11.3165825 7.90236893,10.6834175 8.29289322,10.2928932 C8.68341751,9.90236893 9.31658249,9.90236893 9.70710678,10.2928932 L12,12.5857864 L14.2928932,10.2928932 Z" fill="#000000" fill-rule="nonzero"/>\
-							    </g>\
-							</svg><!--end::Svg Icon--></span>\
-							</a>\
-							<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-success btn-icon mr-2" data-toggle="modal" data-target="#viewItemsModal" title="Edit Contact">\
+							<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-success btn-icon mr-2 viewItemsModal" data-toggle="modal" data-target="#viewItemsModal" title="Edit Contact">\
 								<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Design/Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
 							        <rect x="0" y="0" width="24" height="24"/>\
@@ -243,3 +245,60 @@ jQuery(document).on("click", ".paymentHistoryModal", function () {
 	}
 	
 });
+
+jQuery(document).on("click", ".viewReceiptModal", function () {
+	
+	var rentalId = $(this).data('id');
+
+	if(rentalId != undefined && rentalId != "")
+	{
+		 $.ajax({
+             url: 'gaya/viewRentalReceipt/'+ rentalId,
+             type: "POST",
+             success: function (response) {
+            	$('.modal-body').html(response);
+            	$('.invoiceReceipt').html("View & Print Receipt");
+            	
+             },
+             error: function (error) {
+                 console.log(`Error ${error}`);
+             }
+		 });
+	}
+});
+
+jQuery(document).on("click", ".viewInvoiceModal", function () {
+	
+	var rentalId = $(this).data('id');
+
+	if(rentalId != undefined && rentalId != "")
+	{
+		 $.ajax({
+             url: 'gaya/viewRentalInvoice/'+ rentalId,
+             type: "POST",
+             success: function (response) {
+            	$('.modal-body').html(response);
+            	$('.invoiceReceipt').html("View & Print Invoice");
+            	
+             },
+             error: function (error) {
+                 console.log(`Error ${error}`);
+             }
+		 });
+	}
+});
+
+function printDiv(eltId, file_name) {
+	var element =  document.getElementById(eltId);
+	var opt = {
+	  margin:       0.5,
+	  filename:     file_name,
+	  image:        { type: 'jpeg', quality: 0.98 },
+	  html2canvas:  { scale:3 },
+	  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+	};
+	 
+	// New Promise-based usage:
+	html2pdf().from(element).set(opt).save();
+	 
+}
