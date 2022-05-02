@@ -1,12 +1,16 @@
 package org.hbs.gaya.controllers;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.hbs.gaya.bo.RentalBo;
 import org.hbs.gaya.model.Rental;
+import org.hbs.gaya.model.RentalInvoice;
+import org.hbs.gaya.model.RentalItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class MaterialRentalController
 {
 	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm a");
+	private DateTimeFormatter dFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 	
 	@Autowired
 	RentalBo rentalBo;
@@ -46,14 +51,6 @@ public class MaterialRentalController
 		return "failure";
 	}
 
-	@PostMapping(value = "/calculateInvoice")
-	@ResponseBody
-	public String calculateInvoice(HttpServletRequest request)
-	{
-
-		return "failure";
-	}
-	
 	@PostMapping(value = "/viewRentalReceipt/{rentalId}")
 	public String viewRentalReceipt(ModelMap modal, @PathVariable("rentalId") String rentalId)
 	{
@@ -65,36 +62,15 @@ public class MaterialRentalController
 		modal.addAttribute("totalAmount$", rental.getTotalAmount$());
 		modal.addAttribute("customer", rental.getCustomer());
 		modal.addAttribute("rentedDate", rental.getRentedDate().format(dtFormat));
+		modal.addAttribute("receiptDate", LocalDateTime.now().format(dtFormat));
 
 		return "fragments/receipt";
 	}
 	
-	@GetMapping(value = "/printRentalReceipt/{rentalId}")
-	public String printRentalReceipt(ModelMap modal, @PathVariable("rentalId") String rentalId)
-	{
-		
-		Rental rental = rentalBo.getRentalById(rentalId);
-		
-		modal.addAttribute("items", rental.getRentalItemSet());
-		modal.addAttribute("advanceAmount$", rental.getAdvanceAmount$());
-		modal.addAttribute("totalAmount$", rental.getTotalAmount$());
-		modal.addAttribute("customer", rental.getCustomer());
-		modal.addAttribute("rentedDate", rental.getRentedDate().format(dtFormat));
-
-		return "fragments/print_receipt";
-	}
-
 	@GetMapping(value = "/dashboard")
 	public String viewDashBoardPage()
 	{
-
 		return "dashboard";
-	}
-
-	@PostMapping(value = "/viewRentalInvoice/{rentalId}")
-	public String viewRentalInvoice(@PathVariable("rentalId") String rentalId)
-	{
-		return "fragments/invoice";
 	}
 
 	@PostMapping("/searchRental")

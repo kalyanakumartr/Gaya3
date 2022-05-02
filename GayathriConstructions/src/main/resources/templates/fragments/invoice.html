@@ -10,7 +10,7 @@
 						<div class="col-md-11">
 							<!-- begin: Invoice header-->
 							<div class="d-flex justify-content-between pb-10 pb-md-5 flex-column flex-md-row">
-								<h1 class="display-4 font-weight-boldest mb-10">INVOICE</h1><BR>
+								<h1 class="display-4 font-weight-boldest mb-10">INVOICE</h1>
 								<div class="d-flex flex-column align-items-md-end px-0">
 									<!--begin::Logo-->
 									<a href="#" class="mb-2 max-w-175px">
@@ -33,39 +33,29 @@
 										<table class="table">
 											<thead>
 												<tr>
-													<th class="pt-1 pb-9 pl-0 font-weight-bolder text-muted font-size-lg text-uppercase">Description</th>
-													<th class="pt-1 pb-9 text-right font-weight-bolder text-muted font-size-lg text-uppercase">Hours</th>
-													<th class="pt-1 pb-9 text-right font-weight-bolder text-muted font-size-lg text-uppercase">Rate</th>
-													<th class="pt-1 pb-9 text-right pr-0 font-weight-bolder text-muted font-size-lg text-uppercase">Amount</th>
+													<th class="pt-1 pb-9 pl-0 font-weight-bold text-muted font-size-lg text-uppercase">Item Name</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Quantity</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rate</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Amount</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rent Amount</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr class="font-weight-bolder font-size-lg">
-													<td class="border-top-0 pl-0 pt-7 d-flex align-items-center">
-													<span class="navi-icon mr-2">
-														<i class="fa fa-genderless text-danger font-size-h2"></i>
-													</span>Creative Design</td>
-													<td class="text-right pt-7">80</td>
-													<td class="text-right pt-7">$40.00</td>
-													<td class="pr-0 pt-7 font-size-h6 font-weight-boldest text-right">$3200.00</td>
+												<tr 
+												  th:each="item : ${items}"
+												  th:attr="class='font-weight-bold font-size-lg'">
+												    <td class="border-top-0 pl-0 pt-7 d-flex align-items-center" th:text="${item.inventory.material.materialName}" />
+												    <td class="border-top-0 text-right py-4" th:text="${item.quantity}" />
+												    <td class="border-top-0 text-right py-4" th:utext="${item.getPrice$()}" />
+												    <td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-bold text-right" th:utext="${item.getTotalCost$()}" />
+												    <td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-bold text-right" th:utext="${item.getRentalCost$()}" />
 												</tr>
-												<tr class="font-weight-bolder border-bottom-0 font-size-lg">
+												<tr class="font-weight-bold border-bottom-0 font-size-lg">
 													<td class="border-top-0 pl-0 py-4 d-flex align-items-center">
-													<span class="navi-icon mr-2">
-														<i class="fa fa-genderless text-success font-size-h2"></i>
-													</span>Front-End Development</td>
-													<td class="border-top-0 text-right py-4">120</td>
-													<td class="border-top-0 text-right py-4">$40.00</td>
-													<td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-boldest text-right">$4800.00</td>
-												</tr>
-												<tr class="font-weight-bolder border-bottom-0 font-size-lg">
-													<td class="border-top-0 pl-0 py-4 d-flex align-items-center">
-													<span class="navi-icon mr-2">
-														<i class="fa fa-genderless text-primary font-size-h2"></i>
-													</span>Back-End Development</td>
-													<td class="border-top-0 text-right py-4">210</td>
-													<td class="border-top-0 text-right py-4">$60.00</td>
-													<td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-boldest text-right">$12600.00</td>
+													<td class="border-top-0 text-right py-4"></td>
+													<td class="border-top-0 text-right py-4"></td>
+													<td class="border-top-0 text-right font-weight-bolder text-right py-4">Total Rent Amount</td>
+													<td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-boldest text-right"th:utext="${totalAmount$}" />
 												</tr>
 											</tbody>
 										</table>
@@ -75,23 +65,23 @@
 										<div class="d-flex flex-column mb-10 mb-md-0">
 											<div class="font-weight-bold font-size-h6 mb-3">ADDRESS</div>
 											<div class="d-flex justify-content-between font-size-lg mb-3">
-												<span class="font-weight-bold mr-15">18/9 - 2, AS Apartment, <BR>BalajiNagar 1st Street Part1,<BR>Adambakkam<BR>Chennai - 600088.</span>
+												<span class="font-weight-bold mr-15" th:utext="${customer.address}"></span>
 											</div>
 											<div class="d-flex justify-content-between font-size-lg mb-3">
 												<span class="font-weight-bold mr-15">Hired Date:</span>
-												<span class="text-right">07-Apr-2022 09:53 PM</span>
+												<span class="text-right" th:utext="${rentedDate$}"></span>
 											</div>
 											<div class="d-flex justify-content-between font-size-lg mb-3">
 												<span class="font-weight-bold mr-15">Rent Start Date:</span>
-												<span class="text-right">08-Apr-2022 09:53 PM</span>
+												<span class="text-right"th:utext="${startDate$}"></span>
 											</div>
 											<div class="d-flex justify-content-between font-size-lg mb-3">
 												<span class="font-weight-bold mr-15">Rent End Date:</span>
-												<span class="text-right">29-Apr-2022 09:53 PM</span>
+												<span class="text-right" th:utext="${endDate$}"></span>
 											</div>
 											<div class="d-flex justify-content-between font-size-lg">
 												<span class="font-weight-bold mr-15">Rent Calculated For :</span>
-												<span class="text-right">21 Days</span>
+												<span class="text-right" th:utext="${noOfDays} + ' Days'" ></span>
 											</div>
 										</div>
 									</div>
@@ -99,23 +89,22 @@
 								<div class="col-md-3 border-left-md pl-md-10 py-md-10 text-right">
 									<!--begin::Total Amount-->
 									<div class="font-size-h4 font-weight-bolder text-muted mb-3">TOTAL AMOUNT</div>
-									<div class="font-size-h1 font-weight-boldest">$20,600.00</div>
-									<div class="text-muted font-weight-bold mb-16">Taxes included</div>
+									<div class="font-size-h1 font-weight-boldest" th:utext="${totalAmount$}" ></div>
 									<!--end::Total Amount-->
 									<div class="border-bottom w-100 mb-16"></div>
 									<!--begin::Invoice To-->
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE TO.</div>
-									<div class="font-size-lg font-weight-bold mb-10">Iris Watson. 
-									<br>Fredrick Nebraska 20620</div>
-									<!--end::Invoice To-->
-									<!--begin::Invoice No-->
+									<div class="font-size-lg font-weight-bold mb-10" th:text="${customer.customerName}"></div>
+									
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">MOBILE NO.</div>
+									<div class="font-size-lg font-weight-bold mb-10" th:text="${customer.mobileNo}"></div>
+
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE NO.</div>
-									<div class="font-size-lg font-weight-bold mb-10">56758</div>
+									<div id="invoiceNoDiv" class="font-size-lg font-weight-bold mb-10" th:text="${invoiceNo}"></div>
 									<!--end::Invoice No-->
 									<!--begin::Invoice Date-->
-									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">DATE</div>
-									<div class="font-size-lg font-weight-bold">12 May, 2020</div>
-									<!--end::Invoice Date-->
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE DATE</div>
+									<div class="font-size-lg font-weight-bold" th:text="${invoiceDate$}"></div>
 								</div>
 							</div>
 							<!--end: Invoice body-->
@@ -126,8 +115,18 @@
 						<div class="col-md-9">
 							<div class="d-flex font-size-sm flex-wrap">
 								<button type="button" class="btn btn-success font-weight-bold mr-3 my-1" onclick="printDiv('printInvoice', 'Invoice.pdf')">Print Receipt</button>
-								<button type="button" class="btn btn-dark font-weight-bolder mr-3 my-1">Create Invoice</button>
+								<button type="button" class="btn btn-dark font-weight-bolder mr-3 my-1" th:attr="onclick='generateInvoice(\'' + ${invoiceId} + '\');'" id="createInvoiceBtn" th:disabled="${disableCreateInvoice}">Create Invoice</button>
 								<button type="button" class="btn btn-primary font-weight-bolder ml-sm-auto my-1" data-dismiss="modal">Close</button>
+							</div>
+							<div class="d-flex align-items-center py-3 py-sm-0 px-sm-3 show" id="invoiceHistoryIdHide" >
+				             	<select class="form-control font-size-lg font-weight-boldest text-info" id="invoiceId" th:onchange ="loadInvoice()">
+						    		<option 
+						    			th:each="lv:${invoiceNoList}" 
+							    		th:value="${lv.value}" 
+							    		th:text="${lv.label}"
+							    		th:selected="${lv.value eq invoiceId}">
+						    		</option>
+								</select>
 							</div>
 						</div>
 					</div>

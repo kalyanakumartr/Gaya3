@@ -3,6 +3,7 @@ package org.hbs.gaya.bo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.hbs.gaya.dao.RentalDao;
 import org.hbs.gaya.dao.RentalInvoiceDao;
@@ -11,7 +12,6 @@ import org.hbs.gaya.model.Rental;
 import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,6 +69,16 @@ public class RentalBoImpl implements RentalBo
 	@Override
 	public Rental getRentalById(String rentalId)
 	{
-		return rentalDao.getById(rentalId);
+		Optional<Rental> rentalOpt = rentalDao.findById(rentalId);
+		
+		if(rentalOpt.isPresent())
+			return rentalOpt.get();
+		return null;
+	}
+
+	@Override
+	public Rental getRentalByInvoiceId(String rentalOrInvoiceId)
+	{
+		return rentalInvoiceDao.getRentalByInvoiceId(rentalOrInvoiceId);
 	}
 }

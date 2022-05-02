@@ -23,8 +23,12 @@
 												<span class="text-right" th:text="${customer.mobileNo}"></span>
 											</div>
 											<div class="d-flex justify-content-between font-size-lg mb-3">
-												<span class="font-weight-bold mr-15">DATE & TIME</span>
+												<span class="font-weight-bold mr-15">RENT DATE & TIME</span>
 												<span class="text-right" th:text="${rentedDate}"></span>
+											</div>
+											<div class="d-flex justify-content-between font-size-lg mb-3">
+												<span class="font-weight-bold mr-15">DATE</span>
+												<span class="text-right" th:text="${receiptDate}"></span>
 											</div>
 										</div>
 									</div>
@@ -78,7 +82,7 @@
 								<div class="col-md-3 border-left-md pl-md-10 py-md-10 text-right">
 									<!--begin::Total Amount-->
 									<div class="font-size-h4 font-weight-bolder text-muted mb-3">ADVANCE AMOUNT</div>
-									<div class="font-size-h1 font-weight-bolder" th:utext="${advanceAmount$}">0.00</div>
+									<div class="font-size-h3 font-weight-bolder" th:utext="${advanceAmount$}">0.00</div>
 									<!--end::Total Amount-->
 									
 									<!--end::Invoice Date-->

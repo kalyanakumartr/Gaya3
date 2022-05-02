@@ -1,8 +1,8 @@
 package org.hbs.gaya.model;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashSet;
@@ -24,16 +24,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hbs.gaya.model.RentalInvoice.EInvoiceStatus;
-import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.EnumInterface;
+import org.hbs.gaya.util.LabelValueBean;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -55,7 +53,7 @@ public class Rental implements Serializable
 	}
 
 	private static final long	serialVersionUID	= 8952784246497174078L;
-
+	
 	@Id
 	@Column(name = "rentalId")
 	private String				rentalId;
@@ -156,7 +154,25 @@ public class Rental implements Serializable
 		}
 		return pendingInvoiceSet;
 	}
+	
 
+	@Transient
+	@JsonIgnore
+	public Set<LabelValueBean> getInvoiceNoList()
+	{
+		Set<LabelValueBean> invoiceSet = new LinkedHashSet<>();
+		for (RentalInvoice rInvoice : this.rentalInvoiceSet)
+		{
+			if (rInvoice.getInvoiceNo() != null && rInvoice.getInvoiceDate() != null)
+				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), rInvoice.getInvoiceDate().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")) + "-" + rInvoice.getInvoiceNo()));
+			else if(rInvoice.getActive().booleanValue())
+				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")) + "-Current Invoice"));
+			
+				
+		}
+		return invoiceSet;
+	}
+	
 	@Transient
 	@JsonSerialize(using = TwoDecimalSerializer.class)
 	public Double getPaymentAmount()
@@ -169,7 +185,8 @@ public class Rental implements Serializable
 		return paymentAmt;
 	}
 	
-	private String getCurrency(Double value)
+	@Transient 
+	public  String getCurrency(Double value)
 	{
 		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 	}

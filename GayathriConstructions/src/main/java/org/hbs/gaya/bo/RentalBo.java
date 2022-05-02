@@ -17,4 +17,6 @@ public interface RentalBo extends Serializable
 
 	Rental getRentalById(String rentalId);
 
+	Rental getRentalByInvoiceId(String rentalOrInvoiceId);
+
 }

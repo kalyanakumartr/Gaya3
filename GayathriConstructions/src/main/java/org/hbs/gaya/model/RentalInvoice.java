@@ -13,14 +13,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hbs.gaya.util.EnumInterface;
+import org.hbs.gaya.util.EBusinessKey.EKey;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +34,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Builder
 public class RentalInvoice implements Serializable
 {
 
@@ -88,5 +94,25 @@ public class RentalInvoice implements Serializable
 	@Column(name = "calculatedDate")
 	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime	calculatedDate;
+
+	@Transient
+	@JsonIgnore
+	public RentalInvoice getInvoiceClone()
+	{
+		return RentalInvoice.builder()
+				.masterInvoice(this)
+				.active(true)
+				.calculatedDate(null)
+				.endDate(null)
+				.startDate(LocalDate.now().plusDays(1).atStartOfDay())
+				.invoiceId(EKey.timeline("IN"))
+				.invoiceNo(null)
+				.invoiceStatus(EInvoiceStatus.Pending)
+				.rental(this.rental)
+				.invoiceDate(null)
+				.invoiceAmount(0.0)
+				.paymentAmount(0.0)
+				.build();
+	}
 
 }

@@ -66,6 +66,9 @@ public class RentalItem implements Serializable
 	@Column(name = "totalCost" )
 	private Double				totalCost			= 0.0;
 	
+	@Transient
+	private Double				rentalCost			= 0.0;
+	
 	@OneToMany(targetEntity = RentalItemHistory.class, fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonDeserialize(as = LinkedHashSet.class)
@@ -87,6 +90,12 @@ public class RentalItem implements Serializable
 	public String getTotalCost$()
 	{
 		return getCurrency(this.totalCost);
+	}
+	
+	@Transient 
+	public String getRentalCost$()
+	{
+		return getCurrency(this.rentalCost);
 	}
 	
 	@Transient 

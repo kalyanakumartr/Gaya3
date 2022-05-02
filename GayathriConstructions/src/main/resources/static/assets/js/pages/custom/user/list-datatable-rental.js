@@ -252,13 +252,14 @@ jQuery(document).on("click", ".viewReceiptModal", function () {
 
 	if(rentalId != undefined && rentalId != "")
 	{
+		 $('.modal-body-invoice-receipt').html("");
 		 $.ajax({
              url: 'gaya/viewRentalReceipt/'+ rentalId,
              type: "POST",
              success: function (response) {
             	$('.modal-body-invoice-receipt').html(response);
             	$('.invoiceReceipt').html("View & Print Receipt");
-            	
+            	$("#invoiceId").hide();
              },
              error: function (error) {
                  console.log(`Error ${error}`);
@@ -273,32 +274,82 @@ jQuery(document).on("click", ".viewInvoiceModal", function () {
 
 	if(rentalId != undefined && rentalId != "")
 	{
-		 $.ajax({
-             url: 'gaya/viewRentalInvoice/'+ rentalId,
-             type: "POST",
-             success: function (response) {
-            	$('.modal-body-invoice-receipt').html(response);
-            	$('.invoiceReceipt').html("View & Print Invoice");
-            	
-             },
-             error: function (error) {
-                 console.log(`Error ${error}`);
-             }
-		 });
+		displayInvoice(rentalId, true);
 	}
 });
+
+function loadInvoice()
+{
+	var invoiceId = $("#invoiceId").val();
+	displayInvoice(invoiceId, false);
+}
+
+function displayInvoice(rentalId, reset)
+{
+	 $.ajax({
+        url: 'gaya/viewRentalInvoice/'+ rentalId,
+        type: "POST",
+        success: function (response) {
+        	$('.modal-body-invoice-receipt').html(response);
+        	if(reset)
+        	{
+	        	$('.invoiceReceipt').html("View & Print Invoice");
+	           	$('#invoiceHistoryId').html($('#invoiceHistoryIdHide').html());
+	        }
+        	$('#invoiceHistoryIdHide').html("");
+        },
+        error: function (error) {
+        	$('.modal-body-invoice-receipt').html("Not Able To Load Invoice");
+        }
+	 });
+}
+
+
+function generateInvoice(invoiceId) {
+
+	if(invoiceId != undefined && invoiceId != "")
+	{
+		Swal.fire({
+			title: "Confirm Invoice Closure",
+			text: "Do you want to close Invoice !?",
+	        icon: "warning",
+	        showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Yes, Finalize",
+	        cancelButtonText: "No, Just Continue!",
+	        reverseButtons: true
+	    }).then(function(result) {
+	    	$.ajax({
+	             url: 'gaya/generateInvoice/'+ ((result.value != undefined && result.value) ? 1 : 0) + '/'+ invoiceId,
+	             type: "POST",
+	             success: function (response) {
+	            	if(response != null && response != undefined && response != "" )
+	            	{
+	            		$('#invoiceNoDiv').html(response);
+	            		$('#createInvoiceBtn').attr("disabled", true);
+	            		var currInv = $('#invoiceId option:selected').text();
+	            		currInv = currInv.replaceAll("Current Invoice", response);
+	            		$("#invoiceId").find("option:contains(\"Current Invoice\")").text(currInv);
+	            	}
+	             },
+	             error: function (error) {
+	                 console.log(`Error ${error}`);
+	             }
+			 });
+	    });
+	}
+}
 
 function printDiv(eltId, file_name) {
 	var element =  document.getElementById(eltId);
 	var opt = {
-	  margin:       0.5,
+	  margin:       0.25,
 	  filename:     file_name,
 	  image:        { type: 'jpeg', quality: 0.98 },
-	  html2canvas:  { scale:3 },
-	  jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+	  html2canvas:  { scale:10, scrollY: -window.scrollY},
+	  jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
 	};
 	 
 	// New Promise-based usage:
 	html2pdf().from(element).set(opt).save();
-	 
 }
