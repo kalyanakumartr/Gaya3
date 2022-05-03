@@ -346,7 +346,7 @@ function printDiv(eltId, file_name) {
 	  margin:       0.25,
 	  filename:     file_name,
 	  image:        { type: 'jpeg', quality: 0.98 },
-	  html2canvas:  { scale:10, scrollY: -window.scrollY},
+	  html2canvas:  { scale:1, scrollY: -window.scrollY,  height: window.outerHeight + window.innerHeight - 500, windowHeight: window.outerHeight + window.innerHeight- 500},
 	  jsPDF:        { unit: 'in', format: 'A4', orientation: 'portrait' }
 	};
 	 

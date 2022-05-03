@@ -10,7 +10,16 @@
 						<div class="col-md-11">
 							<!-- begin: Invoice header-->
 							<div class="d-flex justify-content-between pb-10 pb-md-5 flex-column flex-md-row">
-								<h1 class="display-4 font-weight-boldest mb-10">INVOICE</h1>
+								<div class="row">
+									<div class="col-md-9 py-md-2 pr-md-2 display-4 font-weight-boldest mb-2">INVOICE</div>
+									<div class="col-md-9 py-md-2 pr-md-2 d-flex flex-column mb-2 mb-md-0">
+										<div class="text-dark-50 font-size-lg font-weight-bold mb-1">Customer Name :</div>
+										<div class="font-weight-boldest font-size-h4 mb-3" th:text="${customer.customerName}" ></div>
+										<div class="d-flex justify-content-between font-size-lg mb-3">
+											<span class="font-weight-bold mr-15" th:utext="${customer.address}"></span>
+										</div>
+									</div>
+								</div>
 								<div class="d-flex flex-column align-items-md-end px-0">
 									<!--begin::Logo-->
 									<a href="#" class="mb-2 max-w-175px">
@@ -22,7 +31,6 @@
 										<span>Karur.</span>
 									</span>
 								</div>
-								
 							</div>
 							<!--end: Invoice header-->
 							<!--begin: Invoice body-->
@@ -33,25 +41,25 @@
 										<table class="table">
 											<thead>
 												<tr>
-													<th class="pt-1 pb-9 pl-0 font-weight-bold text-muted font-size-lg text-uppercase">Item Name</th>
-													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Quantity</th>
-													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rate</th>
-													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Amount</th>
-													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rent Amount</th>
+													<th class="pt-1 pb-4 pl-0 font-weight-bold text-muted font-size-lg text-uppercase">Item Name</th>
+													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Quantity</th>
+													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rate</th>
+													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Amount</th>
+													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rent Amount</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr 
 												  th:each="item : ${items}"
-												  th:attr="class='font-weight-bold font-size-lg'">
-												    <td class="border-top-0 pl-0 pt-7 d-flex align-items-center" th:text="${item.inventory.material.materialName}" />
-												    <td class="border-top-0 text-right py-4" th:text="${item.quantity}" />
-												    <td class="border-top-0 text-right py-4" th:utext="${item.getPrice$()}" />
-												    <td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-bold text-right" th:utext="${item.getTotalCost$()}" />
-												    <td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-bold text-right" th:utext="${item.getRentalCost$()}" />
+												  th:attr="class='font-weight-bold font-size-sm'">
+												    <td class="border-top-0 pl-0 d-flex align-items-center" th:text="${item.inventory.material.materialName}" />
+												    <td class="border-top-0 text-right py-1" th:text="${item.quantity}" />
+												    <td class="border-top-0 text-right py-1" th:utext="${item.getPrice$()}" />
+												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getTotalCost$()}" />
+												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getRentalCost$()}" />
 												</tr>
 												<tr class="font-weight-bold border-bottom-0 font-size-lg">
-													<td class="border-top-0 pl-0 py-4 d-flex align-items-center">
+													<td class="border-top-0 pl-0 py-2 d-flex align-items-center">
 													<td class="border-top-0 text-right py-4"></td>
 													<td class="border-top-0 text-right py-4"></td>
 													<td class="border-top-0 text-right font-weight-bolder text-right py-4">Total Rent Amount</td>
@@ -61,28 +69,22 @@
 										</table>
 									</div>
 									<div class="border-bottom w-100 mt-7 mb-5"></div>
-									<div class="d-flex flex-column flex-md-row">
-										<div class="d-flex flex-column mb-10 mb-md-0">
-											<div class="font-weight-bold font-size-h6 mb-3">ADDRESS</div>
-											<div class="d-flex justify-content-between font-size-lg mb-3">
-												<span class="font-weight-bold mr-15" th:utext="${customer.address}"></span>
-											</div>
-											<div class="d-flex justify-content-between font-size-lg mb-3">
-												<span class="font-weight-bold mr-15">Hired Date:</span>
-												<span class="text-right" th:utext="${rentedDate$}"></span>
-											</div>
-											<div class="d-flex justify-content-between font-size-lg mb-3">
-												<span class="font-weight-bold mr-15">Rent Start Date:</span>
-												<span class="text-right"th:utext="${startDate$}"></span>
-											</div>
-											<div class="d-flex justify-content-between font-size-lg mb-3">
-												<span class="font-weight-bold mr-15">Rent End Date:</span>
-												<span class="text-right" th:utext="${endDate$}"></span>
-											</div>
-											<div class="d-flex justify-content-between font-size-lg">
-												<span class="font-weight-bold mr-15">Rent Calculated For :</span>
-												<span class="text-right" th:utext="${noOfDays} + ' Days'" ></span>
-											</div>
+									<div class="d-flex flex-column mb-10 mb-md-0">
+										<div class="d-flex justify-content-between font-size-lg mb-3">
+											<span class="font-weight-bold mr-15">Hired Date:</span>
+											<span class="text-right" th:utext="${rentedDate$}"></span>
+										</div>
+										<div class="d-flex justify-content-between font-size-lg mb-3">
+											<span class="font-weight-bold mr-15">Rent Start Date:</span>
+											<span class="text-right"th:utext="${startDate$}"></span>
+										</div>
+										<div class="d-flex justify-content-between font-size-lg mb-3">
+											<span class="font-weight-bold mr-15">Rent End Date:</span>
+											<span class="text-right" th:utext="${endDate$}"></span>
+										</div>
+										<div class="d-flex justify-content-between font-size-lg">
+											<span class="font-weight-bold mr-15">Rent Calculated For :</span>
+											<span class="text-right" th:utext="${noOfDays} + ' Days'" ></span>
 										</div>
 									</div>
 								</div>
@@ -91,16 +93,17 @@
 									<div class="font-size-h4 font-weight-bolder text-muted mb-3">TOTAL AMOUNT</div>
 									<div class="font-size-h1 font-weight-boldest" th:utext="${totalAmount$}" ></div>
 									<!--end::Total Amount-->
-									<div class="border-bottom w-100 mb-16"></div>
+									<div class="border-bottom w-100 mb-2"></div>
 									<!--begin::Invoice To-->
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE NO.</div>
+									<div id="invoiceNoDiv" class="font-size-lg font-weight-bold mb-10" th:text="${invoiceNo}"></div>
+									
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE TO.</div>
 									<div class="font-size-lg font-weight-bold mb-10" th:text="${customer.customerName}"></div>
 									
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">MOBILE NO.</div>
 									<div class="font-size-lg font-weight-bold mb-10" th:text="${customer.mobileNo}"></div>
 
-									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE NO.</div>
-									<div id="invoiceNoDiv" class="font-size-lg font-weight-bold mb-10" th:text="${invoiceNo}"></div>
 									<!--end::Invoice No-->
 									<!--begin::Invoice Date-->
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE DATE</div>
