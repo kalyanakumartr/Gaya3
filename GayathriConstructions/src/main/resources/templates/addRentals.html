@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+	<div th:replace="fragments/header"></div>
+					<!--begin::Content-->
+					<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						<!--begin::Subheader-->
+						<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+							<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+								<!--begin::Details-->
+								<div class="d-flex align-items-center flex-wrap mr-2">
+									<!--begin::Title-->
+									<h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Add Rentals</h5>
+									<!--end::Title-->
+									<!--begin::Separator-->
+									<div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+									<!--end::Separator-->
+									<!--begin::Search Form-->
+									<div class="d-flex align-items-center" id="kt_subheader_search">
+										<form class="ml-5">
+											<div class="input-group input-group-sm input-group-solid" style="max-width: 175px">
+												<input type="text" class="form-control" id="kt_subheader_search_form" placeholder="Mobile No..." />
+												<div class="input-group-append">
+													<span class="input-group-text">
+														<span class="svg-icon">
+															<!--begin::Svg Icon | path:gaya/assets/media/svg/icons/General/Search.svg-->
+															<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+																<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																	<rect x="0" y="0" width="24" height="24" />
+																	<path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+																	<path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+																</g>
+															</svg>
+															<!--end::Svg Icon-->
+														</span>
+													</span>
+												</div>
+											</div>
+										</form>
+									</div>
+									<!--end::Search Form-->
+									<!--begin::Group Actions-->
+									<!--end::Group Actions-->
+								</div>
+								<!--end::Details-->
+								<!--begin::Toolbar-->
+								<div class="d-flex align-items-center">
+									<!--begin::Button-->
+									<a href="#" class=""></a>
+									<!--end::Button-->
+									<!--begin::Button-->
+									
+									<!--end::Button-->
+									<!--begin::Dropdown-->
+									
+									<!--end::Dropdown-->
+								</div>
+								<!--end::Toolbar-->
+							</div>
+						</div>
+						<!--end::Subheader-->
+						<!--begin::Entry-->
+						<div class="d-flex flex-column-fluid">
+							<!--begin::Container-->
+							<div class="container">
+								<!--begin::Card-->
+								<div class="card card-custom">
+									<!--begin::Header-->
+										<div class="card-header flex-wrap border-0 pt-6 pb-0">
+											<div class="d-flex align-items-center">
+										<!--begin::Button-->
+										<a href="#" class=""></a>
+										<!--end::Button-->
+										<!--begin::Button-->
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCustomer">
+										   Add Customer
+										</button>
+										<!--end::Button-->
+										<!--begin::Dropdown-->
+										
+										<!--end::Dropdown-->
+									</div>
+										</div>
+										<div class="card-toolbar">
+											<!--begin::Dropdown-->
+											
+											<!--end::Dropdown-->
+											<!--begin::Button-->
+											
+											<!--end::Button-->
+										</div>
+									</div>
+									<!--end::Header-->
+									<!--begin::Body-->
+									<div class="card-body">
+										<!--begin: Datatable-->
+										<div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+										<!--end: Datatable-->
+									</div>
+									<!--end::Body-->
+								</div>
+								<!--end::Card-->
+							</div>
+							<!--end::Container-->
+						</div>
+						<!--end::Entry-->
+					</div>
+					<!--end::Content-->
+					<!--begin::Footer-->
+					<div th:replace="fragments/footer"></div>
+					<!--end::Footer-->
+				</div>
+				<!--end::Wrapper-->
+			</div>
+			<!--end::Page-->
+		</div>
+		<!--end::Main-->
+		<!-- begin::User Panel-->
+		
+		<!-- end::User Panel-->
+		<!--begin::Quick Cart-->
+		
+		<!--end::Quick Cart-->
+		<!--begin::Quick Panel-->
+		<div id="kt_quick_panel" class="offcanvas offcanvas-right pt-5 pb-10">
+			<!--begin::Header-->
+			<div class="offcanvas-header offcanvas-header-navs d-flex align-items-center justify-content-between mb-5">
+				<div class="offcanvas-close mt-n1 pr-5">
+					<a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_panel_close">
+						<i class="ki ki-close icon-xs text-muted"></i>
+					</a>
+				</div>
+			</div>
+			<!--end::Header-->
+			<!--begin::Content-->
+			<div class="offcanvas-content px-10">
+				<div class="tab-content">
+					<!--begin::Tabpane-->
+					<!--end::Tabpane-->
+					<!--begin::Tabpane-->
+					<!--end::Tabpane-->
+					<!--begin::Tabpane-->
+					<!--end::Tabpane-->
+				</div>
+			</div>
+			<!--end::Content-->
+		</div>
+		<!--end::Quick Panel-->
+		<!--begin::Chat Panel-->
+		
+		<!--end::Chat Panel-->
+		<!--begin::Scrolltop-->
+		<div id="kt_scrolltop" class="scrolltop">
+			<span class="svg-icon">
+				<!--begin::Svg Icon | path:gaya/assets/media/svg/icons/Navigation/Up-2.svg-->
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+					<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+						<polygon points="0 0 24 0 24 24 0 24" />
+						<rect fill="#000000" opacity="0.3" x="11" y="10" width="2" height="10" rx="1" />
+						<path d="M6.70710678,12.7071068 C6.31658249,13.0976311 5.68341751,13.0976311 5.29289322,12.7071068 C4.90236893,12.3165825 4.90236893,11.6834175 5.29289322,11.2928932 L11.2928932,5.29289322 C11.6714722,4.91431428 12.2810586,4.90106866 12.6757246,5.26284586 L18.6757246,10.7628459 C19.0828436,11.1360383 19.1103465,11.7686056 18.7371541,12.1757246 C18.3639617,12.5828436 17.7313944,12.6103465 17.3242754,12.2371541 L12.0300757,7.38413782 L6.70710678,12.7071068 Z" fill="#000000" fill-rule="nonzero" />
+					</g>
+				</svg>
+				<!--end::Svg Icon-->
+			</span>
+		</div>
+		<!--end::Scrolltop-->
+		<!--begin::Sticky Toolbar-->
+		<!-- Add Modal-->
+<div class="modal fade" id="addModalCustomer" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin::Row-->
+               <!-- <form th:action="@{/add_material}" th:object="${material}" method="post" style="max-width: 600px; margin: 0 auto;">-->
+                <form class="form" id="kt_login_singin_form" method="post" action="/gaya/addCustomer">
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Customer Num</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="customerId" placeholder="Customer Num" value="" />
+							<span class="form-text text-muted">Please enter your Customer Num.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					<!--begin::Group-->
+					<div class="col-xl-6">
+						<div class="form-group">
+							<label>Customer Name</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="customerName" placeholder="Customer Name" value="" />
+							<span class="form-text text-muted">Please enter your Customer Name.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+				</div>
+				<!--end::Row-->
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Mobile Number</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="mobileNo" placeholder="MobileNumber" value="" />
+							<span class="form-text text-muted">Please enter your MobileNo.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					<!--begin::Group-->
+					<div class="col-xl-6">
+						<div class="form-group">
+							<label>Adhar Number</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="alternateNo" placeholder="Adhar" value="" />
+							<span class="form-text text-muted">Please enter your Adhar Number.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+				</div>
+				<div class="row">
+					<div class="col-xl-6">
+						<!--begin::Group-->
+						<div class="form-group">
+							<label>Addressr</label>
+							<input type="text" class="form-control form-control-solid form-control-lg" name="address" placeholder="Address" value="" />
+							<span class="form-text text-muted">Please enter your Address.</span>
+						</div>
+					</div>
+					<!--end::Group-->
+					
+				</div>
+				<div class="modal-footer">
+	                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+	                <button type="submit" id="kt_login_singin_form_submit_button" class="btn btn-light-primary font-weight-bold">Save</button>
+            	</div>
+				</form>
+				<!--end::Row-->
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-lg" id="addRentalMaterials" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Rental Materails</h5>
+                <input type="text"  name="customerName"  autocomplete="off"  />
+                <span  id="mobileNo"></span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Select Material</label>
+        <select class="form-control form-control-lg form-control-solid" name="projectId"
+           (change)="setProjectId($event.target.value)">
+          <option [ngValue]="selValue" [selected]=true>Select Material</option>
+          
+        </select>
+      </div>
+      
+      <div class="col-lg-2">
+        <label>Rent Per Unit</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="rentPerUnit"  autocomplete="off"  />
+      </div>
+      <div class="col-lg-2">
+        <label>No of Units</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="noOfUnits" placeholder="units"  autocomplete="off"  />
+      </div>
+      <div class="col-lg-3">
+        <label>Total</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="total" placeholder="remarks" autocomplete="off"  />
+      </div>
+      <div class="col-lg-2">
+        <label>Action</label>
+        <button type="button" id="add" class="btn btn-primary btn-elevate" (click)= "add()">
+          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive angular-bootstrap-table">
+      <table id="addRentalMaterialTable" class="table table-bordered align-middle gs-0 gy-4">
+        <thead>
+          <tr>
+            <th nowrap >Material   </th>
+            <th nowrap >Rent Per Unit   </th>
+            <th nowrap >No of Units   </th>
+            <th nowrap >Total  </th>
+            <th nowrap >Remarks   </th>
+          </tr>
+        </thead>
+        
+      </table>
+    </div>
+
+  </div>
+      </div>
+            
+        </div>
+    </div>
+</div>
+		<!--end::Sticky Toolbar-->
+		<!--begin::Demo Panel-->
+		<!--end::Demo Panel-->
+		<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
+		<!--begin::Global Config(global config for global JS scripts)-->
+		<script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+		<!--end::Global Config-->
+		<!--begin::Global Theme Bundle(used by all pages)-->
+		<script src="gaya/assets/plugins/global/plugins.bundle.js"></script>
+		<script src="gaya/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+		<script src="gaya/assets/js/scripts.bundle.js"></script>
+		<!--end::Global Theme Bundle-->
+		<!--begin::Page Scripts(used by this page)-->
+		<script src="gaya/assets/js/pages/custom/user/list-datatable-customers.js"></script>
+		<!--end::Page Scripts-->
+	</body>
+	<!--end::Body-->
+</html>

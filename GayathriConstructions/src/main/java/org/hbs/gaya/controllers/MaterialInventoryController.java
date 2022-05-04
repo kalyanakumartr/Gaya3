@@ -3,6 +3,8 @@ package org.hbs.gaya.controllers;
 import java.util.List;
 
 import org.hbs.gaya.bo.InventoryBo;
+import org.hbs.gaya.dao.MaterialDao;
+import org.hbs.gaya.dao.UsersDao;
 import org.hbs.gaya.model.Inventory;
 import org.hbs.gaya.model.Material;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,12 @@ public class MaterialInventoryController
 	@Autowired
 	InventoryBo inventoryBo;
 
+	@Autowired
+	MaterialDao matDao;
+	
+	@Autowired
+	private UsersDao usersDao;
+	
 	@GetMapping(value = "/inventory")
 	public String viewInventoryPage()
 	{
