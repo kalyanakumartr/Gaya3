@@ -41,11 +41,11 @@
 										<table class="table">
 											<thead>
 												<tr>
-													<th class="pt-1 pb-4 pl-0 font-weight-bold text-muted font-size-lg text-uppercase">Item Name</th>
-													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Quantity</th>
-													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rate</th>
-													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Amount</th>
-													<th class="pt-1 pb-4 text-right font-weight-bold text-muted font-size-lg text-uppercase">Rent Amount</th>
+													<th class="pt-1 pb-4 pl-0 font-weight-boldest text-muted font-size-lg text-uppercase">Item Name</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Quantity</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Rate</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Amount <BR>per day</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase" th:utext="'Rent Amount <BR>for ' + ${noOfDays} + ' Days'" ></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -55,20 +55,20 @@
 												    <td class="border-top-0 pl-0 d-flex align-items-center" th:text="${item.inventory.material.materialName}" />
 												    <td class="border-top-0 text-right py-1" th:text="${item.quantity}" />
 												    <td class="border-top-0 text-right py-1" th:utext="${item.getPrice$()}" />
-												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getTotalCost$()}" />
-												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getRentalCost$()}" />
+												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getTotalCost$() + '&nbsp;&nbsp;&nbsp;'}" />
+												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getRentalCost$() + '&nbsp;&nbsp;&nbsp;'}" />
 												</tr>
 												<tr class="font-weight-bold border-bottom-0 font-size-lg">
-													<td class="border-top-0 pl-0 py-2 d-flex align-items-center">
-													<td class="border-top-0 text-right py-4"></td>
-													<td class="border-top-0 text-right py-4"></td>
-													<td class="border-top-0 text-right font-weight-bolder text-right py-4">Total Rent Amount</td>
-													<td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-boldest text-right"th:utext="${totalAmount$}" />
+													<td class="border-top-1 pl-0 py-2 d-flex align-items-center">
+													<td class="border-top-1 text-right py-4"></td>
+													<td class="border-top-1 text-right font-weight-bolder text-right py-4">Total Amount</td>
+													<td class="border-top-1 pr-0 py-4 font-weight-bold text-right"th:utext="${totalCostAmount$ + '&nbsp;&nbsp;&nbsp;'}" />
+													<td class="border-top-1 pr-0 py-4 font-weight-bold text-right"th:utext="${totalAmount$ + '&nbsp;&nbsp;&nbsp;'}" />
 												</tr>
 											</tbody>
 										</table>
 									</div>
-									<div class="border-bottom w-100 mt-7 mb-5"></div>
+									<div class="border-bottom w-100 mt-1 mb-5"></div>
 									<div class="d-flex flex-column mb-10 mb-md-0">
 										<div class="d-flex justify-content-between font-size-lg mb-3">
 											<span class="font-weight-bold mr-15">Hired Date:</span>
@@ -126,7 +126,7 @@
 						    		<option 
 						    			th:each="lv:${invoiceNoList}" 
 							    		th:value="${lv.value}" 
-							    		th:text="${lv.label}"
+							    		th:utext="${lv.label}"
 							    		th:selected="${lv.value eq invoiceId}">
 						    		</option>
 								</select>

@@ -87,6 +87,7 @@ public class Rental implements Serializable
 
 	@OneToMany(targetEntity = RentalInvoice.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
+	@OrderBy("startDate Asc")
 	@JsonIgnore
 	private Set<RentalInvoice>	rentalInvoiceSet	= new LinkedHashSet<>();
 
@@ -102,7 +103,7 @@ public class Rental implements Serializable
 	@JsonSerialize(using = TwoDecimalSerializer.class)
 	public Double getTotalInvoiceAmount()
 	{
-		return this.getPendingInvoiceAmount() + this.getActiveInvoiceAmount();
+		return this.getPayableInvoiceAmount() + this.getActiveInvoiceAmount();
 	}
 	
 	@Transient
@@ -115,15 +116,15 @@ public class Rental implements Serializable
 
 	@Transient
 	@JsonSerialize(using = TwoDecimalSerializer.class)
-	public Double getPendingInvoiceAmount()
+	public Double getPayableInvoiceAmount()
 	{
-		Double pendingInvoiceAmount = 0.0;
-		for (RentalInvoice pendingInvoice : this.getPendingInvoice())
+		Double payableInvoiceAmount = 0.0;
+		for (RentalInvoice rentalInvoice : this.getPayableInvoice())
 		{
-			pendingInvoiceAmount += pendingInvoice.getInvoiceAmount();
+			payableInvoiceAmount += rentalInvoice.getInvoiceAmount();
 		}
 
-		return pendingInvoiceAmount;
+		return payableInvoiceAmount;
 	}
 
 	@Transient
@@ -144,15 +145,15 @@ public class Rental implements Serializable
 	}
 
 	@Transient
-	private Set<RentalInvoice> getPendingInvoice()
+	private Set<RentalInvoice> getPayableInvoice()
 	{
-		Set<RentalInvoice> pendingInvoiceSet = new LinkedHashSet<>();
+		Set<RentalInvoice> payableInvoiceSet = new LinkedHashSet<>();
 		for (RentalInvoice rInvoice : this.rentalInvoiceSet)
 		{
-			if (!rInvoice.getActive().booleanValue() && rInvoice.getInvoiceStatus() == EInvoiceStatus.Pending)
-				pendingInvoiceSet.add(rInvoice);
+			if (rInvoice.getInvoiceStatus() == EInvoiceStatus.Payable)
+				payableInvoiceSet.add(rInvoice);
 		}
-		return pendingInvoiceSet;
+		return payableInvoiceSet;
 	}
 	
 
@@ -164,9 +165,9 @@ public class Rental implements Serializable
 		for (RentalInvoice rInvoice : this.rentalInvoiceSet)
 		{
 			if (rInvoice.getInvoiceNo() != null && rInvoice.getInvoiceDate() != null)
-				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), rInvoice.getInvoiceDate().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")) + "-" + rInvoice.getInvoiceNo()));
+				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), rInvoice.getInvoiceNo() + " | " + getCurrency(rInvoice.getInvoiceAmount()) + " | " + rInvoice.getInvoiceStatus()));
 			else if(rInvoice.getActive().booleanValue())
-				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")) + "-Current Invoice"));
+				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), "Current Invoice - " + getCurrency(rInvoice.getInvoiceAmount())));
 			
 				
 		}
@@ -180,7 +181,8 @@ public class Rental implements Serializable
 		Double paymentAmt = 0.0;
 		for (RentalInvoice rInvoice : this.rentalInvoiceSet)
 		{
-			paymentAmt += rInvoice.getPaymentAmount();
+			if(rInvoice.getInvoiceStatus() != EInvoiceStatus.Settled)
+				paymentAmt += rInvoice.getPaymentAmount();
 		}
 		return paymentAmt;
 	}

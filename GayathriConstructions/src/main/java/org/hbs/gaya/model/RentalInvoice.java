@@ -44,7 +44,7 @@ public class RentalInvoice implements Serializable
 
 	public enum EInvoiceStatus implements EnumInterface
 	{
-		Settled, New, InProcess, Pending, Payable;
+		Settled, Pending, Payable;
 	}
 
 	@Id
@@ -115,4 +115,9 @@ public class RentalInvoice implements Serializable
 				.build();
 	}
 
+	@Transient
+	public Double getInvoiceBalance()
+	{
+		return (this.invoiceAmount - this.paymentAmount);
+	}
 }

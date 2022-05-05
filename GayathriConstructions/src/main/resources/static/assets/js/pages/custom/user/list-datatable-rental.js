@@ -1,12 +1,12 @@
 "use strict";
 // Class definition
-
+var datatable ;
 var KTAppsRentalListDatatable = function() {
 	// Private functions
 	
 	// basic demo
 	var _demo = function() {
-		var datatable = $('#kt_datatable').KTDatatable({
+		datatable = $('#kt_datatable').KTDatatable({
 			// datasource definition
 			data: {
 				type: 'remote',
@@ -54,9 +54,8 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'customerName',
 					title: 'Customer Name',
-					width: 110,
+					width: 100,
 					textAlign: 'left',
-					columnSpacing: 5,
 					template: function(data) {
 						
 						return '<span class="font-weight-normal">' + data.customer.customerName + '</span>';
@@ -78,16 +77,16 @@ var KTAppsRentalListDatatable = function() {
 						return '<span class="font-weight-normal">' + data.customer.alternateNo + '</span>';
 					}
 				}, {
-					field: 'pendingInvoiceAmount',
-					title: 'Pending Amount',
-					width: 65,
+					field: 'payableInvoiceAmount',
+					title: 'Payable Invoices Amount',
+					width: 70,
 					textAlign: 'right',
 					template: function(data) {
-						return '<span class="font-weight-normal">' + data.pendingInvoiceAmount + '</span>';
+						return '<span class="font-weight-normal">' + data.payableInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'activeInvoiceAmount',
-					title: 'Current Amount',
+					title: 'Current Invoice Amount',
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
@@ -95,7 +94,7 @@ var KTAppsRentalListDatatable = function() {
 					}
 				}, {
 					field: 'totalInvoiceAmount',
-					title: 'Total Amount',
+					title: 'Overall Invoice Amount',
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
@@ -103,7 +102,7 @@ var KTAppsRentalListDatatable = function() {
 					}
 				}, {
 					field: 'paymentAmount',
-					title: 'Paid Amount',
+					title: 'So Far Paid Amount',
 					width: 65,
 					textAlign: 'right',
 					template: function(data) {
@@ -111,11 +110,31 @@ var KTAppsRentalListDatatable = function() {
 					}
 				}, {
 					field: 'balanceAmount',
-					title: 'Balance Amount',
+					title: 'Balance Invoice Amount',
 					width: 70,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-bold text-danger">' + data.balanceAmount + '</span>';
+					}
+				}, {
+					field: 'rentalId',
+					title: 'Pay',
+					width: 35,
+					textAlign: 'center',
+					template: function(data, row) {
+						var payment = '{"customerName":"'+ data.customer.customerName +'", "rentalId":"'+ data.rentalId +'", "balanceAmount":"'+ data.balanceAmount.replaceAll("&#x20B9; ", "")+'"}';
+						payment = payment.replaceAll("\"", "\'");
+						return '\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentModal" data-id="'+ payment +'" data-toggle="modal" data-target="#paymentModal" title="Print Receipt">\
+									<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Shopping/Dollar.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+								    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+								        <rect x="0" y="0" width="24" height="24"/>\
+								        <rect fill="#000000" opacity="0.3" x="11.5" y="2" width="2" height="4" rx="1"/>\
+								        <rect fill="#000000" opacity="0.3" x="11.5" y="16" width="2" height="5" rx="1"/>\
+								        <path d="M15.493,8.044 C15.2143319,7.68933156 14.8501689,7.40750104 14.4005,7.1985 C13.9508311,6.98949895 13.5170021,6.885 13.099,6.885 C12.8836656,6.885 12.6651678,6.90399981 12.4435,6.942 C12.2218322,6.98000019 12.0223342,7.05283279 11.845,7.1605 C11.6676658,7.2681672 11.5188339,7.40749914 11.3985,7.5785 C11.2781661,7.74950085 11.218,7.96799867 11.218,8.234 C11.218,8.46200114 11.2654995,8.65199924 11.3605,8.804 C11.4555005,8.95600076 11.5948324,9.08899943 11.7785,9.203 C11.9621676,9.31700057 12.1806654,9.42149952 12.434,9.5165 C12.6873346,9.61150047 12.9723317,9.70966616 13.289,9.811 C13.7450023,9.96300076 14.2199975,10.1308324 14.714,10.3145 C15.2080025,10.4981676 15.6576646,10.7419985 16.063,11.046 C16.4683354,11.3500015 16.8039987,11.7268311 17.07,12.1765 C17.3360013,12.6261689 17.469,13.1866633 17.469,13.858 C17.469,14.6306705 17.3265014,15.2988305 17.0415,15.8625 C16.7564986,16.4261695 16.3733357,16.8916648 15.892,17.259 C15.4106643,17.6263352 14.8596698,17.8986658 14.239,18.076 C13.6183302,18.2533342 12.97867,18.342 12.32,18.342 C11.3573285,18.342 10.4263378,18.1741683 9.527,17.8385 C8.62766217,17.5028317 7.88033631,17.0246698 7.285,16.404 L9.413,14.238 C9.74233498,14.6433354 10.176164,14.9821653 10.7145,15.2545 C11.252836,15.5268347 11.7879973,15.663 12.32,15.663 C12.5606679,15.663 12.7949989,15.6376669 13.023,15.587 C13.2510011,15.5363331 13.4504991,15.4540006 13.6215,15.34 C13.7925009,15.2259994 13.9286662,15.0740009 14.03,14.884 C14.1313338,14.693999 14.182,14.4660013 14.182,14.2 C14.182,13.9466654 14.1186673,13.7313342 13.992,13.554 C13.8653327,13.3766658 13.6848345,13.2151674 13.4505,13.0695 C13.2161655,12.9238326 12.9248351,12.7908339 12.5765,12.6705 C12.2281649,12.5501661 11.8323355,12.420334 11.389,12.281 C10.9583312,12.141666 10.5371687,11.9770009 10.1255,11.787 C9.71383127,11.596999 9.34650161,11.3531682 9.0235,11.0555 C8.70049838,10.7578318 8.44083431,10.3968355 8.2445,9.9725 C8.04816568,9.54816454 7.95,9.03200304 7.95,8.424 C7.95,7.67666293 8.10199848,7.03700266 8.406,6.505 C8.71000152,5.97299734 9.10899753,5.53600171 9.603,5.194 C10.0970025,4.85199829 10.6543302,4.60183412 11.275,4.4435 C11.8956698,4.28516587 12.5226635,4.206 13.156,4.206 C13.9160038,4.206 14.6918294,4.34533194 15.4835,4.624 C16.2751706,4.90266806 16.9686637,5.31433061 17.564,5.859 L15.493,8.044 Z" fill="#000000"/>\
+								    </g>\
+								</svg><!--end::Svg Icon--></span>\
+							</a>\
+	                    ';
 					}
 				}, {
 					field: 'rentedDate',
@@ -219,6 +238,26 @@ jQuery(document).ready(function() {
 	KTAppsRentalListDatatable.init();
 });
 
+// decimal format
+$("#paymentAmountId").inputmask('decimal', {
+    rightAlignNumerics: false
+}); 
+
+//decimal format
+$("#discountAmountId").inputmask('decimal', {
+    rightAlignNumerics: false
+}); 
+
+$('input[name=paymentAmount]').change(function() { 
+	var bal = parseFloat($("#balanceAmountId").val());
+	var pay = parseFloat($("#paymentAmountId").val());
+	$("#paymentAmountId").val(pay.toFixed(2));
+	
+	if(bal == pay)
+		$("#discountAmountId").val("0.00");
+	$("#discount-info").text("Balance Amount is " + (bal-pay).toFixed(2) + ". You can also discount it.");
+});
+
 jQuery(document).on("click", ".paymentHistoryModal", function () {
 	
 	$("#paymentHistoryTable tr>td").remove();
@@ -231,14 +270,39 @@ jQuery(document).on("click", ".paymentHistoryModal", function () {
 		
 	    $.each(object, function(index, jsonObject){     
 	        if(Object.keys(jsonObject).length > 0){
-	          var tableRow = '<tr>';
+	          var tableRow = '<tr class="font-weight-bold font-size-sm">';
+	          var cellA = ["","","","",""];
+	          
 	          $.each(Object.keys(jsonObject), function(i, key){
 	        	 if(i == 0)
-	        		 tableRow += '<td>' + (index+1) + '</td>';
+	        		 cellA[0] = '<td class="pt-1 pb-4 text-center font-weight-normal font-size-lg text-uppercase">' + (index+1) + '</td>';
 	        	 else
-	        		 tableRow += '<td>' + jsonObject[key] + '</td>';
-	        	 	 
+	        	 {
+	        		 if(key == "paymentDate")
+	        			 cellA[1] = '<td class="pt-1 pb-4 text-center font-weight-normal font-size-lg ">' + jsonObject[key] + '</td>';
+	        		 else if(key == "invoiceNo")
+	        			 cellA[2] = '<td class="pt-1 pb-4 text-left font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + cellA[2] ;
+	        		 else if(key == "paymentAmount")
+	        			 cellA[3] = '<td class="pt-1 pb-4 text-right font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+	        		 else if(key == "discountAmount")
+	        			 cellA[4] = '<td class="pt-1 pb-4 text-right font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+	        		 else if(key == "status" && jsonObject[key] != "Pending")
+	        		 {
+	        			 var color = (jsonObject[key] == "Settled")? "success" : "primary";
+        				 cellA[2] = cellA[2] + '<span class="svg-icon svg-icon-'+ color+' svg-icon-2x" ><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Check.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+        			 						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+        			 						<polygon points="0 0 24 0 24 24 0 24"/>\
+        			 						<path d="M6.26193932,17.6476484 C5.90425297,18.0684559 5.27315905,18.1196257 4.85235158,17.7619393 C4.43154411,17.404253 4.38037434,16.773159 4.73806068,16.3523516 L13.2380607,6.35235158 C13.6013618,5.92493855 14.2451015,5.87991302 14.6643638,6.25259068 L19.1643638,10.2525907 C19.5771466,10.6195087 19.6143273,11.2515811 19.2474093,11.6643638 C18.8804913,12.0771466 18.2484189,12.1143273 17.8356362,11.7474093 L14.0997854,8.42665306 L6.26193932,17.6476484 Z" fill="#000000" fill-rule="nonzero" transform="translate(11.999995, 12.000002) rotate(-180.000000) translate(-11.999995, -12.000002) "/>\
+											</g>\
+											</svg><!--end::Svg Icon--></span></td>';
+	        		 }	 
+	        	 
+	        	 } 
 	          });
+	          
+	          for (let i = 0; i < cellA.length; ++i) {
+	        	  tableRow += cellA[i];
+	          }
 	          tableRow += "</tr>";
 	          $('#paymentHistoryTable tbody').append(tableRow);
 	        }
@@ -278,6 +342,57 @@ jQuery(document).on("click", ".viewInvoiceModal", function () {
 	}
 });
 
+jQuery(document).on("click", ".paymentModal", function () {
+
+	var object = $(this).data('id');
+
+	if(object != undefined && object != "")
+	{
+		object = JSON.parse(object.replaceAll("\'", "\""));
+		$("#paymentTitle").html("Payment By " + object.customerName);
+		$("#rentalId").val(object.rentalId );
+		$("#paymentAmountId").val(object.balanceAmount );
+		$("#balanceAmountId").val(object.balanceAmount);
+		$("#discount-info").text("");
+		
+		if(parseFloat($("#paymentAmountId").val()) <= 0)
+			$("#payment_submit_button").hide();
+	}
+});
+
+$("#payment_submit_button").on("click", function (e) {
+    e.preventDefault();
+
+    if(parseFloat($("#paymentAmountId").val()) > 0)
+    {
+	    var data = {};
+	    data["rentalId"] = $("#rentalId").val();
+	    data["paymentAmount"] = $("#paymentAmountId").val();
+	    data["discountAmount"] = $("#discountAmountId").val();
+	
+	    $.ajax({
+	        url: 'gaya/payRentalAmount',
+	        contentType: 'application/json',
+	        type: "POST",
+	        data: JSON.stringify(data),
+	        success: function (response) {
+	        	$('#paymentModal').modal('hide');
+	        	if(response == "success")
+	        	{
+	        		Swal.fire("Payment Success", "Amount paid successfully.", "success");
+	        	}
+	        	else
+	        	{
+	        		Swal.fire("Payment Failed", "You payment has encountered error.", "error");
+	        	}
+	        	
+	        	datatable.reload();
+	        },
+	        error: function (error) {
+	        }
+		 });
+    }
+});
 function loadInvoice()
 {
 	var invoiceId = $("#invoiceId").val();

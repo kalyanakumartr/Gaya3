@@ -124,7 +124,7 @@
 		                <div class="modal-title invoiceReceipt font-weight-bolder">View</div>
 		                <div class="card-body p-0">
 			                <div class="row">
-			                	<div class="col-md-5">
+			                	<div class="col-md-6">
 		                			<div class="d-flex align-items-left py-3 py-sm-0 px-sm-3 show " id="invoiceHistoryId"></div>
 				                </div>
 			                </div>
@@ -138,11 +138,10 @@
 	        </div>
 	    </div>
 	</div>
-	<!-- Payment History Modal End -->
 	
 	<!-- Payment History Modal Begin -->
 	<div class="modal fade" id="paymentHistoryModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-	    <div class="modal-dialog" role="document">
+	    <div class="modal-dialog  modal-lg" role="document">
 	        <div class="modal-content">
 	            <div class="modal-header">
 	                <h5 class="modal-title" id="paymentHistoryLabel">Payment History</h5>
@@ -156,9 +155,11 @@
 						<div class="col-xl-12" id="paymentHistoryDiv">
 							<table id="paymentHistoryTable" class="table table-bordered align-middle gs-0 gy-4">
 								<tr>
-									<th align="center">SNo</th>
-									<th align="right">Payment Amount</th>
-									<th align="right">Payment Date</th>
+									<th class="pt-1 pb-4 text-center font-weight-boldest font-size-lg text-uppercase">SNo</th>
+									<th class="pt-1 pb-4 text-center font-weight-boldest font-size-lg text-uppercase">Payment Date</th>
+									<th class="pt-1 pb-4 text-center font-weight-boldest font-size-lg text-uppercase">Invoice Number</th>
+									<th class="pt-1 pb-4 text-center font-weight-boldest font-size-lg text-uppercase">Payment Amount</th>
+									<th class="pt-1 pb-4 text-center font-weight-boldest font-size-lg text-uppercase">Discount Amount</th>
 								</tr>
 							</table>
 						</div>
@@ -203,6 +204,63 @@
 	            </div>
 	        </div>
     	</div>
+	</div>
+	<!-- Payment History Modal End -->
+	
+	<!-- Payment Modal Begin -->
+	<div class="modal fade" id="paymentModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title font-weight-bolder font-size-h2 text-primary" id="paymentTitle" ></h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <i aria-hidden="true" class="ki ki-close"></i>
+	                </button>
+	            </div>
+	            <div class="modal-body">
+				     <!--begin::Row-->
+		                <form class="m-form m-form--fit m-form--label-align-right" name="payment_form" method="post" action="#">
+								<div class="form-group">
+									<label class="font-weight-bolder font-size-h4 mb-3">Rental Amount</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text form-control-lg text-right font-weight-bolder font-size-h4 mb-3">&#x20B9;</span>
+										</div>
+										<input type="hidden" id="rentalId"/> 
+										<input type="text" readonly class="form-control form-control-lg text-right font-weight-bolder font-size-h4 mb-3 text-danger"  id="balanceAmountId" name="balanceAmount" placeholder="Balance Amount" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="font-weight-bolder font-size-h4 mb-3">Payment Amount</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text form-control-lg text-right font-weight-bolder font-size-h4 mb-3">&#x20B9;</span>
+										</div>
+										<input type="text" class="form-control form-control-lg text-right font-weight-bolder font-size-h4 mb-3"  id="paymentAmountId" name="paymentAmount" placeholder="Rental Amount" />
+									</div>
+									<span class="form-text text-muted">Please enter payment amount.<br> Your amount will be adjusted between your invoice(s) </span>
+								</div>
+								<div class="form-group">
+									<label class="font-weight-bolder font-size-h4 mb-3">Discount Amount</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text form-control-lg text-right font-weight-bolder font-size-h4 mb-3">&#x20B9;</span>
+										</div>
+										<input type="text" class="form-control form-control-lg text-right font-weight-bolder font-size-h4 mb-3"  id="discountAmountId" name="discountAmount" placeholder="Discount Amount" value="0.00" />
+									</div>
+									<span class="form-text text-muted">Please enter discount amount if any.</span>
+									<span class="form-text font-weight-bolder text-danger" id="discount-info"></span>
+								</div>
+								<div class="modal-footer">
+					                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+					                <button type="button" id="payment_submit_button" class="btn btn-success font-weight-bold">Pay Amount</button>
+				            	</div>
+						</form>
+						<!--end::Row-->
+		            </div>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 	<!-- Payment History Modal End -->
 	

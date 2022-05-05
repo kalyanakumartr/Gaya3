@@ -81,4 +81,10 @@ public class RentalBoImpl implements RentalBo
 	{
 		return rentalInvoiceDao.getRentalByInvoiceId(rentalOrInvoiceId);
 	}
+
+	@Override
+	public Rental saveOrUpdate(Rental rental)
+	{
+		return rentalDao.save(rental);
+	}
 }

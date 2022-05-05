@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.hbs.gaya.dao.RentalInvoiceDao;
 import org.hbs.gaya.model.RentalInvoice;
+import org.hbs.gaya.model.RentalInvoice.EInvoiceStatus;
 import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.EBusinessKey.EKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,7 @@ public class InvoiceBoImpl implements InvoiceBo
 		if (rentalInvoice != null && rentalInvoice.getInvoiceNo() == null)
 		{
 			rentalInvoice.setEndDate(LocalDateTime.now());
+			rentalInvoice.setInvoiceStatus(EInvoiceStatus.Payable);
 			if(isContinue)
 				rentalInvoice.setActive(false);
 			rentalInvoice.setInvoiceNo(getNewInvoiceId());
@@ -60,6 +62,7 @@ public class InvoiceBoImpl implements InvoiceBo
 
 			if (isContinue)
 			{
+				rentalInvoice.setInvoiceStatus(EInvoiceStatus.Pending);
 				rentalInvoice = rentalInvoice.getInvoiceClone();
 				invoiceDao.saveAndFlush(rentalInvoice);
 				return "";
