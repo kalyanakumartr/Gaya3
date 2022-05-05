@@ -8,10 +8,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hbs.gaya.bo.RentalBo;
+import org.hbs.gaya.dao.CustomerDao;
+import org.hbs.gaya.model.Customer;
 import org.hbs.gaya.model.Rental;
 import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalItem;
+import org.hbs.gaya.util.DataTableParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,6 +36,9 @@ public class MaterialRentalController
 	@Autowired
 	RentalBo rentalBo;
 
+	@Autowired
+	CustomerDao customerDao;
+	
 	@Autowired
 	Jackson2ObjectMapperBuilder mapperBuilder;
 	
@@ -78,19 +85,37 @@ public class MaterialRentalController
 	public String search(HttpServletRequest request)
 	{
 		String data = "";
-		try
-		{
-			String search = request.getParameter("");
-			List<Rental> dataList = rentalBo.searchRental("%");
-			ObjectMapper o = mapperBuilder.build();
-			o.registerModule(new JavaTimeModule());
-			data = o.writeValueAsString(dataList);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		
+			try
+			{
+				DataTableParam dtParam = DataTableParam.init(request);
+				
+				System.out.println("GS : "+dtParam.getGeneralSearch());
+				List<Rental> dataList = rentalBo.searchRental(dtParam.getGeneralSearch()== null?"":dtParam.getGeneralSearch());
+				ObjectMapper o = mapperBuilder.build();
+				o.registerModule(new JavaTimeModule());
+				data = o.writeValueAsString(dataList);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 		return data;
 	}
+	@GetMapping(value = "/addRentals")
+	public String addRental()
+	{
 
+		return "addRentals";
+	}
+	
+	@PostMapping(value = "/addCustomer" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String addMaterialPage( Customer customer)
+	{
+		System.out.println(customer+"customer"+ customer.getCustomerName());
+
+		customerDao.save(customer);
+		return "addRental";	
+	}
 }

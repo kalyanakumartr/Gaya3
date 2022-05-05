@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RentalDao extends JpaRepository<Rental, String>
 {
-	@Query("Select R From Rental R")
+	@Query("Select R From Rental R where R.customer.customerName like %:search%  or R.customer.mobileNo like %:search% or R.customer.alternateNo like %:search%")
 	List<Rental> searchRental(String search);
 
 	@Query("Select RI.rental From RentalInvoice RI Where RI.active = true And RI.rental.rentalStatus = 'Rented' And RI.calculatedDate < :calDate")
