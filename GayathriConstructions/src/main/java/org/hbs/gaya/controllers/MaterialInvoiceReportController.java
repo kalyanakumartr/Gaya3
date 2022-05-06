@@ -66,7 +66,7 @@ public class MaterialInvoiceReportController
 			{
 				if (totalPayment > 0 && rI.getInvoiceStatus() != EInvoiceStatus.Settled)
 				{
-					if (rI.getInvoiceBalance() == totalPayment)
+					if (rI.getInvoiceBalance().doubleValue() == totalPayment.doubleValue())
 					{
 						rI.setPaymentAmount(rI.getPaymentAmount() + totalPayment);
 						if (rI.getInvoiceStatus() == EInvoiceStatus.Payable)
@@ -80,7 +80,7 @@ public class MaterialInvoiceReportController
 								.rental(rental)//DonotChange Order
 								.build());
 					}
-					else if (rI.getInvoiceBalance() < totalPayment)
+					else if (rI.getInvoiceBalance().doubleValue() < totalPayment.doubleValue())
 					{
 						invoiceBalance = rI.getInvoiceBalance();//Mandate
 						totalPayment = totalPayment - invoiceBalance;

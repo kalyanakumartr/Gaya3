@@ -363,7 +363,7 @@ jQuery(document).on("click", ".paymentModal", function () {
 $("#payment_submit_button").on("click", function (e) {
     e.preventDefault();
 
-    if(parseFloat($("#paymentAmountId").val()) > 0)
+    if(parseFloat($("#paymentAmountId").val()) > 0 || parseFloat($("#discountAmountId").val()) > 0 )
     {
 	    var data = {};
 	    data["rentalId"] = $("#rentalId").val();
@@ -440,16 +440,16 @@ function generateInvoice(invoiceId) {
 	             success: function (response) {
 	            	if(response != null && response != undefined && response != "" )
 	            	{
-	            		$('#invoiceNoDiv').html(response);
+	            		$('#invoiceNoDiv').html(response.split("|")[0]);
 	            		$('#createInvoiceBtn').attr("disabled", true);
-	            		var currInv = $('#invoiceId option:selected').text();
-	            		currInv = currInv.replaceAll("Current Invoice", response);
-	            		$("#invoiceId").find("option:contains(\"Current Invoice\")").text(currInv);
+	            		$('#invoiceId option:selected').html(response);
 	            	}
+	            	datatable.reload();
 	             },
 	             error: function (error) {
 	                 console.log(`Error ${error}`);
 	             }
+	             
 			 });
 	    });
 	}

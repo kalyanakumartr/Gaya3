@@ -133,13 +133,13 @@ public class Rental implements Serializable
 	{
 		RentalInvoice rInvoice = this.getActiveInvoice();
 
-		return rInvoice == null ? 0.0 : rInvoice.getInvoiceAmount();
+		return rInvoice != null && (rInvoice.getInvoiceStatus() == EInvoiceStatus.Pending) ? rInvoice.getInvoiceAmount() : 0.00;
 	}
 
 	@Transient
 	public RentalInvoice getActiveInvoice()
 	{
-		Optional<RentalInvoice> inOpt = this.rentalInvoiceSet.stream().filter(p -> p.getActive()).findFirst();
+		Optional<RentalInvoice> inOpt = this.rentalInvoiceSet.stream().filter(p -> (p.getActive() ) ).findFirst();
 
 		return inOpt.isPresent() ? inOpt.get() : null;
 	}
@@ -200,7 +200,7 @@ public class Rental implements Serializable
 	}
 	
 	@Transient 
-	public String getTotalAmount$()
+	public String getTotalAmount$() // Total Amount JSON
 	{
 		double totalAmount = 0.0;
 		for(RentalItem ri : this.rentalItemSet)

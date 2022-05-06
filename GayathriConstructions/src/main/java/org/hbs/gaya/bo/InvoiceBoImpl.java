@@ -1,5 +1,6 @@
 package org.hbs.gaya.bo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +54,7 @@ public class InvoiceBoImpl implements InvoiceBo
 		if (rentalInvoice != null && rentalInvoice.getInvoiceNo() == null)
 		{
 			rentalInvoice.setEndDate(LocalDateTime.now());
+			rentalInvoice.setInvoiceDate(LocalDateTime.now());
 			rentalInvoice.setInvoiceStatus(EInvoiceStatus.Payable);
 			if(isContinue)
 				rentalInvoice.setActive(false);
@@ -68,7 +70,7 @@ public class InvoiceBoImpl implements InvoiceBo
 				return "";
 			}
 		}
-		return rentalInvoice.getInvoiceNo();
+		return rentalInvoice.getInvoiceNo() + " | " + "&#x20B9; " + new BigDecimal(rentalInvoice.getInvoiceAmount()).setScale(2, BigDecimal.ROUND_HALF_UP).toString() + " | " + rentalInvoice.getInvoiceStatus();
 	}
 
 }
