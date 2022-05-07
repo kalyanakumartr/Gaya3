@@ -7,12 +7,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hbs.gaya.bo.MaterialBo;
 import org.hbs.gaya.bo.RentalBo;
 import org.hbs.gaya.dao.CustomerDao;
 import org.hbs.gaya.model.Customer;
+import org.hbs.gaya.model.Material;
 import org.hbs.gaya.model.Rental;
 import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalItem;
+import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.DataTableParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,7 +38,10 @@ public class MaterialRentalController
 	
 	@Autowired
 	RentalBo rentalBo;
-
+	
+	@Autowired
+	MaterialBo materialBo;
+	
 	@Autowired
 	CustomerDao customerDao;
 	
@@ -118,4 +124,37 @@ public class MaterialRentalController
 		customerDao.save(customer);
 		return "addRental";	
 	}
+	
+	@PostMapping(value = "/getRentalMaterials")
+	public String getRentalMaterials(ModelMap modal)
+	{
+		
+		List<Material> dataList = materialBo.getAllMaterials();
+
+		//modal.addAttribute("items", rental.getRentalItemSet());
+		modal.addAttribute("materialList", dataList);
+		
+		return "fragments/addrentmaterial";
+	}
+	/*@PostMapping("/getRentalMaterials")
+	@ResponseBody
+	public String getRentalMaterials()
+	{
+		String data = "";
+		
+			try
+			{
+				List<Material> dataList = materialBo.getAllMaterials();
+				ObjectMapper o = mapperBuilder.build();
+				o.registerModule(new JavaTimeModule());
+				data = o.writeValueAsString(dataList);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+		return data;
+	}	*/
+	
 }

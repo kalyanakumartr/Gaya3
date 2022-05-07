@@ -93,7 +93,7 @@ var KTAppsRentalListDatatable = function() {
 					autoHide: false,
 					template: function(data) { 
 						return '\
-							<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" data-id =\''+JSON.stringify(data)+'\' data-toggle="modal" data-target="#addRentalMaterials" title="Add Rental Items">\
+							<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon me-2" data-id =\''+JSON.stringify(data)+'\' data-toggle="modal" data-target="#addRentalMaterials" title="Add Rental Items">\
 								<span class="svg-icon svg-icon-2">\
 									<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">\
 										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
@@ -133,8 +133,19 @@ jQuery('#addRentalMaterials').on('show.bs.modal', function(e) {
     //get data-id attribute of the clicked element
     var data = jQuery(e.relatedTarget).data('id');
     alert(data.customer.customerName);
-    jQuery(e.currentTarget).find('input[name="customerName"]').val(data.customer.customerName);
-    jQuery(e.currentTarget).find('span[id="mobileNo"]').val(data.customer.mobileNo);
+    $('.mobileNo').html(data.customer.mobileNo);
+    $('.customerName').html(data.customer.customerName);
+     $.ajax({
+             url: 'gaya/getRentalMaterials/',
+             type: "POST",
+             success: function (response) {
+            	$('.modal-body-material-rent').html(response);
+            	
+             },
+             error: function (error) {
+                 console.log(`Error ${error}`);
+             }
+		 });
     $("#addRentalMaterialTable tr>td").remove();
 	
 	var object = $(this).data('id');
@@ -162,3 +173,9 @@ jQuery('#addRentalMaterials').on('show.bs.modal', function(e) {
 jQuery(document).ready(function() {
 	KTAppsRentalListDatatable.init();
 });
+
+function loadMaterialInfo()
+{
+	var invoiceId = $("#invoiceId").val();
+	displayInvoice(invoiceId, false);
+}

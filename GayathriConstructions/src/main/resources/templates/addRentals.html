@@ -241,68 +241,25 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-lg" id="addRentalMaterials" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Rental Materails</h5>
-                <input type="text"  name="customerName"  autocomplete="off"  />
-                <span  id="mobileNo"></span>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                    <div class="form-group row">
-      <div class="col-lg-2">
-        <label>Select Material</label>
-        <select class="form-control form-control-lg form-control-solid" name="projectId"
-           (change)="setProjectId($event.target.value)">
-          <option [ngValue]="selValue" [selected]=true>Select Material</option>
-          
-        </select>
-      </div>
-      
-      <div class="col-lg-2">
-        <label>Rent Per Unit</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="rentPerUnit"  autocomplete="off"  />
-      </div>
-      <div class="col-lg-2">
-        <label>No of Units</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="noOfUnits" placeholder="units"  autocomplete="off"  />
-      </div>
-      <div class="col-lg-3">
-        <label>Total</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="total" placeholder="remarks" autocomplete="off"  />
-      </div>
-      <div class="col-lg-2">
-        <label>Action</label>
-        <button type="button" id="add" class="btn btn-primary btn-elevate" (click)= "add()">
-          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
-        </button>
-      </div>
-    </div>
-    <div class="table-responsive angular-bootstrap-table">
-      <table id="addRentalMaterialTable" class="table table-bordered align-middle gs-0 gy-4">
-        <thead>
-          <tr>
-            <th nowrap >Material   </th>
-            <th nowrap >Rent Per Unit   </th>
-            <th nowrap >No of Units   </th>
-            <th nowrap >Total  </th>
-            <th nowrap >Remarks   </th>
-          </tr>
-        </thead>
-        
-      </table>
-    </div>
 
-  </div>
-      </div>
-            
+    <div class="modal fade" id="addRentalMaterials" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="exampleModalLabel">Add Rental Materails</h5>
+	                <b>Customer Name : <span  class="customerName"></span></b>
+	                <b>Mobile No : <span  class="mobileNo"></span></b>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <i aria-hidden="true" class="ki ki-close"></i>
+	                </button>
+	            </div>
+	            <div class="modal-body-material-rent">
+	                    
+	  			</div>
+      		</div>
         </div>
     </div>
-</div>
+
 		<!--end::Sticky Toolbar-->
 		<!--begin::Demo Panel-->
 		<!--end::Demo Panel-->

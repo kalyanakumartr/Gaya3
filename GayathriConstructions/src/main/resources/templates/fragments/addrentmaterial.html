@@ -1,0 +1,65 @@
+
+							<!-- begin: Rent Material header-->
+
+           
+            <div class="modal-body">
+                    <div class="form-group row">
+      <div class="col-lg-2">
+        <label>Select Material</label>
+        <select class="form-control font-size-lg font-weight-boldest text-info" id="material" th:onchange ="loadMaterialInfo()">
+         <option 
+						    			th:each="lv:${materialList}" 
+							    		th:value="${lv.materialId}" 
+							    		th:utext="${lv.materialName}">
+						    		</option>
+          
+        </select>
+      </div>
+      
+      <div class="col-lg-2">
+        <label>Rent Per Unit</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="rentPerUnit"  autocomplete="off"  />
+      </div>
+      <div class="col-lg-2">
+        <label>No of Units</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="noOfUnits" placeholder="units"  autocomplete="off"  />
+      </div>
+      <div class="col-lg-3">
+        <label>Total</label>
+        <input type="text" class="form-control form-control-lg form-control-solid" name="total" placeholder="remarks" autocomplete="off"  />
+      </div>
+      <div class="col-lg-2">
+        <label>Action</label> <br/>
+        <button type="button" id="add" class="btn btn-primary btn-elevate" (click)= "add()">
+          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+      </div>
+    </div>
+							<!--end: Invoice header-->
+							<!--begin: Rented Material body-->
+							<div class="row border-bottom pb-2">
+								<div class="col-md-9 py-md-2 pr-md-2">
+									<div class="table-responsive">
+										<div class="font-size-h4 font-weight-bolder text-muted mb-3">RENTED ITEMS</div>
+										<table class="table">
+											<thead>
+												<tr>
+													<th class="pt-1 pb-4 pl-0 font-weight-boldest text-muted font-size-lg text-uppercase">Material Name</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Rent Per Unit</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Quantity</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+												
+											</tbody>
+										</table>
+									</div>
+									
+								</div>
+								
+							</div>
+							<!--end: Rented Material body-->
+						</div>
+					
