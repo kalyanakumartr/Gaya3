@@ -16,6 +16,8 @@ public interface RentalBo extends Serializable
 	List<RentalItem> searchRentalItem(String rentalId);
 
 	Rental getRentalById(String rentalId);
+	
+	String getLastRentalId() ;
 
 	Rental getRentalByInvoiceId(String rentalOrInvoiceId);
 

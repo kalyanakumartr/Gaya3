@@ -131,12 +131,12 @@ var KTAppsRentalListDatatable = function() {
 jQuery('#addRentalMaterials').on('show.bs.modal', function(e) {
 
     //get data-id attribute of the clicked element
+    var rentalId='R1000';
     var data = jQuery(e.relatedTarget).data('id');
-    alert(data.customer.customerName);
     $('.mobileNo').html(data.customer.mobileNo);
     $('.customerName').html(data.customer.customerName);
      $.ajax({
-             url: 'gaya/getRentalMaterials/',
+             url: 'gaya/getRentalMaterials/'+rentalId,
              type: "POST",
              success: function (response) {
             	$('.modal-body-material-rent').html(response);
@@ -178,4 +178,27 @@ function loadMaterialInfo()
 {
 	var invoiceId = $("#invoiceId").val();
 	displayInvoice(invoiceId, false);
+}
+function add(){
+	var rentalId = $("#rentalId").val();
+	var material = $("#material").val();
+	var rentPerUnit = $("#rentPerUnit").val();
+	var noOfUnits = $("#noOfUnits").val();
+	var total = $("#total").val();
+	 $.ajax({
+             url: 'gaya/addRentals?rentalId='+rentalId+'material='+material+"&rentPerUnit="+rentPerUnit+"&noOfUnits="+noOfUnits+"&total="+total,
+             type: "POST",
+             success: function (response) {
+            	$('.modal-body-material-rent').html(response);
+            	
+             },
+             error: function (error) {
+                 console.log(`Error ${error}`);
+             }
+		 });
+}
+function calculateTotal(){
+		var rentPerUnit = $("#rentPerUnit").val();
+		var noOfUnits = $("#noOfUnits").val();
+		$("#total").val(rentPerUnit*noOfUnits);
 }

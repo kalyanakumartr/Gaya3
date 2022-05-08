@@ -3,38 +3,42 @@
 
            
             <div class="modal-body">
-                    <div class="form-group row">
-      <div class="col-lg-2">
-        <label>Select Material</label>
-        <select class="form-control font-size-lg font-weight-boldest text-info" id="material" th:onchange ="loadMaterialInfo()">
-         <option 
-						    			th:each="lv:${materialList}" 
-							    		th:value="${lv.materialId}" 
-							    		th:utext="${lv.materialName}">
-						    		</option>
-          
-        </select>
-      </div>
-      
-      <div class="col-lg-2">
-        <label>Rent Per Unit</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="rentPerUnit"  autocomplete="off"  />
-      </div>
-      <div class="col-lg-2">
-        <label>No of Units</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="noOfUnits" placeholder="units"  autocomplete="off"  />
-      </div>
-      <div class="col-lg-3">
-        <label>Total</label>
-        <input type="text" class="form-control form-control-lg form-control-solid" name="total" placeholder="remarks" autocomplete="off"  />
-      </div>
-      <div class="col-lg-2">
-        <label>Action</label> <br/>
-        <button type="button" id="add" class="btn btn-primary btn-elevate" (click)= "add()">
-          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
-        </button>
-      </div>
-    </div>
+            	
+                  <div class="form-group row">
+                    
+				      <div class="col-lg-2">
+				        <label>Select Material</label>
+				        <select class="form-control font-size-lg font-weight-boldest text-info" id="material" th:onchange ="loadMaterialInfo()">
+				         	<option
+				    			th:each="lv:${materialList}" 
+					    		th:value="${lv.materialId}" 
+					    		th:utext="${lv.materialName}">
+				    		</option>
+				          
+				        </select>
+				      </div>
+				      
+				      <div class="col-lg-2">
+				        <label>Rent Per Unit</label>
+				        <input type="text" class="form-control form-control-lg form-control-solid" id="rentPerUnit" name="rentPerUnit"  autocomplete="off"  />
+				      </div>
+				      <div class="col-lg-2">
+				        <label>Quantity</label>
+				        <input type="text" class="form-control form-control-lg form-control-solid" id="noOfUnits" name="noOfUnits" placeholder="quantity" onclick= "calculateTotal()" autocomplete="off"  />
+				      </div>
+				      <div class="col-lg-3">
+				        <label>Total Amount</label>
+				        <input type="text" class="form-control form-control-lg form-control-solid" id="total" name="total" placeholder="amount" autocomplete="off"  />
+				        <input type="text"  id="rentalId" name="rentalId"  autocomplete="off"  />
+				      </div>
+				      <div class="col-lg-2">
+				        <label>Action</label> <br/>
+				        <button type="button" id="add" class="btn btn-primary btn-elevate" onclick= "add()">
+				          &nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
+				        </button>
+				      </div>
+			      
+   				</div>
 							<!--end: Invoice header-->
 							<!--begin: Rented Material body-->
 							<div class="row border-bottom pb-2">
@@ -44,15 +48,32 @@
 										<table class="table">
 											<thead>
 												<tr>
-													<th class="pt-1 pb-4 pl-0 font-weight-boldest text-muted font-size-lg text-uppercase">Material Name</th>
-													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Rent Per Unit</th>
+													
+													<th class="pt-1 pb-4 pl-0 font-weight-boldest text-muted font-size-lg text-uppercase">Item Name</th>
 													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Quantity</th>
-													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Total</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Rate</th>
+													<th class="pt-1 pb-4 text-right font-weight-boldest text-muted font-size-lg text-uppercase">Amount</th>
+													
+												
 												</tr>
+												
 											</thead>
 											<tbody>
 												
-												
+												<tr 
+												  th:each="item : ${items}"
+												  th:attr="class='font-weight-bold font-size-sm'">
+												    <td class="border-top-0 pl-0 d-flex align-items-center" th:text="${item.inventory.material.materialName}" />
+												    <td class="border-top-0 text-right py-1" th:text="${item.quantity}" />
+												    <td class="border-top-0 text-right py-1" th:utext="${item.getPrice$()}" />
+												    <td class="border-top-0 pr-0 py-1 font-weight-bold text-right" th:utext="${item.getTotalCost$() + '&nbsp;&nbsp;&nbsp;'}" />
+												</tr>
+												<tr class="font-weight-bold border-bottom-0 font-size-lg">
+													<td class="border-top-1 pl-0 py-2 d-flex align-items-center">
+													<td class="border-top-1 text-right py-4"></td>
+													<td class="border-top-1 text-right font-weight-bolder text-right py-4">Total Amount</td>
+													<td class="border-top-1 pr-0 py-4 font-weight-bold text-right"th:utext="${totalCostAmount$ + '&nbsp;&nbsp;&nbsp;'}" />
+												</tr>
 											</tbody>
 										</table>
 									</div>

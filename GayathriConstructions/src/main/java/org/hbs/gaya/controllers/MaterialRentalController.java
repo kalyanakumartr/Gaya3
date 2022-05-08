@@ -18,6 +18,7 @@ import org.hbs.gaya.model.RentalItem;
 import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.DataTableParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Controller;
@@ -109,13 +110,19 @@ public class MaterialRentalController
 			
 		return data;
 	}
-	@GetMapping(value = "/addRentals")
-	public String addRental()
+	@PostMapping(value = "/addRentals")
+	public String addRental(ModelMap modal, @Param("rentalId") String rentalId, @Param("material") String material,@Param("rentPerUnit") String rentPerUnit,@Param("noOfUnits") String noOfUnits,@Param("total") String total)
 	{
-
+		System.out.println(rentalId+"rentalId"+material+"material"+rentPerUnit+"rentPerUnit"+noOfUnits+"noOfUnits"+total+"total");
+		getRentedItems(modal, rentalId);
+		return "fragments/addrentmaterial";
+	}
+	@GetMapping(value = "/showCustomer")
+	public String showCustomer()
+	{
+	
 		return "addRentals";
 	}
-	
 	@PostMapping(value = "/addCustomer" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String addMaterialPage( Customer customer)
 	{
@@ -125,36 +132,40 @@ public class MaterialRentalController
 		return "addRental";	
 	}
 	
-	@PostMapping(value = "/getRentalMaterials")
-	public String getRentalMaterials(ModelMap modal)
+	@PostMapping(value = "/getRentalMaterials/{rentalId}")
+	public String getRentalMaterials(ModelMap modal, @PathVariable("rentalId") String rentalId)
 	{
-		
-		List<Material> dataList = materialBo.getAllMaterials();
-
-		//modal.addAttribute("items", rental.getRentalItemSet());
-		modal.addAttribute("materialList", dataList);
+		getRentedItems(modal, rentalId);
 		
 		return "fragments/addrentmaterial";
 	}
-	/*@PostMapping("/getRentalMaterials")
-	@ResponseBody
-	public String getRentalMaterials()
-	{
-		String data = "";
-		
-			try
+	
+
+	private void getRentedItems(ModelMap modal, String rentalId) {
+		Rental rental = new Rental();
+		if(rentalId != null) {
+			rental = rentalBo.getRentalById(rentalId);
+			modal.addAttribute("items", rental.getRentalItemSet());
+			// double totalRentAmount = 0.0;
+			double totalCostAmount = 0.0;
+
+			for (RentalItem rItem : rental.getRentalItemSet())
 			{
-				List<Material> dataList = materialBo.getAllMaterials();
-				ObjectMapper o = mapperBuilder.build();
-				o.registerModule(new JavaTimeModule());
-				data = o.writeValueAsString(dataList);
+				totalCostAmount = totalCostAmount + rItem.getTotalCost();
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
+
+			modal.addAttribute("totalCostAmount$", rental.getCurrency(totalCostAmount));
 			
-		return data;
-	}	*/
+		}else {
+			String lastId = rentalBo.getLastRentalId();
+			lastId = lastId+1;
+			rental.setRentalId(lastId);
+			rentalId = lastId;
+		}
+		List<Material> dataList = materialBo.getAllMaterials();
+
+		modal.addAttribute("rentalId$", rentalId);
+		modal.addAttribute("materialList", dataList);
+	}
 	
 }

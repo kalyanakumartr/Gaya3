@@ -20,5 +20,7 @@ public interface RentalDao extends JpaRepository<Rental, String>
 	@Query("Select RI.rental From RentalInvoice RI Where RI.active = true And RI.rental.rentalStatus = 'Rented' And RI.calculatedDate < :calDate")
 	List<Rental>  getPendingRental(@Param("calDate")  @DateTimeFormat(iso = ISO.DATE) LocalDateTime calculatedDate);
 
-
+	@Query(nativeQuery = true,
+		       value = "SELECT rentalId FROM rental ORDER by createdDate DESC limit 1")
+	String getLastRentalId();
 }
