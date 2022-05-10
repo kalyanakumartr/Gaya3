@@ -12,13 +12,13 @@ var KTAppsRentalListDatatable = function() {
 				type: 'remote',
 				source: {
 					read: {
-						url: '/gaya/searchRental',
+						url: '/gaya/getAllCustomers',
 					},
 				},
 				pageSize: 10, // display 20 records per page
 				serverPaging: true,
 				serverFiltering: true,
-				serverSorting: true,
+				serverSorting: false,
 			},
 
 			// layout definition
@@ -58,7 +58,7 @@ var KTAppsRentalListDatatable = function() {
 					textAlign: 'left',
 					template: function(data) {
 						
-						return '<span class="">' + data.customer.customerName + '</span>';
+						return '<span class="">' + data.customerName + '</span>';
 					}
 				}, {
 					field: 'mobileNo',
@@ -66,7 +66,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="">' + data.customer.mobileNo + '</span>';
+						return '<span class="">' + data.mobileNo + '</span>';
 					}
 				}, {
 					field: 'alternateNo',
@@ -74,7 +74,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="">' + data.customer.alternateNo + '</span>';
+						return '<span class="">' + data.alternateNo + '</span>';
 					}
 				}, {
 					field: 'address',
@@ -82,7 +82,7 @@ var KTAppsRentalListDatatable = function() {
 					width: 80,
 					textAlign: 'center',
 					template: function(data) {
-						return '<span class="">' + data.customer.address + '</span>';
+						return '<span class="">' + data.address + '</span>';
 					}					
 				}, {
 					field: 'Actions',
@@ -131,11 +131,11 @@ var KTAppsRentalListDatatable = function() {
 jQuery('#addRentalMaterials').on('show.bs.modal', function(e) {
 
     //get data-id attribute of the clicked element
-    var rentalId='RNT1000';
+    var rentalId='0';
     var data = jQuery(e.relatedTarget).data('id');
-    $('.mobileNo').html(data.customer.mobileNo);
-    $('.customerName').html(data.customer.customerName);
-     $('#customerId').val(data.customer.customerId);
+    $('.mobileNo').html(data.mobileNo);
+    $('.customerName').html(data.customerName);
+     $('#customerId').val(data.customerId);
      $.ajax({
              url: 'gaya/getRentalMaterials/'+rentalId,
              type: "POST",

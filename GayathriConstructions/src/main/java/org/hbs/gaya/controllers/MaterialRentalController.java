@@ -20,6 +20,7 @@ import org.hbs.gaya.model.Rental;
 import org.hbs.gaya.model.Rental.ERentalStatus;
 import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalItem;
+import org.hbs.gaya.model.Sequence;
 import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.DataTableParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,9 +142,8 @@ public class MaterialRentalController
 		}
 		else
 		{
-			String lastRentalId = rentalBo.getLastRentalId();
-			rentalId = getNextID(lastRentalId);
-			rental.setRentalId(rentalId);
+			
+			rental.setRentalId(rentalBo.getLastRentalId());
 		}
 
 		Set<RentalItem> rentalItemSet = new HashSet<RentalItem>();
@@ -158,6 +158,31 @@ public class MaterialRentalController
 		getRentedItems(modal, rentalId);
 		return "fragments/addrentmaterial";
 	}
+
+	@PostMapping("/getAllCustomers")
+	@ResponseBody
+	public String getCustomers(HttpServletRequest request)
+	{
+		String data = "";
+
+		try
+		{
+			DataTableParam dtParam = DataTableParam.init(request);
+
+			System.out.println("GS : " + dtParam.getGeneralSearch());
+			List<Customer> dataList = customerDao.searchCustomer(dtParam.getGeneralSearch() == null ? "" : dtParam.getGeneralSearch());
+			ObjectMapper o = mapperBuilder.build();
+			o.registerModule(new JavaTimeModule());
+			data = o.writeValueAsString(dataList);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return data;
+	}
+
 
 	@GetMapping(value = "/showCustomer")
 	public String showCustomer()
@@ -189,9 +214,9 @@ public class MaterialRentalController
 		if (rentalId != null)
 		{
 			rental = rentalBo.getRentalById(rentalId);
-			modal.addAttribute("items", rental.getRentalItemSet());
-			// double totalRentAmount = 0.0;
 			double totalCostAmount = 0.0;
+			if(rental != null) {
+			modal.addAttribute("items", rental.getRentalItemSet());
 
 			for (RentalItem rItem : rental.getRentalItemSet())
 			{
@@ -199,6 +224,11 @@ public class MaterialRentalController
 			}
 
 			modal.addAttribute("totalCostAmount$", rental.getCurrency(totalCostAmount));
+			}else {
+				rental = new Rental();
+				modal.addAttribute("items", rental.getRentalItemSet());
+				modal.addAttribute("totalCostAmount$", rental.getCurrency(totalCostAmount));
+			}
 
 		}
 		else
@@ -212,21 +242,6 @@ public class MaterialRentalController
 
 		modal.addAttribute("rentalId$", rentalId);
 		modal.addAttribute("materialList", dataList);
-	}
-
-	String getNextID(String lastId)
-	{
-		String initialChar = lastId.substring(0, 3);
-		int num = Integer.parseInt(lastId.substring(4, 7));
-		num = num + 1;
-		String numStr = num + "";
-		String numOfZero = "";
-		for (int i = 0; i <= (3 - numStr.length()); i++)
-		{
-			numOfZero = numOfZero + '0';
-		}
-		String nextId = initialChar + numOfZero + num;
-		return nextId;
 	}
 
 }

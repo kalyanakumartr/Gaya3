@@ -47,7 +47,9 @@
 									<a href="#" class=""></a>
 									<!--end::Button-->
 									<!--begin::Button-->
-									
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCustomer">
+										   Add Customer
+										</button>
 									<!--end::Button-->
 									<!--begin::Dropdown-->
 									
@@ -62,32 +64,7 @@
 							<!--begin::Container-->
 							<div class="container">
 								<!--begin::Card-->
-								<div class="card card-custom">
-									<!--begin::Header-->
-										<div class="card-header flex-wrap border-0 pt-6 pb-0">
-											<div class="d-flex align-items-center">
-										<!--begin::Button-->
-										<a href="#" class=""></a>
-										<!--end::Button-->
-										<!--begin::Button-->
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModalCustomer">
-										   Add Customer
-										</button>
-										<!--end::Button-->
-										<!--begin::Dropdown-->
-										
-										<!--end::Dropdown-->
-									</div>
-										</div>
-										<div class="card-toolbar">
-											<!--begin::Dropdown-->
-											
-											<!--end::Dropdown-->
-											<!--begin::Button-->
-											
-											<!--end::Button-->
-										</div>
-									</div>
+								
 									<!--end::Header-->
 									<!--begin::Body-->
 									<div class="card-body">
@@ -249,7 +226,7 @@
 	                <h5 class="modal-title" id="exampleModalLabel">Add Rental Materails</h5>
 	                <b>Customer Name : <span  class="customerName"></span></b>
 	                <b>Mobile No : <span  class="mobileNo"></span></b>
-	                <input type="text"  id="customerId" name="customerId"  autocomplete="off"  />
+	                <input type="hidden"  id="customerId" name="customerId"  autocomplete="off"  />
 	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                    <i aria-hidden="true" class="ki ki-close"></i>
 	                </button>
