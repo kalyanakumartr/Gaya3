@@ -131,10 +131,11 @@ var KTAppsRentalListDatatable = function() {
 jQuery('#addRentalMaterials').on('show.bs.modal', function(e) {
 
     //get data-id attribute of the clicked element
-    var rentalId='R1000';
+    var rentalId='RNT1000';
     var data = jQuery(e.relatedTarget).data('id');
     $('.mobileNo').html(data.customer.mobileNo);
     $('.customerName').html(data.customer.customerName);
+     $('#customerId').val(data.customer.customerId);
      $.ajax({
              url: 'gaya/getRentalMaterials/'+rentalId,
              type: "POST",
@@ -185,8 +186,11 @@ function add(){
 	var rentPerUnit = $("#rentPerUnit").val();
 	var noOfUnits = $("#noOfUnits").val();
 	var total = $("#total").val();
+	var customerId = $("#customerId").val();
+
+	
 	 $.ajax({
-             url: 'gaya/addRentals?rentalId='+rentalId+'material='+material+"&rentPerUnit="+rentPerUnit+"&noOfUnits="+noOfUnits+"&total="+total,
+             url: 'gaya/addRentals?customerId='+customerId+'&rentalId='+rentalId+'&material='+material+"&rentPerUnit="+rentPerUnit+"&noOfUnits="+noOfUnits+"&total="+total,
              type: "POST",
              success: function (response) {
             	$('.modal-body-material-rent').html(response);

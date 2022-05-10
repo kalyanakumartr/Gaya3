@@ -67,7 +67,7 @@ public class RentalBoImpl implements RentalBo
 	}
 	@Override
 	public String getLastRentalId() {
-		rentalDao.getLastRentalId();
+		return rentalDao.getLastRentalId();
 	}
 	@Override
 	public Rental getRentalById(String rentalId)

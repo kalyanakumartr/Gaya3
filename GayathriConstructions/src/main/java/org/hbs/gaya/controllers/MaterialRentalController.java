@@ -3,16 +3,21 @@ package org.hbs.gaya.controllers;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hbs.gaya.bo.InventoryBo;
 import org.hbs.gaya.bo.MaterialBo;
 import org.hbs.gaya.bo.RentalBo;
 import org.hbs.gaya.dao.CustomerDao;
+import org.hbs.gaya.dao.UsersDao;
 import org.hbs.gaya.model.Customer;
 import org.hbs.gaya.model.Material;
 import org.hbs.gaya.model.Rental;
+import org.hbs.gaya.model.Rental.ERentalStatus;
 import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalItem;
 import org.hbs.gaya.util.CommonValidator;
@@ -42,6 +47,12 @@ public class MaterialRentalController
 	
 	@Autowired
 	MaterialBo materialBo;
+	
+	@Autowired
+	InventoryBo inventoryBo;
+	
+	@Autowired
+	private UsersDao usersDao;
 	
 	@Autowired
 	CustomerDao customerDao;
@@ -111,9 +122,34 @@ public class MaterialRentalController
 		return data;
 	}
 	@PostMapping(value = "/addRentals")
-	public String addRental(ModelMap modal, @Param("rentalId") String rentalId, @Param("material") String material,@Param("rentPerUnit") String rentPerUnit,@Param("noOfUnits") String noOfUnits,@Param("total") String total)
+	public String addRental(ModelMap modal,@Param("customerId") String customerId, @Param("rentalId") String rentalId, @Param("material") String material,@Param("rentPerUnit") String rentPerUnit,@Param("noOfUnits") String noOfUnits,@Param("total") String total) throws Exception
 	{
 		System.out.println(rentalId+"rentalId"+material+"material"+rentPerUnit+"rentPerUnit"+noOfUnits+"noOfUnits"+total+"total");
+		RentalItem rentalItem = new RentalItem();
+		rentalItem.setItemId(material);
+		rentalItem.setPrice(Double.parseDouble(rentPerUnit));
+		rentalItem.setQuantity(Integer.parseInt(noOfUnits));
+		rentalItem.setTotalCost(Double.parseDouble(total));
+		rentalItem.setInventory(inventoryBo.getInventoryByMaterial(material));
+		
+		Rental rental = new Rental();
+		if(rentalId != null && rentalId !="" && rentalId !="0") {
+			rental = rentalBo.getRentalById(rentalId);
+		}else {
+			String lastRentalId = rentalBo.getLastRentalId();
+			rentalId = getNextID(lastRentalId);
+			rental.setRentalId(rentalId);
+		}
+
+        Set rentalItemSet = new HashSet();
+        rentalItem.setRental(rental);
+        rentalItemSet.add(rentalItem);
+		rental.setRentalItemSet(rentalItemSet);
+		rental.setCreatedUser(usersDao.getLoginDetails("1234567890").get(0));
+		rental.setCustomer(customerDao.getById(customerId));
+		rental.setRentalStatus(ERentalStatus.Rented);
+		rentalBo.saveOrUpdate(rental);
+		
 		getRentedItems(modal, rentalId);
 		return "fragments/addrentmaterial";
 	}
@@ -166,6 +202,19 @@ public class MaterialRentalController
 
 		modal.addAttribute("rentalId$", rentalId);
 		modal.addAttribute("materialList", dataList);
+	}
+	
+	String getNextID(String lastId){
+		String initialChar = lastId.substring(0, 3);
+		int num = Integer.parseInt(lastId.substring(4, 7));
+		num = num+1;
+		String numStr =num+"";
+		String numOfZero ="";
+		for(int i=0;i<=(3 -numStr.length());i++) {
+			numOfZero=numOfZero+'0';
+		}
+		String nextId = initialChar+numOfZero+num;
+		return nextId;
 	}
 	
 }

@@ -14,4 +14,6 @@ public interface InventoryBo extends Serializable
 	Inventory save(Inventory inventory);
 
 	Inventory getInventory(String inventoryId) throws Exception;
+	
+	Inventory getInventoryByMaterial(String materialId) throws Exception;
 }

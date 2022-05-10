@@ -14,4 +14,6 @@ public interface InventoryDao extends JpaRepository<Inventory, String>
 	@Query("Select I From Inventory I Where I.material.materialName Like %:search% Or I.material.numberCode = :search")
 	List<Inventory> searchInventory(@Param("search") String searchParam);
 
+	@Query("Select I From Inventory I Where I.material.materialId = :materialId")
+	Inventory findByMaterialId(@Param("materialId") String materialId);
 }

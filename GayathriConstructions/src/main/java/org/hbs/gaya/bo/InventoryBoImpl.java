@@ -41,5 +41,13 @@ public class InventoryBoImpl implements InventoryBo
 		else
 			throw new Exception("Inventory Not Exists For Given Inventory Id.");
 	}
+	@Override
+	public Inventory getInventoryByMaterial(String materialId) throws Exception
+	{
+		Inventory inventoryOpt = inventoryDao.findByMaterialId(materialId);
+		
 
+			return inventoryOpt;
+		
+	}
 }
