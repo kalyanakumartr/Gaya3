@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.hbs.gaya.dao.RentalDao;
 import org.hbs.gaya.dao.RentalInvoiceDao;
 import org.hbs.gaya.dao.RentalItemDao;
+import org.hbs.gaya.dao.SequenceDao;
 import org.hbs.gaya.model.Rental;
 import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalItem;
@@ -21,6 +22,9 @@ public class RentalBoImpl implements RentalBo
 
 	@Autowired
 	RentalDao					rentalDao;
+	
+	@Autowired
+	SequenceDao					sequenceDao;
 
 	@Autowired
 	RentalInvoiceDao			rentalInvoiceDao;
@@ -67,7 +71,9 @@ public class RentalBoImpl implements RentalBo
 	}
 	@Override
 	public String getLastRentalId() {
-		return rentalDao.getLastRentalId();
+		
+		return sequenceDao.create("Rental");
+		
 	}
 	@Override
 	public Rental getRentalById(String rentalId)

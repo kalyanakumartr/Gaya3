@@ -64,7 +64,7 @@ public class PaymentHistory implements Serializable
 	private Double				discountAmount		= 0.0;
 
 	@Column(name = "paymentDate")
-	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
+	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm:ss a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime		paymentDate;
 
 	@Transient

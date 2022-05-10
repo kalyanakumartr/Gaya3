@@ -54,32 +54,15 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'customerName',
 					title: 'Customer Name',
-					width: 100,
+					width: 120,
 					textAlign: 'left',
 					template: function(data) {
-						
-						return '<span class="font-weight-normal">' + data.customer.customerName + '</span>';
-					}
-				}, {
-					field: 'mobileNo',
-					title: 'Mobile No',
-					width: 80,
-					textAlign: 'center',
-					template: function(data) {
-						return '<span class="font-weight-normal">' + data.customer.mobileNo + '</span>';
-					}
-				}, {
-					field: 'alternateNo',
-					title: 'Alternate No',
-					width: 80,
-					textAlign: 'center',
-					template: function(data) {
-						return '<span class="font-weight-normal">' + data.customer.alternateNo + '</span>';
+						return '<span class="font-weight-normal"><B>' + data.customer.customerName + '</B><BR>' + data.customer.mobileNo + '<img src="gaya/assets/media/svg/icons/Communication/Outgoing-call.svg"/><BR>'+ data.customer.alternateNo  + '<img src="gaya/assets/media/svg/icons/Communication/Outgoing-call.svg"/></span>';
 					}
 				}, {
 					field: 'payableInvoiceAmount',
 					title: 'Payable Invoices Amount',
-					width: 70,
+					width: 80,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.payableInvoiceAmount + '</span>';
@@ -87,7 +70,7 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'activeInvoiceAmount',
 					title: 'Current Invoice Amount',
-					width: 65,
+					width: 80,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.activeInvoiceAmount + '</span>';
@@ -95,15 +78,15 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'totalInvoiceAmount',
 					title: 'Overall Invoice Amount',
-					width: 65,
+					width: 80,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.totalInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'paymentAmount',
-					title: 'So Far Paid Amount',
-					width: 65,
+					title: 'Adjusted Paid Amount',
+					width: 80,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.paymentAmount + '</span>';
@@ -111,7 +94,7 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'balanceAmount',
 					title: 'Balance Invoice Amount',
-					width: 70,
+					width: 80,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-bold text-danger">' + data.balanceAmount + '</span>';
@@ -139,7 +122,7 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'rentedDate',
 					title: 'Rent Date',
-					width: 70,
+					width: 100,
 					textAlign: 'center',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.rentedDate + '</span>';
@@ -258,6 +241,15 @@ $('input[name=paymentAmount]').change(function() {
 	$("#discount-info").text("Balance Amount is " + (bal-pay).toFixed(2) + ". You can also discount it.");
 });
 
+$('input[name=paymentAmount]').change(function() { 
+	$("#paymentAmountId").val($("#paymentAmountId").val().toFixed(2));
+	
+	if(bal == pay)
+		$("#discountAmountId").val("0.00");
+	$("#discount-info").text("Balance Amount is " + (bal-pay).toFixed(2) + ". You can also discount it.");
+});
+
+
 jQuery(document).on("click", ".paymentHistoryModal", function () {
 	
 	$("#paymentHistoryTable tr>td").remove();
@@ -288,7 +280,7 @@ jQuery(document).on("click", ".paymentHistoryModal", function () {
 	        			 cellA[4] = '<td class="pt-1 pb-4 text-right font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
 	        		 else if(key == "status" && jsonObject[key] != "Pending")
 	        		 {
-	        			 var color = (jsonObject[key] == "Settled")? "success" : "primary";
+	        			 var color = (jsonObject[key] == "Settled")? "success" : "danger";
         				 cellA[2] = cellA[2] + '<span class="svg-icon svg-icon-'+ color+' svg-icon-2x" ><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Check.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
         			 						<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
         			 						<polygon points="0 0 24 0 24 24 0 24"/>\
@@ -355,7 +347,7 @@ jQuery(document).on("click", ".paymentModal", function () {
 		$("#balanceAmountId").val(object.balanceAmount);
 		$("#discount-info").text("");
 		
-		if(parseFloat($("#paymentAmountId").val()) <= 0)
+		if(parseFloat($("#paymentAmountId").val()) <= 0 && parseFloat($("#discountAmountId").val()) <= 0)
 			$("#payment_submit_button").hide();
 	}
 });
@@ -426,32 +418,39 @@ function generateInvoice(invoiceId) {
 	{
 		Swal.fire({
 			title: "Confirm Invoice Closure",
-			text: "Do you want to close Invoice !?",
+			text: "Do you want to finalize Invoice !?",
 	        icon: "warning",
 	        showCancelButton: true,
-			confirmButtonClass: "btn-danger",
+	        showDenyButton: true,
+			denyButtonClass: "btn-info",
+			confirmButtonClass: "btn-info",
+			cancelButtonClass: "btn-danger",
+			denyButtonText: "No, Just Continue!",
 			confirmButtonText: "Yes, Finalize",
-	        cancelButtonText: "No, Just Continue!",
-	        reverseButtons: true
+	        cancelButtonText: "Cancel"
 	    }).then(function(result) {
-	    	$.ajax({
-	             url: 'gaya/generateInvoice/'+ ((result.value != undefined && result.value) ? 1 : 0) + '/'+ invoiceId,
-	             type: "POST",
-	             success: function (response) {
-	            	if(response != null && response != undefined && response != "" )
-	            	{
-	            		$('#invoiceNoDiv').html(response.split("|")[0]);
-	            		$('#createInvoiceBtn').attr("disabled", true);
-	            		$('#invoiceId option:selected').html(response);
-	            	}
-	            	datatable.reload();
-	             },
-	             error: function (error) {
-	                 console.log(`Error ${error}`);
-	             }
-	             
-			 });
-	    });
+	    	
+	    	if(!result.isDismissed) 
+	    	{
+				$.ajax({
+					url: 'gaya/generateInvoice/'+ ((result.value != undefined && result.value) ? 1 : 0) + '/'+ invoiceId,
+					type: "POST",
+					success: function (response) {
+						if(response != null && response != undefined && response != "" )
+						{
+							$('#invoiceNoDiv').html(response.split("|")[0]);
+							$('#invoiceId option:selected').html(response);
+							$('#createInvoiceBtn').attr("disabled", true);
+							Swal.fire("Invoice Creation", "Invoice created successfully.", "success");
+						}
+						datatable.reload();
+					},
+					error: function (error) {
+						console.log(`Error ${error}`);
+					}
+				});
+			}
+		});
 	}
 }
 

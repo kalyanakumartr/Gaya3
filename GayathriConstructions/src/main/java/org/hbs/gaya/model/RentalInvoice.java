@@ -105,7 +105,6 @@ public class RentalInvoice implements Serializable
 				.calculatedDate(null)
 				.endDate(null)
 				.startDate(LocalDate.now().plusDays(1).atStartOfDay())
-				.invoiceId(EKey.timeline("IN"))
 				.invoiceNo(null)
 				.invoiceStatus(EInvoiceStatus.Pending)
 				.rental(this.rental)

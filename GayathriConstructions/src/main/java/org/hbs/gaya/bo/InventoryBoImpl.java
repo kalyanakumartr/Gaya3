@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.hbs.gaya.dao.InventoryDao;
+import org.hbs.gaya.dao.SequenceDao;
 import org.hbs.gaya.model.Inventory;
 import org.hbs.gaya.util.EBusinessKey.EKey;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Service;
 public class InventoryBoImpl implements InventoryBo
 {
 
-	private static final long serialVersionUID = -8462653328322046420L;
+	private static final long	serialVersionUID	= -8462653328322046420L;
 
 	@Autowired
-	private InventoryDao inventoryDao;
+	private InventoryDao		inventoryDao;
+
+	@Autowired
+	SequenceDao					sequenceDao;
 
 	@Override
 	public List<Inventory> searchInventory(String searchParam)
@@ -27,7 +31,7 @@ public class InventoryBoImpl implements InventoryBo
 	@Override
 	public Inventory save(Inventory inventory)
 	{
-		inventory.setInventoryId(EKey.timeline("IN"));
+		inventory.setInventoryId(sequenceDao.create("Inventory"));
 		return inventoryDao.save(inventory);
 	}
 
@@ -35,19 +39,19 @@ public class InventoryBoImpl implements InventoryBo
 	public Inventory getInventory(String inventoryId) throws Exception
 	{
 		Optional<Inventory> inventoryOpt = inventoryDao.findById(inventoryId);
-		
-		if(inventoryOpt.isPresent())
+
+		if (inventoryOpt.isPresent())
 			return inventoryOpt.get();
 		else
 			throw new Exception("Inventory Not Exists For Given Inventory Id.");
 	}
+
 	@Override
 	public Inventory getInventoryByMaterial(String materialId) throws Exception
 	{
 		Inventory inventoryOpt = inventoryDao.findByMaterialId(materialId);
-		
 
-			return inventoryOpt;
-		
+		return inventoryOpt;
+
 	}
 }

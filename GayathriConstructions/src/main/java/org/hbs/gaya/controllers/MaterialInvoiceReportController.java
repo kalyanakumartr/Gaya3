@@ -60,6 +60,7 @@ public class MaterialInvoiceReportController
 		Rental rental = rentalBo.getRentalById(payload.get("rentalId"));
 		Double totalPayment = paymentAmt + discountAmt;
 		Double invoiceBalance = 0.0; 
+		LocalDateTime currDT = LocalDateTime.now();
 		if (CommonValidator.isNotNullNotEmpty(rental))
 		{
 			for (RentalInvoice rI : rental.getRentalInvoiceSet())
@@ -71,11 +72,12 @@ public class MaterialInvoiceReportController
 						rI.setPaymentAmount(rI.getPaymentAmount() + totalPayment);
 						if (rI.getInvoiceStatus() == EInvoiceStatus.Payable)
 							rI.setInvoiceStatus(EInvoiceStatus.Settled);
-
+						
+						currDT = currDT.plusSeconds(1);
 						rental.getPaymentSet().add(PaymentHistory.builder()//
 								.paymentAmount(paymentAmt)//
 								.discountAmount(discountAmt)//
-								.paymentDate(LocalDateTime.now())//
+								.paymentDate(currDT)//
 								.rentalInvoice(rI)//DonotChange Order
 								.rental(rental)//DonotChange Order
 								.build());
@@ -88,10 +90,11 @@ public class MaterialInvoiceReportController
 						if (rI.getInvoiceStatus() == EInvoiceStatus.Payable)
 							rI.setInvoiceStatus(EInvoiceStatus.Settled);
 						
+						currDT = currDT.plusSeconds(1);
 						rental.getPaymentSet().add(PaymentHistory.builder()//
 								.paymentAmount(invoiceBalance)//
 								.discountAmount(0.0)//
-								.paymentDate(LocalDateTime.now())//
+								.paymentDate(currDT)//
 								.rentalInvoice(rI)//DonotChange Order
 								.rental(rental)//DonotChange Order
 								.build());
@@ -100,10 +103,11 @@ public class MaterialInvoiceReportController
 					{
 						rI.setPaymentAmount(rI.getPaymentAmount() + totalPayment);
 
+						currDT = currDT.plusSeconds(1);
 						rental.getPaymentSet().add(PaymentHistory.builder()//
 								.paymentAmount(discountAmt > 0 ? totalPayment-discountAmt : totalPayment)//
 								.discountAmount(discountAmt)//
-								.paymentDate(LocalDateTime.now())//
+								.paymentDate(currDT)//
 								.rentalInvoice(rI)//DonotChange Order
 								.rental(rental)//DonotChange Order
 								.build());

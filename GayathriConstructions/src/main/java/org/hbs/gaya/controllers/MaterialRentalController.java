@@ -39,27 +39,27 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Controller
 public class MaterialRentalController
 {
-	private DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm a");
-	private DateTimeFormatter dFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-	
+	private DateTimeFormatter	dtFormat	= DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm a");
+	private DateTimeFormatter	dFormat		= DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+
 	@Autowired
-	RentalBo rentalBo;
-	
+	RentalBo					rentalBo;
+
 	@Autowired
-	MaterialBo materialBo;
-	
+	MaterialBo					materialBo;
+
 	@Autowired
-	InventoryBo inventoryBo;
-	
+	InventoryBo					inventoryBo;
+
 	@Autowired
-	private UsersDao usersDao;
-	
+	private UsersDao			usersDao;
+
 	@Autowired
-	CustomerDao customerDao;
-	
+	CustomerDao					customerDao;
+
 	@Autowired
-	Jackson2ObjectMapperBuilder mapperBuilder;
-	
+	Jackson2ObjectMapperBuilder	mapperBuilder;
+
 	@GetMapping(value = "/success-dashboard")
 	@ResponseBody
 	public String successPage()
@@ -79,9 +79,9 @@ public class MaterialRentalController
 	@PostMapping(value = "/viewRentalReceipt/{rentalId}")
 	public String viewRentalReceipt(ModelMap modal, @PathVariable("rentalId") String rentalId)
 	{
-		
+
 		Rental rental = rentalBo.getRentalById(rentalId);
-		
+
 		modal.addAttribute("items", rental.getRentalItemSet());
 		modal.addAttribute("advanceAmount$", rental.getAdvanceAmount$());
 		modal.addAttribute("totalAmount$", rental.getTotalAmount$());
@@ -91,7 +91,7 @@ public class MaterialRentalController
 
 		return "fragments/receipt";
 	}
-	
+
 	@GetMapping(value = "/dashboard")
 	public String viewDashBoardPage()
 	{
@@ -103,83 +103,91 @@ public class MaterialRentalController
 	public String search(HttpServletRequest request)
 	{
 		String data = "";
-		
-			try
-			{
-				DataTableParam dtParam = DataTableParam.init(request);
-				
-				System.out.println("GS : "+dtParam.getGeneralSearch());
-				List<Rental> dataList = rentalBo.searchRental(dtParam.getGeneralSearch()== null?"":dtParam.getGeneralSearch());
-				ObjectMapper o = mapperBuilder.build();
-				o.registerModule(new JavaTimeModule());
-				data = o.writeValueAsString(dataList);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-			
+
+		try
+		{
+			DataTableParam dtParam = DataTableParam.init(request);
+
+			System.out.println("GS : " + dtParam.getGeneralSearch());
+			List<Rental> dataList = rentalBo.searchRental(dtParam.getGeneralSearch() == null ? "" : dtParam.getGeneralSearch());
+			ObjectMapper o = mapperBuilder.build();
+			o.registerModule(new JavaTimeModule());
+			data = o.writeValueAsString(dataList);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		return data;
 	}
+
 	@PostMapping(value = "/addRentals")
-	public String addRental(ModelMap modal,@Param("customerId") String customerId, @Param("rentalId") String rentalId, @Param("material") String material,@Param("rentPerUnit") String rentPerUnit,@Param("noOfUnits") String noOfUnits,@Param("total") String total) throws Exception
+	public String addRental(ModelMap modal, @Param("customerId") String customerId, @Param("rentalId") String rentalId, @Param("material") String material, @Param("rentPerUnit") String rentPerUnit,
+			@Param("noOfUnits") String noOfUnits, @Param("total") String total) throws Exception
 	{
-		System.out.println(rentalId+"rentalId"+material+"material"+rentPerUnit+"rentPerUnit"+noOfUnits+"noOfUnits"+total+"total");
+		System.out.println(rentalId + "rentalId" + material + "material" + rentPerUnit + "rentPerUnit" + noOfUnits + "noOfUnits" + total + "total");
 		RentalItem rentalItem = new RentalItem();
 		rentalItem.setItemId(material);
 		rentalItem.setPrice(Double.parseDouble(rentPerUnit));
 		rentalItem.setQuantity(Integer.parseInt(noOfUnits));
 		rentalItem.setTotalCost(Double.parseDouble(total));
 		rentalItem.setInventory(inventoryBo.getInventoryByMaterial(material));
-		
+
 		Rental rental = new Rental();
-		if(rentalId != null && rentalId !="" && rentalId !="0") {
+		if (rentalId != null && rentalId != "" && rentalId != "0")
+		{
 			rental = rentalBo.getRentalById(rentalId);
-		}else {
+		}
+		else
+		{
 			String lastRentalId = rentalBo.getLastRentalId();
 			rentalId = getNextID(lastRentalId);
 			rental.setRentalId(rentalId);
 		}
 
-        Set rentalItemSet = new HashSet();
-        rentalItem.setRental(rental);
-        rentalItemSet.add(rentalItem);
+		Set<RentalItem> rentalItemSet = new HashSet<RentalItem>();
+		rentalItem.setRental(rental);
+		rentalItemSet.add(rentalItem);
 		rental.setRentalItemSet(rentalItemSet);
 		rental.setCreatedUser(usersDao.getLoginDetails("1234567890").get(0));
 		rental.setCustomer(customerDao.getById(customerId));
 		rental.setRentalStatus(ERentalStatus.Rented);
 		rentalBo.saveOrUpdate(rental);
-		
+
 		getRentedItems(modal, rentalId);
 		return "fragments/addrentmaterial";
 	}
+
 	@GetMapping(value = "/showCustomer")
 	public String showCustomer()
 	{
-	
+
 		return "addRentals";
 	}
-	@PostMapping(value = "/addCustomer" , produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String addMaterialPage( Customer customer)
+
+	@PostMapping(value = "/addCustomer", produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String addMaterialPage(Customer customer)
 	{
-		System.out.println(customer+"customer"+ customer.getCustomerName());
+		System.out.println(customer + "customer" + customer.getCustomerName());
 
 		customerDao.save(customer);
-		return "addRental";	
+		return "addRental";
 	}
-	
+
 	@PostMapping(value = "/getRentalMaterials/{rentalId}")
 	public String getRentalMaterials(ModelMap modal, @PathVariable("rentalId") String rentalId)
 	{
 		getRentedItems(modal, rentalId);
-		
+
 		return "fragments/addrentmaterial";
 	}
-	
 
-	private void getRentedItems(ModelMap modal, String rentalId) {
+	private void getRentedItems(ModelMap modal, String rentalId)
+	{
 		Rental rental = new Rental();
-		if(rentalId != null) {
+		if (rentalId != null)
+		{
 			rental = rentalBo.getRentalById(rentalId);
 			modal.addAttribute("items", rental.getRentalItemSet());
 			// double totalRentAmount = 0.0;
@@ -191,10 +199,12 @@ public class MaterialRentalController
 			}
 
 			modal.addAttribute("totalCostAmount$", rental.getCurrency(totalCostAmount));
-			
-		}else {
+
+		}
+		else
+		{
 			String lastId = rentalBo.getLastRentalId();
-			lastId = lastId+1;
+			lastId = lastId + 1;
 			rental.setRentalId(lastId);
 			rentalId = lastId;
 		}
@@ -203,18 +213,20 @@ public class MaterialRentalController
 		modal.addAttribute("rentalId$", rentalId);
 		modal.addAttribute("materialList", dataList);
 	}
-	
-	String getNextID(String lastId){
+
+	String getNextID(String lastId)
+	{
 		String initialChar = lastId.substring(0, 3);
 		int num = Integer.parseInt(lastId.substring(4, 7));
-		num = num+1;
-		String numStr =num+"";
-		String numOfZero ="";
-		for(int i=0;i<=(3 -numStr.length());i++) {
-			numOfZero=numOfZero+'0';
+		num = num + 1;
+		String numStr = num + "";
+		String numOfZero = "";
+		for (int i = 0; i <= (3 - numStr.length()); i++)
+		{
+			numOfZero = numOfZero + '0';
 		}
-		String nextId = initialChar+numOfZero+num;
+		String nextId = initialChar + numOfZero + num;
 		return nextId;
 	}
-	
+
 }
