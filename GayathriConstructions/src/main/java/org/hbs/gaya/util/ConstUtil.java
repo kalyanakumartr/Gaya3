@@ -2,6 +2,7 @@ package org.hbs.gaya.util;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public final class ConstUtil
 {
 
+	public static final String	SUCCESS			= "success";
+	public static final String	FAILURE			= "failure";
+	public static final String	ERROR			= "error";
 	public static final String	HASH			= "#";
 	public static final String	HYPHEN			= "-";
 	public static final String	SLASH			= "/";
@@ -54,5 +58,10 @@ public final class ConstUtil
 			e.printStackTrace();
 		}
 		return "Parsing Error";
+	}
+	
+	public static String getCurrency(Double value)
+	{
+		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 	}
 }

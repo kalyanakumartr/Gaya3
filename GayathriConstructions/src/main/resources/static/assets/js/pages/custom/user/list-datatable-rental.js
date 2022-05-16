@@ -12,7 +12,7 @@ var KTAppsRentalListDatatable = function() {
 				type: 'remote',
 				source: {
 					read: {
-						url: '/gaya/searchRental',
+						url: '/gaya/searchRental/1',
 					},
 				},
 				pageSize: 10, // display 20 records per page
@@ -60,25 +60,34 @@ var KTAppsRentalListDatatable = function() {
 						return '<span class="font-weight-normal"><B>' + data.customer.customerName + '</B><BR>' + data.customer.mobileNo + '<img src="gaya/assets/media/svg/icons/Communication/Outgoing-call.svg"/><BR>'+ data.customer.alternateNo  + '<img src="gaya/assets/media/svg/icons/Communication/Outgoing-call.svg"/></span>';
 					}
 				}, {
-					field: 'payableInvoiceAmount',
-					title: 'Payable Invoices Amount',
+					field: 'rentalStatus',
+					title: 'Rental Code',
 					width: 80,
+					textAlign: 'center',
+					template: function(data) {
+						return data.closureStatus == 'None' ? '<span class="label label-lg label-info label-inline mr-2" title="InProgress">' + data.rentalId + '</span>' : 
+							'<span class="label label-lg label-success label-inline mr-2" title="Rental Finalized">' + data.rentalId + '</span>';
+					}
+				}, {
+					field: 'payableInvoiceAmount',
+					title: 'Billed Invoices Amount',
+					width: 70,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.payableInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'activeInvoiceAmount',
-					title: 'Current Invoice Amount',
-					width: 80,
+					title: 'UnBilled Invoice Amount',
+					width: 70,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.activeInvoiceAmount + '</span>';
 					}
 				}, {
 					field: 'totalInvoiceAmount',
-					title: 'Overall Invoice Amount',
-					width: 80,
+					title: 'Sum Of Invoices Amount',
+					width: 70,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.totalInvoiceAmount + '</span>';
@@ -86,7 +95,7 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'paymentAmount',
 					title: 'Adjusted Paid Amount',
-					width: 80,
+					width: 75,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.paymentAmount + '</span>';
@@ -94,35 +103,15 @@ var KTAppsRentalListDatatable = function() {
 				}, {
 					field: 'balanceAmount',
 					title: 'Balance Invoice Amount',
-					width: 80,
+					width: 70,
 					textAlign: 'right',
 					template: function(data) {
 						return '<span class="font-weight-bold text-danger">' + data.balanceAmount + '</span>';
 					}
 				}, {
-					field: 'rentalId',
-					title: 'Pay',
-					width: 35,
-					textAlign: 'center',
-					template: function(data, row) {
-						var payment = '{"customerName":"'+ data.customer.customerName +'", "rentalId":"'+ data.rentalId +'", "balanceAmount":"'+ data.balanceAmount.replaceAll("&#x20B9; ", "")+'"}';
-						payment = payment.replaceAll("\"", "\'");
-						return '\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentModal" data-id="'+ payment +'" data-toggle="modal" data-target="#paymentModal" title="Print Receipt">\
-									<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Shopping/Dollar.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-								    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-								        <rect x="0" y="0" width="24" height="24"/>\
-								        <rect fill="#000000" opacity="0.3" x="11.5" y="2" width="2" height="4" rx="1"/>\
-								        <rect fill="#000000" opacity="0.3" x="11.5" y="16" width="2" height="5" rx="1"/>\
-								        <path d="M15.493,8.044 C15.2143319,7.68933156 14.8501689,7.40750104 14.4005,7.1985 C13.9508311,6.98949895 13.5170021,6.885 13.099,6.885 C12.8836656,6.885 12.6651678,6.90399981 12.4435,6.942 C12.2218322,6.98000019 12.0223342,7.05283279 11.845,7.1605 C11.6676658,7.2681672 11.5188339,7.40749914 11.3985,7.5785 C11.2781661,7.74950085 11.218,7.96799867 11.218,8.234 C11.218,8.46200114 11.2654995,8.65199924 11.3605,8.804 C11.4555005,8.95600076 11.5948324,9.08899943 11.7785,9.203 C11.9621676,9.31700057 12.1806654,9.42149952 12.434,9.5165 C12.6873346,9.61150047 12.9723317,9.70966616 13.289,9.811 C13.7450023,9.96300076 14.2199975,10.1308324 14.714,10.3145 C15.2080025,10.4981676 15.6576646,10.7419985 16.063,11.046 C16.4683354,11.3500015 16.8039987,11.7268311 17.07,12.1765 C17.3360013,12.6261689 17.469,13.1866633 17.469,13.858 C17.469,14.6306705 17.3265014,15.2988305 17.0415,15.8625 C16.7564986,16.4261695 16.3733357,16.8916648 15.892,17.259 C15.4106643,17.6263352 14.8596698,17.8986658 14.239,18.076 C13.6183302,18.2533342 12.97867,18.342 12.32,18.342 C11.3573285,18.342 10.4263378,18.1741683 9.527,17.8385 C8.62766217,17.5028317 7.88033631,17.0246698 7.285,16.404 L9.413,14.238 C9.74233498,14.6433354 10.176164,14.9821653 10.7145,15.2545 C11.252836,15.5268347 11.7879973,15.663 12.32,15.663 C12.5606679,15.663 12.7949989,15.6376669 13.023,15.587 C13.2510011,15.5363331 13.4504991,15.4540006 13.6215,15.34 C13.7925009,15.2259994 13.9286662,15.0740009 14.03,14.884 C14.1313338,14.693999 14.182,14.4660013 14.182,14.2 C14.182,13.9466654 14.1186673,13.7313342 13.992,13.554 C13.8653327,13.3766658 13.6848345,13.2151674 13.4505,13.0695 C13.2161655,12.9238326 12.9248351,12.7908339 12.5765,12.6705 C12.2281649,12.5501661 11.8323355,12.420334 11.389,12.281 C10.9583312,12.141666 10.5371687,11.9770009 10.1255,11.787 C9.71383127,11.596999 9.34650161,11.3531682 9.0235,11.0555 C8.70049838,10.7578318 8.44083431,10.3968355 8.2445,9.9725 C8.04816568,9.54816454 7.95,9.03200304 7.95,8.424 C7.95,7.67666293 8.10199848,7.03700266 8.406,6.505 C8.71000152,5.97299734 9.10899753,5.53600171 9.603,5.194 C10.0970025,4.85199829 10.6543302,4.60183412 11.275,4.4435 C11.8956698,4.28516587 12.5226635,4.206 13.156,4.206 C13.9160038,4.206 14.6918294,4.34533194 15.4835,4.624 C16.2751706,4.90266806 16.9686637,5.31433061 17.564,5.859 L15.493,8.044 Z" fill="#000000"/>\
-								    </g>\
-								</svg><!--end::Svg Icon--></span>\
-							</a>\
-	                    ';
-					}
-				}, {
 					field: 'rentedDate',
 					title: 'Rent Date',
-					width: 100,
+					width: 90,
 					textAlign: 'center',
 					template: function(data) {
 						return '<span class="font-weight-normal">' + data.rentedDate + '</span>';
@@ -131,14 +120,27 @@ var KTAppsRentalListDatatable = function() {
 					field: 'Actions',
 					title: 'Actions',
 					sortable: false,
-					width: 200,
+					width: 255,
 					overflow: 'visible',
 					autoHide: false,
 					template: function(data, row) {
+						var remittance = '{"customerName":"'+ data.customer.customerName +'", "rentalId":"'+ data.rentalId +'", "balanceAmount":"'+ data.balanceAmount.replaceAll("&#x20B9; ", "")+'"}';
+						remittance = remittance.replaceAll("\"", "\'");
+						
 						var payment = JSON.stringify(data.paymentSet);
 						payment = payment.replaceAll("\"", "\'");
 						
-						return '\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 viewReceiptModal" data-id="'+ data.rentalId +'" data-toggle="modal" data-target="#viewInvoiceReceiptModal" title="Print Receipt">\
+						return '\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentModal" data-id="'+ remittance +'" data-toggle="modal" data-target="#paymentModal" title="Print Receipt">\
+								<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Shopping/Dollar.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
+							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+							        <rect x="0" y="0" width="24" height="24"/>\
+							        <rect fill="#000000" opacity="0.3" x="11.5" y="2" width="2" height="4" rx="1"/>\
+							        <rect fill="#000000" opacity="0.3" x="11.5" y="16" width="2" height="5" rx="1"/>\
+							        <path d="M15.493,8.044 C15.2143319,7.68933156 14.8501689,7.40750104 14.4005,7.1985 C13.9508311,6.98949895 13.5170021,6.885 13.099,6.885 C12.8836656,6.885 12.6651678,6.90399981 12.4435,6.942 C12.2218322,6.98000019 12.0223342,7.05283279 11.845,7.1605 C11.6676658,7.2681672 11.5188339,7.40749914 11.3985,7.5785 C11.2781661,7.74950085 11.218,7.96799867 11.218,8.234 C11.218,8.46200114 11.2654995,8.65199924 11.3605,8.804 C11.4555005,8.95600076 11.5948324,9.08899943 11.7785,9.203 C11.9621676,9.31700057 12.1806654,9.42149952 12.434,9.5165 C12.6873346,9.61150047 12.9723317,9.70966616 13.289,9.811 C13.7450023,9.96300076 14.2199975,10.1308324 14.714,10.3145 C15.2080025,10.4981676 15.6576646,10.7419985 16.063,11.046 C16.4683354,11.3500015 16.8039987,11.7268311 17.07,12.1765 C17.3360013,12.6261689 17.469,13.1866633 17.469,13.858 C17.469,14.6306705 17.3265014,15.2988305 17.0415,15.8625 C16.7564986,16.4261695 16.3733357,16.8916648 15.892,17.259 C15.4106643,17.6263352 14.8596698,17.8986658 14.239,18.076 C13.6183302,18.2533342 12.97867,18.342 12.32,18.342 C11.3573285,18.342 10.4263378,18.1741683 9.527,17.8385 C8.62766217,17.5028317 7.88033631,17.0246698 7.285,16.404 L9.413,14.238 C9.74233498,14.6433354 10.176164,14.9821653 10.7145,15.2545 C11.252836,15.5268347 11.7879973,15.663 12.32,15.663 C12.5606679,15.663 12.7949989,15.6376669 13.023,15.587 C13.2510011,15.5363331 13.4504991,15.4540006 13.6215,15.34 C13.7925009,15.2259994 13.9286662,15.0740009 14.03,14.884 C14.1313338,14.693999 14.182,14.4660013 14.182,14.2 C14.182,13.9466654 14.1186673,13.7313342 13.992,13.554 C13.8653327,13.3766658 13.6848345,13.2151674 13.4505,13.0695 C13.2161655,12.9238326 12.9248351,12.7908339 12.5765,12.6705 C12.2281649,12.5501661 11.8323355,12.420334 11.389,12.281 C10.9583312,12.141666 10.5371687,11.9770009 10.1255,11.787 C9.71383127,11.596999 9.34650161,11.3531682 9.0235,11.0555 C8.70049838,10.7578318 8.44083431,10.3968355 8.2445,9.9725 C8.04816568,9.54816454 7.95,9.03200304 7.95,8.424 C7.95,7.67666293 8.10199848,7.03700266 8.406,6.505 C8.71000152,5.97299734 9.10899753,5.53600171 9.603,5.194 C10.0970025,4.85199829 10.6543302,4.60183412 11.275,4.4435 C11.8956698,4.28516587 12.5226635,4.206 13.156,4.206 C13.9160038,4.206 14.6918294,4.34533194 15.4835,4.624 C16.2751706,4.90266806 16.9686637,5.31433061 17.564,5.859 L15.493,8.044 Z" fill="#000000"/>\
+							    </g>\
+							</svg><!--end::Svg Icon--></span>\
+						</a>\
+						<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 viewReceiptModal" data-id="'+ data.rentalId +'" data-toggle="modal" data-target="#viewInvoiceReceiptModal" title="Print Receipt">\
 									<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Devices/Printer.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 								    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
 								        <rect x="0" y="0" width="24" height="24"/>\
@@ -157,7 +159,7 @@ var KTAppsRentalListDatatable = function() {
 							    </g>\
 							</svg><!--end::Svg Icon--></span>\
 							</a>\
-							\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentHistoryModal" data-toggle="modal"  data-target="#paymentHistoryModal"  data-id="' + payment + '" title="View Payments">\
+							\<a href="javascript:;" class="btn btn-sm btn-icon btn-light btn-color-muted btn-hover-success me-2 paymentHistoryModal"  data-toggle="modal"  data-target="#paymentHistoryModal"  data-id="' + payment + '" title="View Payments">\
 									<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Communication/Dial-numbers.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 								    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
 								        <rect x="0" y="0" width="24" height="24"/>\
@@ -173,7 +175,7 @@ var KTAppsRentalListDatatable = function() {
 								    </g>\
 								</svg><!--end::Svg Icon--></span>\
 							</a>\
-							<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-success btn-icon mr-2 viewItemsModal" data-toggle="modal" data-target="#viewItemsModal" title="Edit Contact">\
+							<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-success btn-icon mr-2 viewItemsModal" data-id="'+ data.rentalId +'" data-toggle="modal" data-target="#viewItemsModal" title="Edit Contact">\
 								<span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Design/Edit.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
 							    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
 							        <rect x="0" y="0" width="24" height="24"/>\
@@ -182,16 +184,13 @@ var KTAppsRentalListDatatable = function() {
 							    </g>\
 								</svg><!--end::Svg Icon--></span>\
 		                    </a>\
-	                        <a href="javascript:;" class="btn btn-sm btn-default btn-text-danger btn-hover-danger btn-icon" title="Delete">\
-								<span class="svg-icon svg-icon-md">\
-									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\
-										<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
-											<rect x="0" y="0" width="24" height="24"/>\
-											<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fill-rule="nonzero"/>\
-											<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>\
-										</g>\
-									</svg>\
-								</span>\
+	                        <a href="javascript:recalculate(\''+ data.rentalId +'\');" class="btn btn-sm btn-default btn-text-danger btn-hover-danger btn-icon mr-2 " title="Recalculate">\
+		                        <span class="svg-icon svg-icon-'+ (data.calculateStatus ? 'primary' : 'danger') +' svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/General/Update.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">\z\
+		                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">\
+		                            <rect x="0" y="0" width="24" height="24"/>\
+		                            <path d="M8.43296491,7.17429118 L9.40782327,7.85689436 C9.49616631,7.91875282 9.56214077,8.00751728 9.5959027,8.10994332 C9.68235021,8.37220548 9.53982427,8.65489052 9.27756211,8.74133803 L5.89079566,9.85769242 C5.84469033,9.87288977 5.79661753,9.8812917 5.74809064,9.88263369 C5.4720538,9.8902674 5.24209339,9.67268366 5.23445968,9.39664682 L5.13610134,5.83998177 C5.13313425,5.73269078 5.16477113,5.62729274 5.22633424,5.53937151 C5.384723,5.31316892 5.69649589,5.25819495 5.92269848,5.4165837 L6.72910242,5.98123382 C8.16546398,4.72182424 10.0239806,4 12,4 C16.418278,4 20,7.581722 20,12 C20,16.418278 16.418278,20 12,20 C7.581722,20 4,16.418278 4,12 L6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C10.6885336,6 9.44767246,6.42282109 8.43296491,7.17429118 Z" fill="#000000" fill-rule="nonzero"/>\
+		                        </g>\
+		                    </svg><!--end::Svg Icon--></span>\
 	                        </a>\
 	                    ';
 					},
@@ -250,6 +249,29 @@ $('input[name=paymentAmount]').change(function() {
 });
 
 
+jQuery(document).on("click", ".viewItemsModal", function () {
+	var rentalId = $(this).data('id');
+
+	if(rentalId != undefined && rentalId != "")
+	{
+		 returnItems(rentalId);
+	}
+});
+
+function returnItems(rentalId)
+{
+	 $('.modal-body-return-items').html("");
+	 $.ajax({
+         url: 'gaya/viewReturnItems/'+ rentalId,
+         type: "POST",
+         success: function (response) {
+        	$('.modal-body-return-items').html(response);
+         },
+         error: function (error) {
+             console.log(`Error ${error}`);
+         }
+	 });
+}
 jQuery(document).on("click", ".paymentHistoryModal", function () {
 	
 	$("#paymentHistoryTable tr>td").remove();
@@ -267,17 +289,17 @@ jQuery(document).on("click", ".paymentHistoryModal", function () {
 	          
 	          $.each(Object.keys(jsonObject), function(i, key){
 	        	 if(i == 0)
-	        		 cellA[0] = '<td class="pt-1 pb-4 text-center font-weight-normal font-size-lg text-uppercase">' + (index+1) + '</td>';
+	        		 cellA[0] = '<td class="pt-1 pb-4 text-center font-weight-normal text-uppercase">' + (index+1) + '</td>';
 	        	 else
 	        	 {
 	        		 if(key == "paymentDate")
-	        			 cellA[1] = '<td class="pt-1 pb-4 text-center font-weight-normal font-size-lg ">' + jsonObject[key] + '</td>';
+	        			 cellA[1] = '<td class="pt-1 pb-4 text-center font-weight-normal ">' + jsonObject[key] + '</td>';
 	        		 else if(key == "invoiceNo")
-	        			 cellA[2] = '<td class="pt-1 pb-4 text-left font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + cellA[2] ;
+	        			 cellA[2] = '<td class="pt-1 pb-4 text-center font-weight-normal text-uppercase">' + jsonObject[key] + cellA[2] ;
 	        		 else if(key == "paymentAmount")
-	        			 cellA[3] = '<td class="pt-1 pb-4 text-right font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+	        			 cellA[3] = '<td class="pt-1 pb-4 text-right font-weight-normal text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
 	        		 else if(key == "discountAmount")
-	        			 cellA[4] = '<td class="pt-1 pb-4 text-right font-weight-normal font-size-lg text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
+	        			 cellA[4] = '<td class="pt-1 pb-4 text-right font-weight-normal text-uppercase">' + jsonObject[key] + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>';
 	        		 else if(key == "status" && jsonObject[key] != "Pending")
 	        		 {
 	        			 var color = (jsonObject[key] == "Settled")? "success" : "danger";
@@ -385,6 +407,30 @@ $("#payment_submit_button").on("click", function (e) {
 		 });
     }
 });
+
+function recalculate(rentalId)
+{
+	$.ajax({
+        url: 'gaya/calculateInvoice/'+ rentalId,
+        type: "POST",
+        success: function (response) {
+        	if(response == "success")
+        	{
+        		Swal.fire("Calculation Success", "Amount manually calculated  successfully.", "success");
+        	}
+        	else
+        	{
+        		Swal.fire("Up To Date", "Nothing to calculate.", "info");
+        	}
+        	
+        	datatable.reload();
+        },
+        error: function (error) {
+        	Swal.fire("Calculation Failed", "Cause : " + error.responseText, "error");
+        }
+	 });
+}
+
 function loadInvoice()
 {
 	var invoiceId = $("#invoiceId").val();
@@ -467,3 +513,63 @@ function printDiv(eltId, file_name) {
 	// New Promise-based usage:
 	html2pdf().from(element).set(opt).save();
 }
+
+function restrict(elt) { 
+	var balance = parseFloat($("#" + elt.id + "Balance").val());
+	var returnItems = parseFloat(elt.value);
+	
+	if(returnItems < 0 || balance < returnItems )
+	{
+		$("#" + elt.id ).val("0");
+	}
+}
+
+$("#return_items_submit_button").on("click", function (e) {
+    e.preventDefault();
+    
+    var data = {};
+    var cell, itemData;
+    var table = document.getElementById("returnItemsTable");
+    var valid = false;
+    for (var i = 1, row; row = table.rows[i]; i++) {
+      
+      cell = row.cells[4];
+      if(cell != undefined && cell != null)
+      {
+    	  itemData = cell.querySelector("input[type='number']") ;
+    	  if(itemData != undefined && itemData !=undefined)
+    		  data[itemData.id] = itemData.value;
+    	  
+    	  if(!valid)
+    		  valid = (itemData.value != "0") ;
+      }
+    }
+    if(valid)
+    {
+	    $.ajax({
+	        url: 'gaya/returnItems',
+	        contentType: 'application/json',
+	        type: "POST",
+	        data: JSON.stringify(data),
+	        success: function (response) {
+	        	returnItems($("#rentalId").val());
+	        	if(response == "success")
+	        	{
+	        		Swal.fire("Return Success", "Items returned successfully.", "success");
+	        	}
+	        	else
+	        	{
+	        		Swal.fire("Return Failed", "Item returning has encountered error.", "error");
+	        	}
+	        	
+	        	datatable.reload();
+	        },
+	        error: function (error) {
+	        }
+		 });
+    }
+    else
+    {
+    	Swal.fire("Return Error", "Please update return items", "error");
+    }
+});

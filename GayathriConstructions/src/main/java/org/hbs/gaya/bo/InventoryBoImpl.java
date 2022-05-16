@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.hbs.gaya.dao.InventoryDao;
 import org.hbs.gaya.dao.SequenceDao;
 import org.hbs.gaya.model.Inventory;
-import org.hbs.gaya.util.EBusinessKey.EKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +52,11 @@ public class InventoryBoImpl implements InventoryBo
 
 		return inventoryOpt;
 
+	}
+
+	@Override
+	public List<Inventory> getInventoryList()
+	{
+		return inventoryDao.findAll();
 	}
 }
