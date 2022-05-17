@@ -166,6 +166,6 @@ public class RentalInvoice implements Serializable
 	@Transient
 	public Long getNoOfDays$()
 	{
-		return this.startDate.until(getEndDate$(), ChronoUnit.DAYS);
+		return this.startDate.toLocalDate().until(getEndDate$().toLocalDate(), ChronoUnit.DAYS);
 	}
 }

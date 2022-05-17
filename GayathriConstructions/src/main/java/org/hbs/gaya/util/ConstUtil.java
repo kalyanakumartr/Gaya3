@@ -4,6 +4,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 
+import org.hbs.gaya.model.Users;
+import org.hbs.gaya.security.CustomUserDetails;
+import org.springframework.security.core.Authentication;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,6 +44,14 @@ public final class ConstUtil
 
 	}
 
+	public static Users getUser(Authentication auth)
+	{
+		if(auth != null)
+			return Users.builder().employeeId(((CustomUserDetails) auth.getPrincipal()).getEmployeeId()).build();
+		else
+			return Users.builder().employeeId("System").build();
+	}
+
 	public static String asString(Exception excep)
 	{
 		StringWriter logMessageWriter = new StringWriter();
@@ -59,7 +71,7 @@ public final class ConstUtil
 		}
 		return "Parsing Error";
 	}
-	
+
 	public static String getCurrency(Double value)
 	{
 		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();

@@ -93,15 +93,14 @@
 									<!--begin::Total Amount-->
 									<div class="font-size-h4 font-weight-bolder text-muted mb-3">TOTAL AMOUNT</div>
 									<div class="font-size-h1 font-weight-boldest" th:utext="${totalAmount$}" ></div>
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">PAYMENT STATUS</div>
+									<div class="font-size-lg font-weight-bold mb-10" th:text="${invoiceStatus}"></div>
+									
 									<!--end::Total Amount-->
 									<div class="border-bottom w-100 mb-2"></div>
 									<!--begin::Invoice To-->
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE NO</div>
 									<div id="invoiceNoDiv" class="font-size-lg font-weight-bold mb-10" th:text="${invoiceNo}"></div>
-									
-									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">PAYMENT STATUS</div>
-									<div class="font-size-lg font-weight-bold mb-10" th:text="${invoiceStatus}"></div>
-									
 									<!--end::Invoice No-->
 									<!--begin::Invoice Date-->
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE DATE</div>

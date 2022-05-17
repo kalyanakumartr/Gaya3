@@ -18,6 +18,7 @@ import org.hbs.gaya.model.RentalInvoice.EInvoiceStatus;
 import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.ConstUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class CustomerController implements Serializable
 
 	@PostMapping(value = "/addCustomer")
 	@ResponseBody
-	public String addCustomerRental(HttpSession session, @RequestBody Map<String, String> payload)
+	public String addCustomerRental(Authentication auth, @RequestBody Map<String, String> payload)
 	{
 		Customer customer = customerDao.save(Customer.builder()//
 				.address(payload.get("address"))//
@@ -68,7 +69,7 @@ public class CustomerController implements Serializable
 					.rentedDate(LocalDateTime.now())//
 					.customer(customer)//
 					.createdDate(LocalDateTime.now())//
-					.createdUser(Users.builder().employeeId("System").build()).build(); //(String) session.getAttribute("employeeId")
+					.createdUser(ConstUtil.getUser(auth)).build();
 
 			RentalInvoice rentalInvoice = RentalInvoice.builder()//
 					.invoiceId(sequenceDao.create("RentalInvoice"))//

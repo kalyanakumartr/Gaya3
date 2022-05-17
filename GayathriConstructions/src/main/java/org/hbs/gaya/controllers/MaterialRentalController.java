@@ -26,12 +26,14 @@ import org.hbs.gaya.model.RentalInvoice;
 import org.hbs.gaya.model.RentalInvoice.EInvoiceStatus;
 import org.hbs.gaya.model.RentalItem;
 import org.hbs.gaya.model.Users;
+import org.hbs.gaya.security.CustomUserDetails;
 import org.hbs.gaya.util.CommonValidator;
 import org.hbs.gaya.util.ConstUtil;
 import org.hbs.gaya.util.DataTableParam;
 import org.hbs.gaya.util.LabelValueBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -123,7 +125,7 @@ public class MaterialRentalController implements Serializable
 	}
 
 	@PostMapping(value = "/addRentals")
-	public String addRentals(HttpSession session, ModelMap modal, @RequestBody Map<String, String> payload) throws Exception
+	public String addRentals(Authentication auth, ModelMap modal, @RequestBody Map<String, String> payload) throws Exception
 	{
 		Rental rental;
 		RentalInvoice rentalInvoice;
@@ -159,7 +161,7 @@ public class MaterialRentalController implements Serializable
 					.rentedDate(LocalDateTime.now())//
 					.customer(Customer.builder().customerId(payload.get("customerId")).build())//
 					.createdDate(LocalDateTime.now())//
-					.createdUser(Users.builder().employeeId("System").build()).build(); //(String) session.getAttribute("employeeId")
+					.createdUser(ConstUtil.getUser(auth)).build(); 
 
 			rentalInvoice = RentalInvoice.builder()//
 					.invoiceId(sequenceDao.create("RentalInvoice"))//
@@ -262,7 +264,7 @@ public class MaterialRentalController implements Serializable
 	@ResponseBody
 	public String successPage()
 	{
-
+		
 		return ConstUtil.SUCCESS;
 	}
 

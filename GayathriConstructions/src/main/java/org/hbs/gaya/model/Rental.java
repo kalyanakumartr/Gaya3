@@ -237,4 +237,12 @@ public class Rental implements Serializable
 		}
 		return rentalSet;
 	}
+	
+	@Transient
+	public boolean isNoBalance()
+	{
+		return this.getBalanceAmount() > 0 ;
+	}
+	
+	
 }
