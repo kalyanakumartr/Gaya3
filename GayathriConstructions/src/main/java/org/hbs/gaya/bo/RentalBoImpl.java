@@ -11,7 +11,7 @@ import org.hbs.gaya.dao.RentalItemDao;
 import org.hbs.gaya.dao.SequenceDao;
 import org.hbs.gaya.model.Rental;
 import org.hbs.gaya.model.RentalInvoice;
-import org.hbs.gaya.model.RentalItem;
+import org.hbs.gaya.util.ConstUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class RentalBoImpl implements RentalBo
 
 	@Autowired
 	RentalDao					rentalDao;
-	
+
 	@Autowired
 	SequenceDao					sequenceDao;
 
@@ -33,15 +33,12 @@ public class RentalBoImpl implements RentalBo
 	RentalItemDao				rentalItemDao;
 
 	@Override
-	public List<Rental> searchRental(String search)
+	public List<Rental> searchRental(String search, boolean includeDraft)
 	{
-		return rentalDao.searchRental(search);
-	}
-
-	@Override
-	public List<RentalItem> searchRentalItem(String rentalId)
-	{
-		return rentalItemDao.searchRentalItem(rentalId);
+		if(includeDraft)
+			return rentalDao.searchRentalWithDraft(search);
+		else
+			return rentalDao.searchRental(search);
 	}
 
 	@Override
@@ -50,37 +47,58 @@ public class RentalBoImpl implements RentalBo
 		RentalInvoice activeInvoice = null;
 		LocalDate lastCalculatedDate = null;
 
-		for (Rental rental : rentalDao.getPendingRental(LocalDate.now().atStartOfDay()))
+		LocalDateTime currDate = LocalDate.now().atStartOfDay();
+
+		for (Rental rental : rentalDao.getPendingRental(currDate))
 		{
 			activeInvoice = rental.getActiveInvoice();
 			lastCalculatedDate = activeInvoice.getCalculatedDate().toLocalDate();
 
-			while ( lastCalculatedDate.isBefore(LocalDate.now()) )
+			while ( lastCalculatedDate.isBefore(currDate.toLocalDate()) )
 			{
-				for (RentalItem item : rental.getRentalItemSet())
-				{
-					activeInvoice.setInvoiceAmount(activeInvoice.getInvoiceAmount() + item.getTotalCost());
-				}
+				activeInvoice.setInvoiceAmount(activeInvoice.getInvoiceAmount() + activeInvoice.getItemsTotalCost());
 				lastCalculatedDate = lastCalculatedDate.plusDays(1);
 			}
+
 			activeInvoice.setCalculatedDate(LocalDateTime.now());
 			rentalInvoiceDao.save(activeInvoice);
-
 		}
+	}
 
-	}
 	@Override
-	public String getLastRentalId() {
+	public String calculateDayRentalForSpecificRentalId(String rentalId) throws Exception
+	{
+		RentalInvoice activeInvoice = null;
+		LocalDate lastCalculatedDate = null;
+
+		Rental rental = rentalDao.getById(rentalId);
+		activeInvoice = rental.getActiveInvoice();
+		lastCalculatedDate = activeInvoice.getCalculatedDate().toLocalDate();
+
+		if (lastCalculatedDate.isBefore(LocalDate.now()))
+		{
+			while ( lastCalculatedDate.isBefore(LocalDate.now()) )
+			{
+				activeInvoice.setInvoiceAmount(activeInvoice.getInvoiceAmount() + activeInvoice.getItemsTotalCost());
+				lastCalculatedDate = lastCalculatedDate.plusDays(1);
+			}
+
+			activeInvoice.setCalculatedDate(LocalDateTime.now());
+			rentalInvoiceDao.save(activeInvoice);
+			return ConstUtil.SUCCESS;
+		}
+		else if (lastCalculatedDate.isAfter(LocalDate.now()))
+			throw new Exception("Future Date");
 		
-		return sequenceDao.create("Rental");
-		
+		return ConstUtil.ERROR;
 	}
+
 	@Override
 	public Rental getRentalById(String rentalId)
 	{
 		Optional<Rental> rentalOpt = rentalDao.findById(rentalId);
-		
-		if(rentalOpt.isPresent())
+
+		if (rentalOpt.isPresent())
 			return rentalOpt.get();
 		return null;
 	}

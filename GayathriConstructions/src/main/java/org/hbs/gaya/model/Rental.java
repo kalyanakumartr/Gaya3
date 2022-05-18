@@ -1,7 +1,6 @@
 package org.hbs.gaya.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hbs.gaya.model.RentalInvoice.EInvoiceStatus;
+import org.hbs.gaya.util.ConstUtil;
 import org.hbs.gaya.util.EnumInterface;
 import org.hbs.gaya.util.LabelValueBean;
 import org.hibernate.annotations.Fetch;
@@ -35,6 +35,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,23 +45,26 @@ import lombok.Setter;
 @Table(name = "rental")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Rental implements Serializable
 {
 	public enum ERentalStatus implements EnumInterface
 	{
-		Completed, None, Rented;
+		Closed, None, Rented;
 	}
 
 	private static final long	serialVersionUID	= 8952784246497174078L;
-	
+
 	@Id
 	@Column(name = "rentalId")
 	private String				rentalId;
 
 	@Column(name = "advanceAmount")
 	@JsonSerialize(using = TwoDecimalSerializer.class)
+	@Builder.Default
 	private Double				advanceAmount		= 0.0;
 
 	@ManyToOne(targetEntity = Customer.class, fetch = FetchType.EAGER, optional = false)
@@ -70,24 +75,25 @@ public class Rental implements Serializable
 	@Enumerated(EnumType.STRING)
 	private ERentalStatus		rentalStatus;
 
+	@Column(name = "closureStatus")
+	@Enumerated(EnumType.STRING)
+	private ERentalStatus		closureStatus;
+	
 	@Column(name = "rentedDate")
 	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime		rentedDate;
-	
+
 	@OneToMany(targetEntity = PaymentHistory.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonDeserialize(as = LinkedHashSet.class)
 	@OrderBy("paymentDate Desc")
-	private Set<PaymentHistory>		paymentSet		= new LinkedHashSet<>();
-
-	@OneToMany(targetEntity = RentalItem.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
-	@Fetch(FetchMode.JOIN)
-	@JsonDeserialize(as = LinkedHashSet.class)
-	private Set<RentalItem>		rentalItemSet		= new LinkedHashSet<>();
+	@Builder.Default
+	private Set<PaymentHistory>	paymentSet			= new LinkedHashSet<>();
 
 	@OneToMany(targetEntity = RentalInvoice.class, fetch = FetchType.EAGER, mappedBy = "rental", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@OrderBy("startDate Asc")
+	@Builder.Default
 	@JsonIgnore
 	private Set<RentalInvoice>	rentalInvoiceSet	= new LinkedHashSet<>();
 
@@ -105,14 +111,13 @@ public class Rental implements Serializable
 	{
 		return this.getPayableInvoiceAmount() + this.getActiveInvoiceAmount();
 	}
-	
+
 	@Transient
 	@JsonSerialize(using = TwoDecimalSerializer.class)
 	public Double getBalanceAmount()
 	{
 		return this.getTotalInvoiceAmount() - this.getPaymentAmount();
 	}
-
 
 	@Transient
 	@JsonSerialize(using = TwoDecimalSerializer.class)
@@ -139,9 +144,23 @@ public class Rental implements Serializable
 	@Transient
 	public RentalInvoice getActiveInvoice()
 	{
-		Optional<RentalInvoice> inOpt = this.rentalInvoiceSet.stream().filter(p -> (p.getActive() ) ).findFirst();
+		if (this.rentalInvoiceSet == null)
+			return null;
+
+		Optional<RentalInvoice> inOpt = this.rentalInvoiceSet.stream().filter(p -> (p.getActive())).findFirst();
 
 		return inOpt.isPresent() ? inOpt.get() : null;
+	}
+	
+	@Transient
+	public boolean getCalculateStatus()
+	{
+		RentalInvoice rInvoice = this.getActiveInvoice();
+
+		if(rInvoice == null)
+			return false ;
+		
+		return rInvoice.getCalculatedDate().toLocalDate().equals(LocalDate.now());
 	}
 
 	@Transient
@@ -155,7 +174,6 @@ public class Rental implements Serializable
 		}
 		return payableInvoiceSet;
 	}
-	
 
 	@Transient
 	@JsonIgnore
@@ -165,15 +183,14 @@ public class Rental implements Serializable
 		for (RentalInvoice rInvoice : this.rentalInvoiceSet)
 		{
 			if (rInvoice.getInvoiceNo() != null && rInvoice.getInvoiceDate() != null)
-				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), rInvoice.getInvoiceNo() + " | " + getCurrency(rInvoice.getInvoiceAmount()) + " | " + rInvoice.getInvoiceStatus()));
-			else if(rInvoice.getActive().booleanValue())
-				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), "Current Invoice - " + getCurrency(rInvoice.getInvoiceAmount())));
-			
-				
+				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), rInvoice.getInvoiceNo() + " | " + ConstUtil.getCurrency(rInvoice.getInvoiceAmount()) + " | " + rInvoice.getInvoiceStatus()));
+			else if (rInvoice.getActive().booleanValue())
+				invoiceSet.add(new LabelValueBean(rInvoice.getInvoiceId(), "Current Invoice - " + ConstUtil.getCurrency(rInvoice.getInvoiceAmount())));
+
 		}
 		return invoiceSet;
 	}
-	
+
 	@Transient
 	@JsonSerialize(using = TwoDecimalSerializer.class)
 	public Double getPaymentAmount()
@@ -181,33 +198,51 @@ public class Rental implements Serializable
 		Double paymentAmt = 0.0;
 		for (RentalInvoice rInvoice : this.rentalInvoiceSet)
 		{
-			if(rInvoice.getInvoiceStatus() != EInvoiceStatus.Settled)
+			if (rInvoice.getInvoiceStatus() != EInvoiceStatus.Settled)
 				paymentAmt += rInvoice.getPaymentAmount();
 		}
 		return paymentAmt;
 	}
-	
-	@Transient 
-	public  String getCurrency(Double value)
+
+	@Transient
+	public String getItemsTotalAmount$() // ForReceipt
 	{
-		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-	}
-	
-	@Transient 
-	public String getAdvanceAmount$()
-	{
-		return getCurrency(this.advanceAmount);
-	}
-	
-	@Transient 
-	public String getTotalAmount$() // Total Amount JSON
-	{
-		double totalAmount = 0.0;
-		for(RentalItem ri : this.rentalItemSet)
+		for (RentalInvoice rentalInvoice : this.rentalInvoiceSet)
 		{
-			totalAmount = totalAmount + ri.getTotalCost();
+			if (rentalInvoice.getInvoiceId().equals(rentalInvoice.getMasterInvoice().getInvoiceId()))
+				return ConstUtil.getCurrency(rentalInvoice.getItemsTotalCost());
 		}
-		return getCurrency(totalAmount);
+		return ConstUtil.getCurrency(0.0);
 	}
+
+	@Transient
+	public Set<RentalItem> getBaseItemSet()// ForReceipt
+	{
+		for (RentalInvoice rentalInvoice : this.rentalInvoiceSet)
+		{
+			if (rentalInvoice.getInvoiceId().equals(rentalInvoice.getMasterInvoice().getInvoiceId()))
+				return rentalInvoice.getItemSet();
+		}
+		return new LinkedHashSet<>();
+	}
+
+	@Transient
+	public Set<LabelValueBean> getRentalList()// ForRentalList
+	{
+		Set<LabelValueBean> rentalSet = new LinkedHashSet<>();
+		for (Rental rental : this.customer.getRentalSet())
+		{
+			if (this.rentalStatus == rental.getRentalStatus())
+				rentalSet.add(new LabelValueBean(rental.getRentalId(), rental.getRentalId() + " - " + rental.getRentedDate().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"))));
+		}
+		return rentalSet;
+	}
+	
+	@Transient
+	public boolean isNoBalance()
+	{
+		return this.getBalanceAmount() > 0 ;
+	}
+	
 	
 }
