@@ -1,29 +1,73 @@
-<div class="d-flex flex-column-fluid">
-	<div class="table-responsive">
-		<table class="table" id="returnItemsTable">
-			<thead>
-				<tr>
-					<th class="text-center border font-weight-boldest font-size-lg text-uppercase">Item Name</th>
-					<th class="text-center border font-weight-boldest font-size-lg text-uppercase">Hired Quantity</th>
-					<th class="text-center border font-weight-boldest font-size-lg text-uppercase">Returned Items</th>
-					<th class="text-center border font-weight-boldest font-size-lg text-uppercase">Balance Items</th>
-					<th class="text-center border font-weight-boldest font-size-lg text-uppercase">Returning Items</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr 
-				  th:each="item : ${items}"
-				  >
-				  	<td class="text-center border font-size-lg" th:text="${item.inventory.material.materialName}"/></td>
-				  	<td class="text-center border font-size-lg font-weight-boldest text-info" th:text="${item.quantity}"/></td>
-				  	<td class="text-center border font-size-lg font-weight-boldest text-success" th:text="${item.getTotalReturnQuantity()}"/></td>
-				  	<td class="text-center border font-size-lg font-weight-boldest text-danger" th:text="${item.balanceQuantity}"></td>
-					<td class="text-right  border" >
-					<input type="hidden" th:id="${item.itemId + 'Balance'}" th:value="${item.balanceQuantity}"/>
-					<input type="hidden" id="rentalId" th:value="${rentalId}"/>
-					<input type="number" class="form-control form-control-sm font-size-lg text-right" th:name="${item.itemId}" th:id="${item.itemId}" value="0" th:onchange="'restrict(this)'"/></td>
-				</tr>
-			</tbody>
-		</table>
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+	<!--begin::Entry-->
+	<div class="d-flex flex-column-fluid">
+		<!--begin::Container-->
+		<div class="container">
+			<div class="card card-custom">
+				<div class="card-body p-0">
+					<!--begin::Invoice-->
+					<div class="row justify-content-center" id="printReceipt">
+						<div class="col-md-9">
+							<!--begin: Invoice body-->
+							<div class="row border-bottom pb-2">
+								<div class="col-md-9 py-md-2 pr-md-2">
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th class="pt-1 pb-9 pl-0 font-weight-bold text-muted font-size-lg text-uppercase">Item Name</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Hired Quantity</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Return Items</th>
+													<th class="pt-1 pb-9 text-right font-weight-bold text-muted font-size-lg text-uppercase">Restore Items</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr 
+												  th:each="item : ${items}"
+												  th:attr="class='font-weight-bold font-size-lg'">
+												    <td class="border-top-0 pl-0 pt-7 d-flex align-items-center" th:text="${item.inventory.material.materialName}" />
+												    <td class="border-top-0 text-right py-4" th:text="${item.quantity}" />
+												    <td class="border-top-0 text-right py-4" th:utext="${item.getSoFarReturnItems}" />
+												    <td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-bold text-right" >
+													<input type="text" class="form-control form-control-lg" name="returnItemCount" value="0" /></td>
+												</tr>
+												<tr class="font-weight-bold border-bottom-0 font-size-lg">
+													<td class="border-top-0 pl-0 py-4 d-flex align-items-center">
+													<td class="border-top-0 text-right py-4"></td>
+													<td class="border-top-0 text-right font-weight-bolder py-4">Total Amount</td>
+													<td class="border-top-0 pr-0 py-4 font-size-h6 font-weight-boldest text-right"th:utext="${totalAmount$}" />
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="col-md-3 border-left-md pl-md-10 py-md-10 text-right">
+									<!--begin::Total Amount-->
+									<div class="font-size-h4 font-weight-bolder text-muted mb-3">ADVANCE AMOUNT</div>
+									<div class="font-size-h3 font-weight-bolder" th:utext="${advanceAmount$}">0.00</div>
+									<!--end::Total Amount-->
+									
+									<!--end::Invoice Date-->
+								</div>
+							</div>
+							<!--end: Invoice body-->
+						</div>
+					</div>
+					<!-- begin: Invoice action-->
+					<div class="row justify-content-center py-8 px-8 py-md-5 px-md-0">
+						<div class="col-md-9">
+							<div class="d-flex font-size-sm flex-wrap">
+								<button type="button" class="btn btn-success font-weight-bold mr-3 my-1" onclick="printDiv('printReceipt', 'Receipt.pdf')">Print Receipt</button>
+								<button type="button" class="btn btn-primary font-weight-bolder ml-sm-auto my-1" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+					<!-- end: Invoice action-->
+					<!--end::Invoice-->
+				</div>
+			</div>
+		</div>
+		<!--end::Container-->
 	</div>
+	<!--end::Entry-->
 </div>

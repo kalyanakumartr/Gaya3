@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RentalDao extends JpaRepository<Rental, String>
 {
-	@Query("Select R From Rental R where R.rentalStatus <> 'None' And (R.customer.customerName like %:search%  or R.customer.mobileNo like %:search% or R.customer.alternateNo like %:search%) Order By R.rentedDate Desc")
+	@Query("Select R From Rental R where R.customer.customerName like %:search%  or R.customer.mobileNo like %:search% or R.customer.alternateNo like %:search%")
 	List<Rental> searchRental(String search);
 
 	@Query("Select RI.rental From RentalInvoice RI Where RI.active = true And RI.rental.rentalStatus = 'Rented' And RI.calculatedDate < :calDate")
@@ -23,7 +23,4 @@ public interface RentalDao extends JpaRepository<Rental, String>
 	@Query(nativeQuery = true,
 		       value = "SELECT rentalId FROM rental ORDER by createdDate DESC limit 1")
 	String getLastRentalId();
-
-	@Query("Select R From Rental R where (R.customer.customerName like %:search%  or R.customer.mobileNo like %:search% or R.customer.alternateNo like %:search%) Group By R.rentalStatus, customer.customerId Order By R.rentedDate Desc")
-	List<Rental> searchRentalWithDraft(String search);
 }

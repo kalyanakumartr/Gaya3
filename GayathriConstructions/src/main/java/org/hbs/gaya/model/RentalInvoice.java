@@ -3,11 +3,7 @@ package org.hbs.gaya.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,19 +12,15 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hbs.gaya.util.EnumInterface;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hbs.gaya.util.EBusinessKey.EKey;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
@@ -52,7 +44,7 @@ public class RentalInvoice implements Serializable
 
 	public enum EInvoiceStatus implements EnumInterface
 	{
-		Settled, Pending, Payable, None;
+		Settled, Pending, Payable;
 	}
 
 	@Id
@@ -86,7 +78,6 @@ public class RentalInvoice implements Serializable
 
 	@Column(name = "invoiceAmount")
 	@JsonSerialize(using = TwoDecimalSerializer.class)
-	@Builder.Default
 	private Double			invoiceAmount	= 0.0;
 
 	@Column(name = "invoiceStatus")
@@ -95,24 +86,15 @@ public class RentalInvoice implements Serializable
 
 	@Column(name = "paymentAmount")
 	@JsonSerialize(using = TwoDecimalSerializer.class)
-	@Builder.Default
 	private Double			paymentAmount	= 0.0;
 
 	@Column(name = "active")
-	@Builder.Default
 	private Boolean			active			= false;
 
 	@Column(name = "calculatedDate")
 	@JsonFormat(pattern = "dd-MMM-yyyy hh:mm a", shape = JsonFormat.Shape.STRING)
 	private LocalDateTime	calculatedDate;
 
-	@OneToMany(targetEntity = RentalItem.class, fetch = FetchType.EAGER, mappedBy = "rentalInvoice", cascade = CascadeType.ALL, orphanRemoval = true)
-	@Fetch(FetchMode.JOIN)
-	@OrderBy("itemId")
-	@JsonDeserialize(as = LinkedHashSet.class)
-	@Builder.Default
-	private Set<RentalItem>		itemSet		= new LinkedHashSet<>();
-	
 	@Transient
 	@JsonIgnore
 	public RentalInvoice getInvoiceClone()
@@ -120,7 +102,7 @@ public class RentalInvoice implements Serializable
 		return RentalInvoice.builder()
 				.masterInvoice(this)
 				.active(true)
-				.calculatedDate(LocalDate.now().plusDays(1).atStartOfDay())
+				.calculatedDate(null)
 				.endDate(null)
 				.startDate(LocalDate.now().plusDays(1).atStartOfDay())
 				.invoiceNo(null)
@@ -129,43 +111,12 @@ public class RentalInvoice implements Serializable
 				.invoiceDate(null)
 				.invoiceAmount(0.0)
 				.paymentAmount(0.0)
-				.itemSet(new LinkedHashSet<>())
 				.build();
 	}
-	
-	@Transient
-	public Double getItemsTotalCost()
-	{
-		double allItemsTotalCost = 0.0;
-		
-		for (RentalItem item : this.itemSet)
-		{
-			allItemsTotalCost += item.getTotalCost();
-		}
-		
-		return allItemsTotalCost ;
-	}
-	
+
 	@Transient
 	public Double getInvoiceBalance()
 	{
 		return (this.invoiceAmount - this.paymentAmount);
-	}
-	
-	@Transient
-	public LocalDateTime getEndDate$()
-	{
-		return this.endDate == null ? LocalDateTime.now() : this.endDate;
-	}
-	@Transient
-	public LocalDateTime getInvoiceDate$()
-	{
-		return this.invoiceDate == null ? LocalDateTime.now() : this.invoiceDate;
-	}
-	
-	@Transient
-	public Long getNoOfDays$()
-	{
-		return this.startDate.toLocalDate().until(getEndDate$().toLocalDate(), ChronoUnit.DAYS);
 	}
 }

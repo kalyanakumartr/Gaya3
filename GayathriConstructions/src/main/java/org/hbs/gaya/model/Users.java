@@ -9,8 +9,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,9 +17,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Users extends CreatedModifiedDateStatus implements Serializable
 {
@@ -42,7 +38,6 @@ public class Users extends CreatedModifiedDateStatus implements Serializable
 	private String				userName;
 
 	@Column(name = "lastName")
-	@Builder.Default
 	private String				lastName			= "";
 
 	@Column(name = "mobileNo")

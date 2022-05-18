@@ -1,22 +1,26 @@
 package org.hbs.gaya.bo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hbs.gaya.model.Rental;
+import org.hbs.gaya.model.RentalItem;
 
 public interface RentalBo extends Serializable
 {
+	List<Rental> searchRental(String search);
+
 	void calculateDayRental();
 
-	String calculateDayRentalForSpecificRentalId(String rentalId) throws Exception;
+	List<RentalItem> searchRentalItem(String rentalId);
 
 	Rental getRentalById(String rentalId);
+	
+	String getLastRentalId() ;
 
 	Rental getRentalByInvoiceId(String rentalOrInvoiceId);
-	
-	Rental saveOrUpdate(Rental rental);
 
-	List<Rental> searchRental(String search, boolean includeAll);
+	Rental saveOrUpdate(Rental rental);
 
 }

@@ -30,11 +30,6 @@ public class CustomUserDetails implements UserDetails {
 	public String getUsername() {
 		return user.getEmailId();
 	}
-	
-	public String getEmployeeId() {
-		return user.getEmployeeId();
-	}
-
 
 	@Override
 	public boolean isAccountNonExpired() {

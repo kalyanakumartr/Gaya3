@@ -1,6 +1,7 @@
 package org.hbs.gaya.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hbs.gaya.util.ConstUtil;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,111 +32,80 @@ import lombok.Setter;
 @Table(name = "rental_item")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class RentalItem implements Serializable
 {
 
-	private static final long		serialVersionUID	= 160903192897435425L;
+	private static final long	serialVersionUID	= 160903192897435425L;
 
 	@Id
 	@Column(name = "itemId")
-	private String					itemId;
+	private String				itemId;
 
 	@ManyToOne(targetEntity = Rental.class, fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name = "rentalId")
+	@JoinColumn(name = "rentalId", nullable = false)
 	@JsonIgnore
-	private Rental					rental;
+	private Rental				rental;
 
 	@ManyToOne(targetEntity = Inventory.class, fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "inventoryId", nullable = false)
 	@JsonIgnore
-	private Inventory				inventory;
-
-	@ManyToOne(targetEntity = RentalInvoice.class, fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "invoiceId", nullable = false)
-	@JsonIgnore
-	private RentalInvoice			rentalInvoice;
+	private Inventory			inventory;
 
 	@Column(name = "quantity")
-	@Builder.Default
-	private Integer					quantity			= 0;
+	private Integer				quantity			= 0;
 
 	@Column(name = "balanceQuantity")
-	@Builder.Default
-	private Integer					balanceQuantity		= 0;
+	private Integer				balanceQuantity		= 0;
 
 	@Column(name = "price")
-	@Builder.Default
-	private Double					price				= 0.0;
+	private Double				price				= 0.0;
 
+	@Column(name = "totalCost" )
+	private Double				totalCost			= 0.0;
+	
 	@Transient
-	@Builder.Default
-	private Double					rentalCost			= 0.0;
-
+	private Double				rentalCost			= 0.0;
+	
 	@OneToMany(targetEntity = RentalItemHistory.class, fetch = FetchType.LAZY, mappedBy = "item", cascade = CascadeType.ALL)
 	@Fetch(FetchMode.JOIN)
 	@JsonDeserialize(as = LinkedHashSet.class)
-	@Builder.Default
-	private Set<RentalItemHistory>	rentalItemHistorys	= new LinkedHashSet<>();
-
-	@Transient
-	public String getDataId()
-	{
-		return this.itemId + "," + this.balanceQuantity;
-	}
-
+	private Set<RentalItemHistory>		rentalItemHistorys = new LinkedHashSet<>();
+	
 	@Transient
 	public Integer getTotalReturnQuantity()
 	{
 		int totalReturnQty = 0;
-		for (RentalItemHistory itemHistory : this.rentalItemHistorys)
+		for(RentalItemHistory itemHistory : rentalItemHistorys)
 		{
 			totalReturnQty += itemHistory.getQuantity();
 		}
-
+		
 		return totalReturnQty;
 	}
 	
-	@Transient
-	public Double getTotalCost()
-	{
-		return this.quantity * this.price;
-	}
-
-	@Transient
+	@Transient 
 	public String getTotalCost$()
 	{
-		return ConstUtil.getCurrency(this.getTotalCost());
+		return getCurrency(this.totalCost);
 	}
-
-	@Transient
+	
+	@Transient 
 	public String getRentalCost$()
 	{
-		return ConstUtil.getCurrency(this.getTotalCost() * rentalInvoice.getNoOfDays$());
+		return getCurrency(this.rentalCost);
 	}
-
-	@Transient
+	
+	@Transient 
 	public String getPrice$()
 	{
-		return ConstUtil.getCurrency(this.price);
+		return getCurrency(this.price);
 	}
-
-	@Transient
-	@JsonIgnore
-	public RentalItem clone()
+	
+	private String getCurrency(Double value)
 	{
-		return RentalItem.builder()//
-				.quantity(this.balanceQuantity)//
-				.balanceQuantity(this.balanceQuantity) // specifically
-				.inventory(this.inventory)//
-				.price(this.price)//
-				.rental(this.rental)//
-				.rentalCost(this.rentalCost)//
-				.rentalItemHistorys(new LinkedHashSet<>())//
-				.build();
+		return "&#x20B9; " + new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 	}
-
 }

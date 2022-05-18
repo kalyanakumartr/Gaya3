@@ -15,7 +15,6 @@
 									<div class="col-md-9 py-md-2 pr-md-2 d-flex flex-column mb-2 mb-md-0">
 										<div class="text-dark-50 font-size-lg font-weight-bold mb-1">Customer Name :</div>
 										<div class="font-weight-boldest font-size-h4 mb-3" th:text="${customer.customerName}" ></div>
-										<div class="font-weight-bold mr-15" th:text="${'Mobile No : ' + customer.mobileNo}"></div>
 										<div class="d-flex justify-content-between font-size-lg mb-3">
 											<span class="font-weight-bold mr-15" th:utext="${customer.address}"></span>
 										</div>
@@ -93,14 +92,18 @@
 									<!--begin::Total Amount-->
 									<div class="font-size-h4 font-weight-bolder text-muted mb-3">TOTAL AMOUNT</div>
 									<div class="font-size-h1 font-weight-boldest" th:utext="${totalAmount$}" ></div>
-									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">PAYMENT STATUS</div>
-									<div class="font-size-lg font-weight-bold mb-10" th:text="${invoiceStatus}"></div>
-									
 									<!--end::Total Amount-->
 									<div class="border-bottom w-100 mb-2"></div>
 									<!--begin::Invoice To-->
-									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE NO</div>
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE NO.</div>
 									<div id="invoiceNoDiv" class="font-size-lg font-weight-bold mb-10" th:text="${invoiceNo}"></div>
+									
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE TO.</div>
+									<div class="font-size-lg font-weight-bold mb-10" th:text="${customer.customerName}"></div>
+									
+									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">MOBILE NO.</div>
+									<div class="font-size-lg font-weight-bold mb-10" th:text="${customer.mobileNo}"></div>
+
 									<!--end::Invoice No-->
 									<!--begin::Invoice Date-->
 									<div class="text-dark-50 font-size-lg font-weight-bold mb-3">INVOICE DATE</div>
@@ -114,7 +117,7 @@
 					<div class="row justify-content-center py-8 px-8 py-md-5 px-md-0">
 						<div class="col-md-9">
 							<div class="d-flex font-size-sm flex-wrap">
-								<button type="button" class="btn btn-success font-weight-bold mr-3 my-1" onclick="printDiv('printInvoice', 'Invoice.pdf')">Print Invoice</button>
+								<button type="button" class="btn btn-success font-weight-bold mr-3 my-1" onclick="printDiv('printInvoice', 'Invoice.pdf')">Print Receipt</button>
 								<button type="button" class="btn btn-dark font-weight-bolder mr-3 my-1" th:attr="onclick='generateInvoice(\'' + ${invoiceId} + '\');'" id="createInvoiceBtn" th:disabled="${disableCreateInvoice}">Create Invoice</button>
 								<button type="button" class="btn btn-primary font-weight-bolder ml-sm-auto my-1" data-dismiss="modal">Close</button>
 							</div>

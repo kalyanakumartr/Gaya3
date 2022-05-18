@@ -1,6 +1,7 @@
 package org.hbs.gaya.controllers;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import org.hbs.gaya.bo.RentalBo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class RentalScheduler implements Serializable
 	private static final String	MIDNIGHT_12				= "0 0 0 * * *";		// On_Every_Day_12AM
 	private static final String ONE_MINUTE = "0 0/1 * * * *";
 	
-	@Scheduled(cron = MIDNIGHT_12, zone = ASIA_KOLKATA)
+	@Scheduled(cron = ONE_MINUTE, zone = ASIA_KOLKATA)
 	public void calculateDayRental()
 	{
 		rentalBo.calculateDayRental();
